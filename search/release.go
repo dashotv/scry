@@ -2,11 +2,12 @@ package search
 
 import (
 	"context"
-	"fmt"
 	"encoding/json"
 	"time"
 
 	"github.com/olivere/elastic"
+	"fmt"
+	"strings"
 )
 
 const RELEASE_SEARCH_INDEX = "torrents" // TODO: Fix
@@ -16,7 +17,12 @@ type ReleaseService struct {
 }
 
 func (s *ReleaseService) NewSearch() *ReleaseSearch {
-	return &ReleaseSearch{client: s.client}
+	return &ReleaseSearch{
+		client: s.client,
+		Season: -1,
+		Episode: -1,
+		Resolution: -1,
+	}
 }
 
 type Release struct {
@@ -36,7 +42,7 @@ type Release struct {
 	Verified    bool      `json:"verified"`
 	Bluray      bool      `json:"bluray"`
 	Uncensored  bool      `json:"uncensored"`
-	Checksum    string    `json:"checksum" gorm:"unique_index"`
+	Checksum    string    `json:"checksum"`
 	Download    string    `json:"download"`
 	Source      string    `json:"source"`
 	Type        string    `json:"type"`
@@ -44,7 +50,7 @@ type Release struct {
 }
 
 type ReleaseSearch struct {
-	Source string
+	Source     string
 	Type       string
 	Name       string
 	Author     string
@@ -72,7 +78,7 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 	search := s.client.Search().Index(RELEASE_SEARCH_INDEX)
 	search = search.From(0)
 	search = search.Size(10)
-	search.Query(s.Query())
+	search.Query(s.StringQuery())
 
 	sr, err := search.Do(ctx)
 	if err != nil {
@@ -109,8 +115,62 @@ func (s *ReleaseSearch) processResponse(res *elastic.SearchResult) ([]*Release, 
 	return rels, nil
 }
 
+func (s *ReleaseSearch) StringQuery() *elastic.QueryStringQuery {
+	list := []string{}
+
+	if s.Name != "" {
+		if s.Exact {
+			list = append(list, fmt.Sprintf("%s:\"%s\"", "name", s.Name))
+		} else {
+			list = append(list, fmt.Sprintf("%s:(%s)", "name", s.Name))
+		}
+	}
+
+	if s.Source != "" {
+		list = append(list, fmt.Sprintf("%s:\"%s\"", "source", s.Source))
+	}
+	if s.Type != "" {
+		list = append(list, fmt.Sprintf("%s:\"%s\"", "type", s.Type))
+	}
+
+	if s.Author != "" {
+		list = append(list, fmt.Sprintf("%s:\"%s\"", "author", s.Author))
+	}
+	if s.Group != "" {
+		list = append(list, fmt.Sprintf("%s:\"%s\"", "group", s.Group))
+	}
+
+	if s.Season >= 0 {
+		list = append(list, fmt.Sprintf("%s:%d", "season", s.Season))
+	}
+	if s.Episode >= 0 {
+		list = append(list, fmt.Sprintf("%s:%d", "episode", s.Episode))
+	}
+
+	if s.Resolution >= 0 {
+		list = append(list, fmt.Sprintf("%s:%d", "resolution", s.Resolution))
+	}
+
+	if s.Verified {
+		list = append(list, fmt.Sprintf("%s:%t", "verified", s.Verified))
+	}
+	if s.Uncensored {
+		list = append(list, fmt.Sprintf("%s:%t", "uncensored", s.Uncensored))
+	}
+	if s.Bluray {
+		list = append(list, fmt.Sprintf("%s:%t", "bluray", s.Bluray))
+	}
+
+	str := strings.Join(list, " AND ")
+	fmt.Printf("search: %s\n", str)
+	return elastic.NewQueryStringQuery(str)
+}
+
 func (s *ReleaseSearch) Query() *elastic.BoolQuery {
 	query := elastic.NewBoolQuery()
+
+	fmt.Printf("search: %#v\n", s)
+
 	if s.Name != "" {
 		if s.Exact {
 			query = query.Must(elastic.NewTermQuery("name", "\""+s.Name+"\""))
@@ -133,15 +193,17 @@ func (s *ReleaseSearch) Query() *elastic.BoolQuery {
 		query = query.Must(elastic.NewTermQuery("group", "\""+s.Group+"\""))
 	}
 
-	//if s.Season >= 0 {
-	//	query = query.Must(elastic.NewTermQuery("season", s.Season))
-	//}
-	//if s.Episode >= 0 {
-	//	query = query.Must(elastic.NewTermQuery("episode", s.Episode))
-	//}
+	if s.Season >= 0 {
+		query = query.Must(elastic.NewTermQuery("season", s.Season))
+	}
+	if s.Episode >= 0 {
+		query = query.Must(elastic.NewTermQuery("episode", s.Episode))
+	}
+
 	if s.Resolution >= 0 {
 		query = query.Must(elastic.NewTermQuery("resolution", s.Resolution))
 	}
+
 	if s.Verified {
 		query = query.Must(elastic.NewTermQuery("verified", s.Verified))
 	}
@@ -151,6 +213,6 @@ func (s *ReleaseSearch) Query() *elastic.BoolQuery {
 	if s.Bluray {
 		query = query.Must(elastic.NewTermQuery("bluray", s.Bluray))
 	}
-	fmt.Printf("query: %#v\n", query)
+
 	return query
 }

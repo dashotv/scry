@@ -2,23 +2,26 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/dashotv/scry/search"
+	"github.com/dashotv/scry/server/releases"
+	"net/http"
+	"github.com/dashotv/scry/server/config"
 )
 
-var client *search.Client
-
 func Start(url string) error {
-	var err error
-
-	client, err = search.New(url)
-	if err != nil {
-		return err
-	}
+	cfg := config.New(url)
 
 	router := gin.Default()
 	router.GET("/", homeIndex)
-	router.GET("/releases", releasesSearch)
 
-	router.Run(":8080")
+	releases.Routes(cfg, router)
+
+	if err := router.Run(":8080"); err != nil {
+		return err
+	}
+
 	return nil
+}
+
+func homeIndex(c *gin.Context) {
+	c.String(http.StatusOK, "home")
 }

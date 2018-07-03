@@ -12,10 +12,11 @@ func TestTorrentSearch_Find(t *testing.T) {
 	}
 
 	s := c.Release.NewSearch()
-	s.Type = "movies"
-	s.Name = "notebook"
-	s.Resolution = 720
-	s.Verified = true
+	s.Type = "anime"
+	s.Name = "my hero academia"
+	s.Exact = true
+	//s.Resolution = 720
+	//s.Verified = true
 
 	r, err := s.Find()
 	if err != nil {
