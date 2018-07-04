@@ -81,6 +81,7 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 	search := s.client.Search().Index(RELEASE_SEARCH_INDEX)
 	search = search.From(s.Start)
 	search = search.Size(s.Limit)
+	search = search.Sort("published_at", false)
 
 	if s.IsZero() {
 		q = elastic.NewMatchAllQuery()
