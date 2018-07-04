@@ -22,5 +22,9 @@ func QueryDefaultInteger(c *gin.Context, name string, def int) (int, error) {
 		return def, err
 	}
 
+	if n < 0 {
+		return def, fmt.Errorf("less than zero")
+	}
+
 	return n, nil
 }
