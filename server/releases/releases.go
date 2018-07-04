@@ -48,6 +48,9 @@ func Search(c *gin.Context) {
 func CreateSearch(c *gin.Context) (*search.ReleaseSearch, error) {
 	s := client.Release.NewSearch()
 
+	s.Start, _ = util.QueryDefaultInteger(c, "start", 0)
+	s.Limit, _ = util.QueryDefaultInteger(c, "limit", search.RELEASE_PAGE_SIZE)
+
 	s.Source = c.Query("source")
 	s.Type = c.Query("type")
 	s.Name = c.Query("text")

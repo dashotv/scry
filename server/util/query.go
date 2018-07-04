@@ -8,14 +8,18 @@ import (
 )
 
 func QueryInteger(c *gin.Context, name string) (int, error) {
+	return QueryDefaultInteger(c, name, -1)
+}
+
+func QueryDefaultInteger(c *gin.Context, name string, def int) (int, error) {
 	v := c.Query(name)
 	if v == "" {
-		return -1, fmt.Errorf("not set")
+		return def, fmt.Errorf("not set")
 	}
 
 	n, err := strconv.Atoi(v)
 	if err != nil {
-		return -1, err
+		return def, err
 	}
 
 	return n, nil
