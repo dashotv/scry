@@ -30,7 +30,7 @@ var serverCmd = &cobra.Command{
 		port := viper.GetInt("port")
 		url := viper.GetString("url")
 		mode := viper.GetString("mode")
-		logrus.Infof("mode:%s elasticsearch:%s port:%d\n", mode, url, port)
+		logrus.Infof("mode:%s elasticsearch:%s port:%d", mode, url, port)
 		server.Start(url, port, mode)
 	},
 }

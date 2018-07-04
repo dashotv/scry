@@ -44,7 +44,7 @@ func New(url string) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	//logrus.Debugf("Elasticsearch returned with code %d and version %s\n", code, info.Version.Number)
+	//logrus.Debugf("Elasticsearch returned with code %d and version %s", code, info.Version.Number)
 	c.Code = code
 	c.Version = info.Version.Number
 

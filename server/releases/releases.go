@@ -16,7 +16,7 @@ var client *search.Client
 func Routes(cfg *config.Config, e *gin.Engine) error {
 	var err error
 
-	logrus.Infof("connecting to elasticsearch: %s\n", cfg.URL)
+	logrus.Infof("connecting to elasticsearch: %s", cfg.URL)
 	client, err = search.New(cfg.URL)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func Routes(cfg *config.Config, e *gin.Engine) error {
 }
 
 func Search(c *gin.Context) {
-	logrus.Debugf("    params: %#v\n", c.Params)
+	logrus.Debugf("    params: %#v", c.Params)
 	s, err := CreateSearch(c)
 	if err != nil {
 		c.Error(err)
@@ -66,6 +66,6 @@ func CreateSearch(c *gin.Context) (*search.ReleaseSearch, error) {
 	s.Bluray = c.Query("bluray") == "true"
 	s.Exact = c.Query("exact") == "true"
 
-	logrus.Debugf("    create: %#v\n", s)
+	logrus.Debugf("    create: %#v", s)
 	return s, nil
 }

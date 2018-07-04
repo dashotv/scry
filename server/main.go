@@ -2,12 +2,12 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/dashotv/scry/server/config"
 	"github.com/dashotv/scry/server/releases"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func Start(url string, port int, mode string) error {
@@ -22,7 +22,7 @@ func Start(url string, port int, mode string) error {
 
 	err := releases.Routes(cfg, router)
 	if err != nil {
-		log.Fatalf("error: %s\n", err)
+		logrus.Fatalf("error: %s", err)
 	}
 
 	if err := router.Run(fmt.Sprintf(":%d", port)); err != nil {

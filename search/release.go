@@ -94,7 +94,10 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 
 	sr, err := search.Do(ctx)
 	if err != nil {
-		logrus.Errorf("Find(): %s\n", err)
+		logrus.Errorf("Find(): %s", err)
+		if e, ok := err.(*elastic.Error); ok {
+			logrus.Errorf("Elastic failed with status %d and error %s.", e.Status, e.Details)
+		}
 		return r, err
 	}
 
@@ -176,7 +179,7 @@ func (s *ReleaseSearch) Query() *elastic.QueryStringQuery {
 	}
 
 	str := strings.Join(list, " AND ")
-	logrus.Debugf("    search: %s\n", str)
+	logrus.Debugf("    search: %s", str)
 	return elastic.NewQueryStringQuery(str)
 }
 
@@ -226,7 +229,7 @@ func (s *ReleaseSearch) IsZero() bool {
 //func (s *ReleaseSearch) Query() *elastic.BoolQuery {
 //	query := elastic.NewBoolQuery()
 //
-//	//logrus.Debugf("search: %#v\n", s)
+//	//logrus.Debugf("search: %#v", s)
 //
 //	if s.Name != "" {
 //		if s.Exact {
