@@ -46,7 +46,7 @@ type Release struct {
 	Download    string    `json:"download"`
 	Source      string    `json:"source"`
 	Type        string    `json:"type"`
-	Published   time.Time `json:"published"`
+	Published   time.Time `json:"published_at"`
 }
 
 type ReleaseSearch struct {
