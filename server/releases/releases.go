@@ -29,6 +29,7 @@ func Routes(cfg *config.Config, e *gin.Engine) error {
 }
 
 func Search(c *gin.Context) {
+	fmt.Printf("    params: %#v\n", c.Params)
 	s, err := CreateSearch(c)
 	if err != nil {
 		c.Error(err)
