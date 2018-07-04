@@ -28,8 +28,8 @@ func (s *ReleaseService) NewSearch() *ReleaseSearch {
 }
 
 type Release struct {
-	ID          string
-	Name        string
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
 	DisplayName string    `json:"display_name"`
 	Raw         string    `json:"raw"`
 	Title       string    `json:"title"`
@@ -52,17 +52,17 @@ type Release struct {
 }
 
 type ReleaseSearch struct {
-	Source     string
-	Type       string
-	Name       string
-	Author     string
-	Group      string
-	Season     int
-	Episode    int
-	Resolution int
-	Verified   bool
-	Uncensored bool
-	Bluray     bool
+	Source     string `json:"source"`
+	Type       string `json:"type"`
+	Name       string `json:"name"`
+	Author     string `json:"author"`
+	Group      string `json:"group"`
+	Season     int    `json:"season"`
+	Episode    int    `json:"episode"`
+	Resolution int    `json:"resolution"`
+	Verified   bool   `json:"verified"`
+	Uncensored bool   `json:"uncensored"`
+	Bluray     bool   `json:"bluray"`
 	Exact      bool
 
 	client *elastic.Client
