@@ -29,8 +29,7 @@ func (s *ReleaseService) NewSearch() *ReleaseSearch {
 
 type Release struct {
 	ID          string    `json:"id"`
-	Name        string    `json:"name"`
-	DisplayName string    `json:"display_name"`
+	Name        string    `json:"display"`
 	Raw         string    `json:"raw"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
@@ -39,7 +38,6 @@ type Release struct {
 	Size        string    `json:"size"`
 	Guid        string    `json:"guid"`
 	Resolution  string    `json:"resolution"`
-	Team        string    `json:"team"`
 	Author      string    `json:"author"`
 	Verified    bool      `json:"verified"`
 	Bluray      bool      `json:"bluray"`
