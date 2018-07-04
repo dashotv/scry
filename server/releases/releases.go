@@ -1,7 +1,6 @@
 package releases
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,6 +8,7 @@ import (
 	"github.com/dashotv/scry/search"
 	"github.com/dashotv/scry/server/config"
 	"github.com/dashotv/scry/server/util"
+	"github.com/sirupsen/logrus"
 )
 
 var client *search.Client
@@ -16,7 +16,7 @@ var client *search.Client
 func Routes(cfg *config.Config, e *gin.Engine) error {
 	var err error
 
-	fmt.Printf("connecting to elasticsearch: %s\n", cfg.URL)
+	logrus.Infof("connecting to elasticsearch: %s\n", cfg.URL)
 	client, err = search.New(cfg.URL)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func Routes(cfg *config.Config, e *gin.Engine) error {
 }
 
 func Search(c *gin.Context) {
-	fmt.Printf("    params: %#v\n", c.Params)
+	logrus.Debugf("    params: %#v\n", c.Params)
 	s, err := CreateSearch(c)
 	if err != nil {
 		c.Error(err)
@@ -66,6 +66,6 @@ func CreateSearch(c *gin.Context) (*search.ReleaseSearch, error) {
 	s.Bluray = c.Query("bluray") == "true"
 	s.Exact = c.Query("exact") == "true"
 
-	fmt.Printf("    create: %#v\n", s)
+	logrus.Debugf("    create: %#v\n", s)
 	return s, nil
 }

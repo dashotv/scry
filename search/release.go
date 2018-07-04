@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/olivere/elastic"
+	"github.com/sirupsen/logrus"
 )
 
 const RELEASE_SEARCH_INDEX = "torrents" // TODO: Fix
@@ -93,6 +94,7 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 
 	sr, err := search.Do(ctx)
 	if err != nil {
+		logrus.Errorf("Find(): %s\n", err)
 		return r, err
 	}
 
@@ -174,7 +176,7 @@ func (s *ReleaseSearch) Query() *elastic.QueryStringQuery {
 	}
 
 	str := strings.Join(list, " AND ")
-	fmt.Printf("    search: %s\n", str)
+	logrus.Debugf("    search: %s\n", str)
 	return elastic.NewQueryStringQuery(str)
 }
 
@@ -224,7 +226,7 @@ func (s *ReleaseSearch) IsZero() bool {
 //func (s *ReleaseSearch) Query() *elastic.BoolQuery {
 //	query := elastic.NewBoolQuery()
 //
-//	//fmt.Printf("search: %#v\n", s)
+//	//logrus.Debugf("search: %#v\n", s)
 //
 //	if s.Name != "" {
 //		if s.Exact {
