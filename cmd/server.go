@@ -27,11 +27,16 @@ var serverCmd = &cobra.Command{
 	Short: "run the server",
 	Long:  "run the server",
 	Run: func(cmd *cobra.Command, args []string) {
-		port := viper.GetInt("port")
-		url := viper.GetString("url")
-		mode := viper.GetString("mode")
-		logrus.Infof("mode:%s elasticsearch:%s port:%d", mode, url, port)
-		server.Start(url, port, mode)
+		s := &server.Server{
+			Port: viper.GetInt("port"),
+			URL:  viper.GetString("url"),
+			Mode: viper.GetString("mode"),
+		}
+
+		err := s.Start()
+		if err != nil {
+			logrus.Fatalf("error: %s", err)
+		}
 	},
 }
 

@@ -3,20 +3,20 @@ package search
 import (
 	"fmt"
 	"testing"
+
+	"github.com/sirupsen/logrus"
 )
 
-func TestReleaseSearch_Find(t *testing.T) {
+func TestMediaSearch_Find(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
 	c, err := New("http://127.0.0.1:9200")
 	if err != nil {
 		t.Error(err)
 	}
 
-	s := c.Release.NewSearch()
-	s.Type = "anime"
+	s := c.Media.NewSearch()
+	s.Type = "series"
 	s.Name = "my hero academia"
-	s.Exact = true
-	//s.Resolution = 720
-	//s.Verified = true
 
 	r, err := s.Find()
 	if err != nil {
@@ -24,7 +24,7 @@ func TestReleaseSearch_Find(t *testing.T) {
 	}
 
 	fmt.Printf("found: %d/%d\n", r.Count, r.Total)
-	for _, r := range r.Releases {
-		fmt.Printf("%5t %5s %s\n", r.Verified, r.Resolution, r.Name)
+	for _, f := range r.Media {
+		fmt.Printf("%10s %s\n", f.Type, f.Name)
 	}
 }
