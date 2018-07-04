@@ -17,6 +17,7 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"github.com/dashotv/scry/server"
+	"github.com/spf13/viper"
 )
 
 // serverCmd represents the server command
@@ -25,7 +26,10 @@ var serverCmd = &cobra.Command{
 	Short: "run the server",
 	Long:  "run the server",
 	Run: func(cmd *cobra.Command, args []string) {
-		server.Start("http://127.0.0.1:9200")
+		port := viper.GetInt("port")
+		url := viper.GetString("url")
+		mode := viper.GetString("mode")
+		server.Start(url, port, mode)
 	},
 }
 
@@ -40,5 +44,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// serverCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//serverCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
