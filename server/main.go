@@ -12,7 +12,7 @@ import (
 
 func Start(url string, port int, mode string) error {
 	cfg := config.New(url, port, mode)
-	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetLevel(logrus.InfoLevel)
 	logrus.SetFormatter(&logrus.TextFormatter{})
 
 	if mode == "release" {
