@@ -3,11 +3,11 @@ package search
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/olivere/elastic"
-	"fmt"
-	"strings"
 )
 
 const RELEASE_SEARCH_INDEX = "torrents" // TODO: Fix
@@ -18,9 +18,9 @@ type ReleaseService struct {
 
 func (s *ReleaseService) NewSearch() *ReleaseSearch {
 	return &ReleaseSearch{
-		client: s.client,
-		Season: -1,
-		Episode: -1,
+		client:     s.client,
+		Season:     -1,
+		Episode:    -1,
 		Resolution: -1,
 	}
 }
@@ -98,11 +98,12 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 }
 
 func (s *ReleaseSearch) processResponse(res *elastic.SearchResult) ([]*Release, error) {
+	var rels []*Release
+
 	if res == nil || res.TotalHits() == 0 {
-		return nil, nil
+		return rels, nil
 	}
 
-	var rels []*Release
 	for _, hit := range res.Hits.Hits {
 		rel := &Release{}
 		if err := json.Unmarshal(*hit.Source, rel); err != nil {
