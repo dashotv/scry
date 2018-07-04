@@ -163,14 +163,14 @@ func (s *ReleaseSearch) StringQuery() *elastic.QueryStringQuery {
 	}
 
 	str := strings.Join(list, " AND ")
-	fmt.Printf("search: %s\n", str)
+	//fmt.Printf("search: %s\n", str)
 	return elastic.NewQueryStringQuery(str)
 }
 
 func (s *ReleaseSearch) Query() *elastic.BoolQuery {
 	query := elastic.NewBoolQuery()
 
-	fmt.Printf("search: %#v\n", s)
+	//fmt.Printf("search: %#v\n", s)
 
 	if s.Name != "" {
 		if s.Exact {
