@@ -80,6 +80,7 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 	ctx := context.Background()
 
 	search := s.client.Search().Index(RELEASE_SEARCH_INDEX)
+	logrus.Debugf("Find(): start=%d limit=%d", s.Start, s.Limit)
 	search = search.From(s.Start)
 	search = search.Size(s.Limit)
 	search = search.Sort("published_at", false)

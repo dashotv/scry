@@ -12,6 +12,8 @@ import (
 
 func Start(url string, port int, mode string) error {
 	cfg := config.New(url, port, mode)
+	logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetFormatter(&logrus.TextFormatter{})
 
 	if mode == "release" {
 		gin.SetMode(mode)
