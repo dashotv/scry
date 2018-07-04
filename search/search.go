@@ -7,17 +7,22 @@ import (
 
 type Client struct {
 	client *elastic.Client
-	url string
+	url    string
 
-	Code int
+	Code    int
 	Version string
 
 	Release *ReleaseService
-	Media *MediaService
+	Media   *MediaService
 }
 
 type Service struct {
 	client *elastic.Client
+}
+
+type Search struct {
+	Start int
+	Limit int
 }
 
 type SearchResponse struct {

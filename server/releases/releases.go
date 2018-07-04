@@ -1,6 +1,7 @@
 package releases
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,7 @@ var client *search.Client
 func Routes(cfg *config.Config, e *gin.Engine) error {
 	var err error
 
+	fmt.Printf("connecting to elasticsearch: %s\n", cfg.URL)
 	client, err = search.New(cfg.URL)
 	if err != nil {
 		return err
@@ -60,5 +62,6 @@ func CreateSearch(c *gin.Context) (*search.ReleaseSearch, error) {
 	s.Bluray = c.Query("bluray") == "true"
 	s.Exact = c.Query("exact") == "true"
 
+	fmt.Printf("    create: %#v\n", s)
 	return s, nil
 }

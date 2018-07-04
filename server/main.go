@@ -2,11 +2,12 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/dashotv/scry/server/releases"
 	"github.com/dashotv/scry/server/config"
+	"github.com/dashotv/scry/server/releases"
+	"github.com/gin-gonic/gin"
 )
 
 func Start(url string, port int, mode string) error {
@@ -19,7 +20,10 @@ func Start(url string, port int, mode string) error {
 	router := gin.Default()
 	router.GET("/", homeIndex)
 
-	releases.Routes(cfg, router)
+	err := releases.Routes(cfg, router)
+	if err != nil {
+		log.Fatalf("error: %s\n", err)
+	}
 
 	if err := router.Run(fmt.Sprintf(":%d", port)); err != nil {
 		return err

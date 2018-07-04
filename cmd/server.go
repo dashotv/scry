@@ -15,8 +15,9 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
+	"fmt"
 	"github.com/dashotv/scry/server"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
@@ -29,6 +30,7 @@ var serverCmd = &cobra.Command{
 		port := viper.GetInt("port")
 		url := viper.GetString("url")
 		mode := viper.GetString("mode")
+		fmt.Printf("mode:%s elasticsearch:%s port:%d\n", mode, url, port)
 		server.Start(url, port, mode)
 	},
 }

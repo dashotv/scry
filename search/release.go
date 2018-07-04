@@ -11,6 +11,7 @@ import (
 )
 
 const RELEASE_SEARCH_INDEX = "torrents" // TODO: Fix
+const RELEASE_PAGE_SIZE = 25
 
 type ReleaseService struct {
 	Service
@@ -22,6 +23,7 @@ func (s *ReleaseService) NewSearch() *ReleaseSearch {
 		Season:     -1,
 		Episode:    -1,
 		Resolution: -1,
+		Search:     &Search{Start: 0, Limit: RELEASE_PAGE_SIZE},
 	}
 }
 
@@ -64,6 +66,7 @@ type ReleaseSearch struct {
 	Exact      bool
 
 	client *elastic.Client
+	*Search
 }
 
 type ReleaseSearchResponse struct {
@@ -72,13 +75,22 @@ type ReleaseSearchResponse struct {
 }
 
 func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
+	var q elastic.Query
+
 	r := &ReleaseSearchResponse{SearchResponse: &SearchResponse{}}
 	ctx := context.Background()
 
 	search := s.client.Search().Index(RELEASE_SEARCH_INDEX)
-	search = search.From(0)
-	search = search.Size(10)
-	search.Query(s.StringQuery())
+	search = search.From(s.Start)
+	search = search.Size(s.Limit)
+
+	if s.IsZero() {
+		q = elastic.NewMatchAllQuery()
+	} else {
+		q = s.Query()
+	}
+
+	search.Query(q)
 
 	sr, err := search.Do(ctx)
 	if err != nil {
@@ -116,7 +128,7 @@ func (s *ReleaseSearch) processResponse(res *elastic.SearchResult) ([]*Release, 
 	return rels, nil
 }
 
-func (s *ReleaseSearch) StringQuery() *elastic.QueryStringQuery {
+func (s *ReleaseSearch) Query() *elastic.QueryStringQuery {
 	list := []string{}
 
 	if s.Name != "" {
@@ -163,57 +175,100 @@ func (s *ReleaseSearch) StringQuery() *elastic.QueryStringQuery {
 	}
 
 	str := strings.Join(list, " AND ")
-	//fmt.Printf("search: %s\n", str)
+	fmt.Printf("    search: %s\n", str)
 	return elastic.NewQueryStringQuery(str)
 }
 
-func (s *ReleaseSearch) Query() *elastic.BoolQuery {
-	query := elastic.NewBoolQuery()
-
-	//fmt.Printf("search: %#v\n", s)
-
+func (s *ReleaseSearch) IsZero() bool {
 	if s.Name != "" {
-		if s.Exact {
-			query = query.Must(elastic.NewTermQuery("name", "\""+s.Name+"\""))
-		} else {
-			query = query.Must(elastic.NewTermQuery("name", s.Name))
-		}
+		return false
 	}
 
 	if s.Source != "" {
-		query = query.Must(elastic.NewTermQuery("source", s.Source))
+		return false
 	}
 	if s.Type != "" {
-		query = query.Must(elastic.NewTermQuery("type", s.Type))
+		return false
 	}
 
 	if s.Author != "" {
-		query = query.Must(elastic.NewTermQuery("author", "\""+s.Author+"\""))
+		return false
 	}
 	if s.Group != "" {
-		query = query.Must(elastic.NewTermQuery("group", "\""+s.Group+"\""))
+		return false
 	}
 
 	if s.Season >= 0 {
-		query = query.Must(elastic.NewTermQuery("season", s.Season))
+		return false
 	}
 	if s.Episode >= 0 {
-		query = query.Must(elastic.NewTermQuery("episode", s.Episode))
+		return false
 	}
 
 	if s.Resolution >= 0 {
-		query = query.Must(elastic.NewTermQuery("resolution", s.Resolution))
+		return false
 	}
 
 	if s.Verified {
-		query = query.Must(elastic.NewTermQuery("verified", s.Verified))
+		return false
 	}
 	if s.Uncensored {
-		query = query.Must(elastic.NewTermQuery("uncensored", s.Uncensored))
+		return false
 	}
 	if s.Bluray {
-		query = query.Must(elastic.NewTermQuery("bluray", s.Bluray))
+		return false
 	}
 
-	return query
+	return true
 }
+
+//func (s *ReleaseSearch) Query() *elastic.BoolQuery {
+//	query := elastic.NewBoolQuery()
+//
+//	//fmt.Printf("search: %#v\n", s)
+//
+//	if s.Name != "" {
+//		if s.Exact {
+//			query = query.Must(elastic.NewTermQuery("name", "\""+s.Name+"\""))
+//		} else {
+//			query = query.Must(elastic.NewTermQuery("name", s.Name))
+//		}
+//	}
+//
+//	if s.Source != "" {
+//		query = query.Must(elastic.NewTermQuery("source", s.Source))
+//	}
+//	if s.Type != "" {
+//		query = query.Must(elastic.NewTermQuery("type", s.Type))
+//	}
+//
+//	if s.Author != "" {
+//		query = query.Must(elastic.NewTermQuery("author", "\""+s.Author+"\""))
+//	}
+//	if s.Group != "" {
+//		query = query.Must(elastic.NewTermQuery("group", "\""+s.Group+"\""))
+//	}
+//
+//	if s.Season >= 0 {
+//		query = query.Must(elastic.NewTermQuery("season", s.Season))
+//	}
+//	if s.Episode >= 0 {
+//		query = query.Must(elastic.NewTermQuery("episode", s.Episode))
+//	}
+//
+//	if s.Resolution >= 0 {
+//		query = query.Must(elastic.NewTermQuery("resolution", s.Resolution))
+//	}
+//
+//	if s.Verified {
+//		query = query.Must(elastic.NewTermQuery("verified", s.Verified))
+//	}
+//	if s.Uncensored {
+//		query = query.Must(elastic.NewTermQuery("uncensored", s.Uncensored))
+//	}
+//	if s.Bluray {
+//		query = query.Must(elastic.NewTermQuery("bluray", s.Bluray))
+//	}
+//
+//	return query
+//}
