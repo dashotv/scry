@@ -40,7 +40,9 @@ type Release struct {
 	Size        string    `json:"size"`
 	Guid        string    `json:"guid"`
 	Resolution  string    `json:"resolution"`
+	Group       string    `json:"group"`
 	Author      string    `json:"author"`
+	GroupAuthor string    `json:"groupauthor"`
 	Verified    bool      `json:"verified"`
 	Bluray      bool      `json:"bluray"`
 	Uncensored  bool      `json:"uncensored"`
