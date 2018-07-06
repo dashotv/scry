@@ -30,7 +30,8 @@ func (s *ReleaseService) NewSearch() *ReleaseSearch {
 
 type Release struct {
 	ID          string    `json:"id"`
-	Name        string    `json:"display"`
+	Name        string    `json:"name"`
+	Display     string    `json:"display"`
 	Raw         string    `json:"raw"`
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
