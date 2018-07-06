@@ -90,8 +90,9 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 
 	if s.IsZero() {
 		q = elastic.NewMatchAllQuery()
+		r.Search = "*"
 	} else {
-		q = s.Query()
+		q, r.Search = s.Query()
 	}
 
 	search.Query(q)
@@ -136,7 +137,7 @@ func (s *ReleaseSearch) processResponse(res *elastic.SearchResult) ([]*Release, 
 	return rels, nil
 }
 
-func (s *ReleaseSearch) Query() *elastic.QueryStringQuery {
+func (s *ReleaseSearch) Query() (*elastic.QueryStringQuery, string) {
 	list := []string{}
 
 	if s.Name != "" {
@@ -184,7 +185,7 @@ func (s *ReleaseSearch) Query() *elastic.QueryStringQuery {
 
 	str := strings.Join(list, " AND ")
 	logrus.Debugf("    search: %s", str)
-	return elastic.NewQueryStringQuery(str)
+	return elastic.NewQueryStringQuery(str), str
 }
 
 func (s *ReleaseSearch) IsZero() bool {

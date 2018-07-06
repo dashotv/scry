@@ -69,8 +69,9 @@ func (s *MediaSearch) Find() (*MediaSearchResponse, error) {
 
 	if s.IsZero() {
 		q = elastic.NewMatchAllQuery()
+		r.Search = "*"
 	} else {
-		q = s.Query()
+		q, r.Search = s.Query()
 	}
 
 	search.Query(q)
@@ -114,7 +115,7 @@ func (s *MediaSearch) processResponse(res *elastic.SearchResult) ([]*Media, erro
 	return ms, nil
 }
 
-func (s *MediaSearch) Query() *elastic.QueryStringQuery {
+func (s *MediaSearch) Query() (*elastic.QueryStringQuery, string) {
 	list := []string{}
 
 	if s.Name != "" {
@@ -135,7 +136,7 @@ func (s *MediaSearch) Query() *elastic.QueryStringQuery {
 
 	str := strings.Join(list, " AND ")
 	logrus.Debugf("    search: %s", str)
-	return elastic.NewQueryStringQuery(str)
+	return elastic.NewQueryStringQuery(str), str
 }
 
 func (s *MediaSearch) IsZero() bool {

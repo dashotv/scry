@@ -26,6 +26,7 @@ type Search struct {
 }
 
 type SearchResponse struct {
+	Search string
 	Total int64
 	Count int
 }
