@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+
 	"github.com/dashotv/scry/search"
 	"github.com/dashotv/scry/server/media"
 	"github.com/dashotv/scry/server/releases"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 type Server struct {

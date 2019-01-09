@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/olivere/elastic"
-	"github.com/sirupsen/logrus"
 	"strings"
 	"time"
+
+	"github.com/olivere/elastic"
+	"github.com/sirupsen/logrus"
 )
 
 const MEDIA_SEARCH_INDEX = "media" // TODO: Fix

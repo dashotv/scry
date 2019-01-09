@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 
 	"github.com/dashotv/scry/search"
 	"github.com/dashotv/scry/server/util"
-	"github.com/sirupsen/logrus"
 )
 
 var client *search.Client
