@@ -81,7 +81,7 @@ func (s *MediaSearch) Find() (*MediaSearchResponse, error) {
 	if err != nil {
 		logrus.Errorf("Find(): %s", err)
 		if e, ok := err.(*elastic.Error); ok {
-			logrus.Errorf("Elastic failed with status %d and error %s.", e.Status, e.Details)
+			logrus.Errorf("Elastic failed with status %d and error %s.", e.Status, e.Details.Reason)
 		}
 		return r, err
 	}
@@ -120,7 +120,8 @@ func (s *MediaSearch) Query() (*elastic.QueryStringQuery, string) {
 	list := []string{}
 
 	if s.Name != "" {
-		list = append(list, fmt.Sprintf("%s:(%s)", "name", s.Name))
+		words := strings.Split(s.Name, " ")
+		list = append(list, fmt.Sprintf("%s:(%s)", "name", strings.Join(words, " AND ")))
 	}
 
 	if s.Display != "" {
