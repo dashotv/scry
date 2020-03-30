@@ -15,12 +15,13 @@
 package main
 
 import (
-	"github.com/dashotv/scry/cmd"
 	"github.com/sirupsen/logrus"
+
+	"github.com/dashotv/scry/cmd"
 )
 
 func main() {
-	logrus.SetLevel(logrus.InfoLevel)
+	logrus.SetLevel(logrus.DebugLevel)
 	logrus.SetFormatter(&logrus.TextFormatter{})
 	cmd.Execute()
 }

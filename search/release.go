@@ -31,6 +31,7 @@ func (s *ReleaseService) NewSearch() *ReleaseSearch {
 type Release struct {
 	ID          string    `json:"id"`
 	Name        string    `json:"name"`
+	Year        int       `json:"year"`
 	Display     string    `json:"display"`
 	Raw         string    `json:"raw"`
 	Title       string    `json:"title"`
@@ -57,6 +58,7 @@ type ReleaseSearch struct {
 	Source     string `json:"source"`
 	Type       string `json:"type"`
 	Name       string `json:"name"`
+	Year       int    `json:"year"`
 	Author     string `json:"author"`
 	Group      string `json:"group"`
 	Season     int    `json:"season"`
@@ -147,6 +149,10 @@ func (s *ReleaseSearch) Query() (*elastic.QueryStringQuery, string) {
 			words := strings.Split(s.Name, " ")
 			list = append(list, fmt.Sprintf("%s:(%s)", "name", strings.Join(words, " AND ")))
 		}
+	}
+
+	if s.Year > 0 {
+		list = append(list, fmt.Sprintf("%s:\"%d\"", "year", s.Year))
 	}
 
 	if s.Source != "" {

@@ -25,6 +25,7 @@ import (
 )
 
 var cfgFile string
+var debug bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -47,15 +48,27 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(setLogLevel)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.scry.yaml)")
+	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "set debug")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+// set logrus log level
+func setLogLevel() {
+	if debug {
+		logrus.SetLevel(logrus.DebugLevel)
+	} else {
+		logrus.SetLevel(logrus.InfoLevel)
+	}
+	logrus.Debug("log level set")
 }
 
 // initConfig reads in config file and ENV variables if set.

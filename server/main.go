@@ -7,22 +7,28 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"github.com/dashotv/scry/search"
 	"github.com/dashotv/scry/server/media"
 	"github.com/dashotv/scry/server/releases"
+
+	"github.com/dashotv/scry/search"
 )
 
 type Server struct {
 	URL    string
 	Port   int
 	Mode   string
+	Debug  bool
 	Client *search.Client
 }
 
 func (s *Server) Start() error {
 	var err error
 
-	logrus.SetLevel(logrus.InfoLevel)
+	if s.Debug {
+		logrus.SetLevel(logrus.DebugLevel)
+	} else {
+		logrus.SetLevel(logrus.InfoLevel)
+	}
 	logrus.SetFormatter(&logrus.TextFormatter{})
 
 	if s.Mode == "release" {

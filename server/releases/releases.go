@@ -45,6 +45,7 @@ func CreateSearch(c *gin.Context) (*search.ReleaseSearch, error) {
 	s.Source = c.Query("source")
 	s.Type = c.Query("type")
 	s.Name = c.Query("text")
+	s.Year, _ = util.QueryInteger(c, "year")
 	s.Author = c.Query("author")
 	s.Group = c.Query("group")
 
