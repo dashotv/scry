@@ -38,19 +38,24 @@ type Release struct {
 	Description string    `json:"description"`
 	Season      int       `json:"season"`
 	Episode     int       `json:"episode"`
+	Volume      int       `json:"volume"`
 	Size        string    `json:"size"`
-	Guid        string    `json:"guid"`
+	Encoding    string    `json:"encoding"`
 	Resolution  string    `json:"resolution"`
+	Quality     string    `json:"resolution"`
 	Group       string    `json:"group"`
 	Author      string    `json:"author"`
 	GroupAuthor string    `json:"groupauthor"`
 	Verified    bool      `json:"verified"`
 	Bluray      bool      `json:"bluray"`
+	NZB         bool      `json:"nzb"`
 	Uncensored  bool      `json:"uncensored"`
 	Checksum    string    `json:"checksum"`
+	View        string    `json:"view"`
 	Download    string    `json:"download"`
 	Source      string    `json:"source"`
 	Type        string    `json:"type"`
+	Created     time.Time `json:"created_at"`
 	Published   time.Time `json:"published_at"`
 }
 
@@ -67,6 +72,7 @@ type ReleaseSearch struct {
 	Verified   bool   `json:"verified"`
 	Uncensored bool   `json:"uncensored"`
 	Bluray     bool   `json:"bluray"`
+	NZB        bool   `json:"nzb"`
 	Exact      bool
 
 	client *elastic.Client
@@ -189,6 +195,9 @@ func (s *ReleaseSearch) Query() (*elastic.QueryStringQuery, string) {
 	if s.Bluray {
 		list = append(list, fmt.Sprintf("%s:%t", "bluray", s.Bluray))
 	}
+	if s.NZB {
+		list = append(list, fmt.Sprintf("%s:%t", "nzb", s.NZB))
+	}
 
 	str := strings.Join(list, " AND ")
 	logrus.Debugf("    search: %s", str)
@@ -232,6 +241,9 @@ func (s *ReleaseSearch) IsZero() bool {
 		return false
 	}
 	if s.Bluray {
+		return false
+	}
+	if s.NZB {
 		return false
 	}
 
