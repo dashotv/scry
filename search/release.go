@@ -42,7 +42,7 @@ type Release struct {
 	Size        string    `json:"size"`
 	Encoding    string    `json:"encoding"`
 	Resolution  string    `json:"resolution"`
-	Quality     string    `json:"resolution"`
+	Quality     string    `json:"quality"`
 	Group       string    `json:"group"`
 	Author      string    `json:"author"`
 	GroupAuthor string    `json:"groupauthor"`
