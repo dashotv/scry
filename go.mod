@@ -2,6 +2,7 @@ module github.com/dashotv/scry
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
+	github.com/davecgh/go-spew v1.1.1
 	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/gin-gonic/gin v1.6.2
