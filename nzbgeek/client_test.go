@@ -13,7 +13,7 @@ var key = os.Getenv("NZBGEEK_KEY")
 func TestClient_TvSearch(t *testing.T) {
 	client := NewClient(geek, key)
 	options := &TvSearchOptions{
-		Season:  "1",
+		Season:  "3",
 		Episode: "4",
 		TvdbID:  "321231",
 	}

@@ -17,7 +17,6 @@ package cmd
 import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
 	"github.com/dashotv/scry/server"
 )
@@ -29,10 +28,7 @@ var serverCmd = &cobra.Command{
 	Long:  "run the server",
 	Run: func(cmd *cobra.Command, args []string) {
 		s := &server.Server{
-			Port:  viper.GetInt("port"),
-			URL:   viper.GetString("url"),
-			Mode:  viper.GetString("mode"),
-			Debug: debug,
+			Config: cfg,
 		}
 
 		err := s.Start()

@@ -7,47 +7,51 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"github.com/dashotv/scry/server/media"
-	"github.com/dashotv/scry/server/releases"
-
+	"github.com/dashotv/scry/nzbgeek"
 	"github.com/dashotv/scry/search"
+	"github.com/dashotv/scry/server/config"
+	"github.com/dashotv/scry/server/media"
+	"github.com/dashotv/scry/server/nzbs"
+	"github.com/dashotv/scry/server/releases"
 )
 
 type Server struct {
-	URL    string
-	Port   int
-	Mode   string
-	Debug  bool
-	Client *search.Client
+	Config  *config.Config
+	Client  *search.Client
+	Nzbgeek *nzbgeek.Client
 }
 
 func (s *Server) Start() error {
 	var err error
 
-	if s.Debug {
+	if s.Config.Debug {
 		logrus.SetLevel(logrus.DebugLevel)
 	} else {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 	logrus.SetFormatter(&logrus.TextFormatter{})
 
-	if s.Mode == "release" {
-		gin.SetMode(s.Mode)
+	if s.Config.Mode == "release" {
+		gin.SetMode(s.Config.Mode)
 	}
 
-	logrus.Infof("connecting to elasticsearch: %s", s.URL)
-	s.Client, err = search.New(s.URL)
+	logrus.Infof("connecting to elasticsearch: %s", s.Config.Elasticsearch.URL)
+	s.Client, err = search.New(s.Config.Elasticsearch.URL)
 	if err != nil {
 		return err
 	}
+
+	logrus.Infof("setting up nzbgeek...")
+	s.Nzbgeek = nzbgeek.NewClient(s.Config.Nzbgeek.URL, s.Config.Nzbgeek.Key)
 
 	router := gin.Default()
 	router.GET("/", homeIndex)
 
 	releases.Routes(s.Client, router)
 	media.Routes(s.Client, router)
+	nzbs.Routes(s.Nzbgeek, router)
 
-	if err := router.Run(fmt.Sprintf(":%d", s.Port)); err != nil {
+	if err := router.Run(fmt.Sprintf(":%d", s.Config.Port)); err != nil {
 		return err
 	}
 
