@@ -77,11 +77,25 @@ func (c *Client) TvSearch(options *TvSearchOptions) (*Response, error) {
 	response := &Response{}
 	params := url.Values{}
 	params.Add("t", "tvsearch")
-	params.Add("tvdbid", options.TvdbID)
-	params.Add("season", options.Season)
-	params.Add("ep", options.Episode)
-	params.Add("rid", options.RageID)
+	if options.TvdbID != "" {
+		params.Add("tvdbid", options.TvdbID)
+	}
+	if options.Season != "" {
+		params.Add("season", options.Season)
+	}
+	if options.Episode != "" {
+		params.Add("ep", options.Episode)
+	}
+	if options.RageID != "" {
+		params.Add("rid", options.RageID)
+	}
 	err := c.request("", params, response)
+	if err != nil {
+		return nil, err
+	}
+	if len(response.Channel.Item) == 0 {
+		response.Channel.Item = []SearchResult{}
+	}
 	return response, err
 }
 
@@ -101,6 +115,8 @@ func (c *Client) request(path string, params url.Values, target interface{}) err
 		return errors.Wrap(err, "creating "+u+" request failed")
 	}
 	request.URL.RawQuery = params.Encode()
+
+	logrus.Debugf("request url: %s", request.URL)
 
 	client := &http.Client{}
 	if response, err = client.Do(request); err != nil {
