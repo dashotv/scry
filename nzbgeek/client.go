@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -28,10 +29,44 @@ type SearchOptions struct {
 }
 
 type TvSearchOptions struct {
+	SearchOptions
 	Season  string
 	Episode string
 	RageID  string
 	TvdbID  string
+}
+
+func (o *TvSearchOptions) Params() url.Values {
+	params := url.Values{}
+	params.Add("t", "tvsearch")
+	if o.TvdbID != "" {
+		params.Add("tvdbid", o.TvdbID)
+	}
+	if o.Season != "" {
+		params.Add("season", o.Season)
+	}
+	if o.Episode != "" {
+		params.Add("ep", o.Episode)
+	}
+	if o.RageID != "" {
+		params.Add("rid", o.RageID)
+	}
+	return params
+}
+
+type MovieSearchOptions struct {
+	SearchOptions
+	ImdbID string
+}
+
+func (o *MovieSearchOptions) Params() url.Values {
+	params := url.Values{}
+	params.Add("t", "movie")
+	if o.ImdbID != "" {
+		id := strings.Replace(o.ImdbID, "tt", "", 1)
+		params.Add("imdbid", id)
+	}
+	return params
 }
 
 type SearchResponse struct {
@@ -75,20 +110,20 @@ type SearchResult struct {
 
 func (c *Client) TvSearch(options *TvSearchOptions) (*Response, error) {
 	response := &Response{}
-	params := url.Values{}
-	params.Add("t", "tvsearch")
-	if options.TvdbID != "" {
-		params.Add("tvdbid", options.TvdbID)
+	params := options.Params()
+	err := c.request("", params, response)
+	if err != nil {
+		return nil, err
 	}
-	if options.Season != "" {
-		params.Add("season", options.Season)
+	if len(response.Channel.Item) == 0 {
+		response.Channel.Item = []SearchResult{}
 	}
-	if options.Episode != "" {
-		params.Add("ep", options.Episode)
-	}
-	if options.RageID != "" {
-		params.Add("rid", options.RageID)
-	}
+	return response, err
+}
+
+func (c *Client) MovieSearch(options *MovieSearchOptions) (*Response, error) {
+	response := &Response{}
+	params := options.Params()
 	err := c.request("", params, response)
 	if err != nil {
 		return nil, err

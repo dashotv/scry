@@ -16,6 +16,7 @@ func Routes(c *nzbgeek.Client, e *gin.Engine) {
 
 	r := e.Group("/nzbs")
 	r.GET("/tv", TvSearch)
+	r.GET("/movie", TvSearch)
 }
 
 func TvSearch(c *gin.Context) {
@@ -28,6 +29,23 @@ func TvSearch(c *gin.Context) {
 	logrus.Debugf("options: %#v", options)
 
 	response, err := client.TvSearch(options)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
+		return
+	}
+
+	logrus.Debugf("response: %#v", response)
+
+	c.JSON(http.StatusOK, response.Channel.Item)
+}
+
+func MovieSearch(c *gin.Context) {
+	options := &nzbgeek.MovieSearchOptions{}
+	options.ImdbID = c.Query("imdbid")
+
+	logrus.Debugf("options: %#v", options)
+
+	response, err := client.MovieSearch(options)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
 		return
