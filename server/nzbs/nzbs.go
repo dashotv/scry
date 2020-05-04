@@ -16,7 +16,7 @@ func Routes(c *nzbgeek.Client, e *gin.Engine) {
 
 	r := e.Group("/nzbs")
 	r.GET("/tv", TvSearch)
-	r.GET("/movie", TvSearch)
+	r.GET("/movie", MovieSearch)
 }
 
 func TvSearch(c *gin.Context) {
