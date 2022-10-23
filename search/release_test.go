@@ -6,9 +6,10 @@ import (
 )
 
 func TestReleaseSearch_Find(t *testing.T) {
-	c, err := New("http://127.0.0.1:9200")
+	c, err := New(elasticURL)
 	if err != nil {
 		t.Error(err)
+		return
 	}
 
 	s := c.Release.NewSearch()
@@ -21,6 +22,7 @@ func TestReleaseSearch_Find(t *testing.T) {
 	r, err := s.Find()
 	if err != nil {
 		t.Error(err)
+		return
 	}
 
 	fmt.Printf("found: %d/%d\n", r.Count, r.Total)

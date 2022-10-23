@@ -1,7 +1,7 @@
 all: test
 
 test:
-	go test -v ./...
+	source .env && go test -v ./...
 
 build:
 	go build

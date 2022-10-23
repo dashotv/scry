@@ -28,8 +28,8 @@ type Search struct {
 
 type SearchResponse struct {
 	Search string
-	Total int64
-	Count int
+	Total  int64
+	Count  int
 }
 
 func New(url string) (*Client, error) {
@@ -37,7 +37,7 @@ func New(url string) (*Client, error) {
 	var err error
 	c := &Client{url: url}
 
-	e, err := elastic.NewClient()
+	e, err := elastic.NewClient(elastic.SetURL(url))
 	if err != nil {
 		return nil, err
 	}

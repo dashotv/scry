@@ -1,7 +1,7 @@
 mode: not
 port: 10080
 elasticsearch:
-  url: http://localhost:9200
+  url: http://10.0.4.61:9200
 nzbgeek:
   url: https://api.nzbgeek.info/api
   key: eISG7JzxXnmWskK632mjY3CHRylfVuiX

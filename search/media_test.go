@@ -2,16 +2,20 @@ package search
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/sirupsen/logrus"
 )
 
+var elasticURL = os.Getenv("ELASTIC_URL")
+
 func TestMediaSearch_Find(t *testing.T) {
 	logrus.SetLevel(logrus.DebugLevel)
-	c, err := New("http://127.0.0.1:9200")
+	c, err := New(elasticURL)
 	if err != nil {
 		t.Error(err)
+		return
 	}
 
 	s := c.Media.NewSearch()
@@ -21,6 +25,7 @@ func TestMediaSearch_Find(t *testing.T) {
 	r, err := s.Find()
 	if err != nil {
 		t.Error(err)
+		return
 	}
 
 	fmt.Printf("found: %d/%d\n", r.Count, r.Total)
