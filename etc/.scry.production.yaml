@@ -1,0 +1,7 @@
+mode: release
+port: 10080
+elasticsearch:
+  url: http://host.docker.internal:9200
+nzbgeek:
+  url: https://api.nzbgeek.info/api
+  key: eISG7JzxXnmWskK632mjY3CHRylfVuiX
