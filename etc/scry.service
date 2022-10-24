@@ -1,0 +1,15 @@
+[Unit]
+Description=Scry Container
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop dashotv/scry
+ExecStartPre=-/usr/bin/docker rm dashotv/scry
+ExecStartPre=/usr/bin/docker pull dashotv/scry
+ExecStart=/usr/bin/docker run --rm --name %n --add-host=host.docker.internal:host-gateway -p 10080:10080 dashotv/scry
+
+[Install]
+WantedBy=multi-user.target

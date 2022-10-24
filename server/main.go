@@ -83,5 +83,5 @@ func (s *Server) Start() error {
 //}
 
 func homeIndex(c *gin.Context) {
-	c.String(http.StatusOK, "home")
+	c.String(http.StatusOK, "woo!")
 }
