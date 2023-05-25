@@ -6,20 +6,23 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+
+	"github.com/dashotv/scry/nzbgeek"
+	"github.com/dashotv/scry/search"
 )
 
 type Server struct {
-	App    *Application
-	Config *Config
-	Log    *logrus.Entry
-	Router *gin.Engine
+	Config  *Config
+	Log     *logrus.Entry
+	Router  *gin.Engine
+	Client  *search.Client
+	Nzbgeek *nzbgeek.Client
 }
 
 func NewServer() (*Server, error) {
 	s := &Server{
-		App:    App(),
-		Config: ConfigInstance(),
-		Log:    App().Log.WithField("prefix", "server"),
+		Config: App().Config,
+		Log:    App().Log,
 		Router: App().Router,
 	}
 

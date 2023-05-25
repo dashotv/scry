@@ -1,0 +1,9 @@
+name: scry
+repo: github.com/dashotv/scry
+groups:
+  media:
+    path: /media
+    routes:
+      index:
+        path: /
+

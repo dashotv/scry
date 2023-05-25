@@ -9,9 +9,17 @@ var configOnce sync.Once
 var configInstance *Config
 
 type Config struct {
-	Mode        string                 `yaml:"mode"`
-	Port        int                    `yaml:"port"`
-	Connections map[string]*Connection `yaml:"connections"`
+	Mode          string `yaml:"mode"`
+	Port          int    `yaml:"port"`
+	Debug         bool
+	Connections   map[string]*Connection `yaml:"connections"`
+	Elasticsearch struct {
+		URL string
+	}
+	Nzbgeek struct {
+		URL string
+		Key string
+	}
 }
 
 type Connection struct {

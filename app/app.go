@@ -3,6 +3,9 @@ package app
 import (
 	"sync"
 
+	"github.com/dashotv/scry/nzbgeek"
+	"github.com/dashotv/scry/search"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	ginlogrus "github.com/toorop/gin-logrus"
@@ -25,6 +28,8 @@ type Application struct {
 	// Cache  *redis.Client
 	Log *logrus.Entry
 	// Add additional clients and connections
+	Client  *search.Client
+	Nzbgeek *nzbgeek.Client
 }
 
 func logger() *logrus.Entry {
@@ -48,6 +53,15 @@ func initialize() *Application {
 	router := gin.New()
 	router.Use(ginlogrus.Logger(log), gin.Recovery())
 
+	logrus.Infof("connecting to elasticsearch: %s", cfg.Elasticsearch.URL)
+	client, err := search.New(cfg.Elasticsearch.URL)
+	if err != nil {
+		log.Fatalf("failed to connect to Elasticsearch: %s", err)
+	}
+
+	logrus.Infof("setting up nzbgeek...")
+	nzbg := nzbgeek.NewClient(cfg.Nzbgeek.URL, cfg.Nzbgeek.Key)
+
 	// TODO: add this to config
 	// cache := redis.NewClient(&redis.Options{
 	//	Addr: "localhost:6379",
@@ -60,6 +74,8 @@ func initialize() *Application {
 		Config: cfg,
 		Router: router,
 		// Cache:    cache,
-		Log: log,
+		Log:     log,
+		Client:  client,
+		Nzbgeek: nzbg,
 	}
 }
