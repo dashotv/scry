@@ -22,7 +22,6 @@ func App() *Application {
 type Application struct {
 	Config *Config
 	Router *gin.Engine
-	DB     *Connector
 	// Cache  *redis.Client
 	Log *logrus.Entry
 	// Add additional clients and connections
@@ -37,11 +36,6 @@ func logger() *logrus.Entry {
 func initialize() *Application {
 	cfg := ConfigInstance()
 	log := logger()
-
-	db, err := NewConnector()
-	if err != nil {
-		log.Errorf("database connection failed: %s", err)
-	}
 
 	if cfg.Mode == "dev" {
 		logrus.SetLevel(logrus.DebugLevel)
@@ -65,7 +59,6 @@ func initialize() *Application {
 	return &Application{
 		Config: cfg,
 		Router: router,
-		DB:     db,
 		// Cache:    cache,
 		Log: log,
 	}

@@ -9,19 +9,18 @@ import (
 )
 
 type Server struct {
-	App    *App
+	App    *Application
 	Config *Config
 	Log    *logrus.Entry
 	Router *gin.Engine
 }
 
 func NewServer() (*Server, error) {
-	app := Instance()
 	s := &Server{
-		App:    app,
+		App:    App(),
 		Config: ConfigInstance(),
-		Log:    app.Log.WithField("prefix", "server"),
-		Router: app.Router,
+		Log:    App().Log.WithField("prefix", "server"),
+		Router: App().Router,
 	}
 
 	return s, nil

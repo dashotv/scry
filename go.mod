@@ -7,6 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/mailru/easyjson v0.0.0-20180606163543-3fdea8d05856 // indirect
+	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/olivere/elastic v6.1.23+incompatible
@@ -14,6 +15,8 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
+	github.com/toorop/gin-logrus v0.0.0-20210225092905-2c785434f26f
+	github.com/x-cray/logrus-prefixed-formatter v0.5.2
 	golang.org/x/sys v0.1.0 // indirect
 )
 
