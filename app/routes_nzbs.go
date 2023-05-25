@@ -1,25 +1,15 @@
-package nzbs
+package app
 
 import (
 	"net/http"
 
+	"github.com/dashotv/scry/nzbgeek"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-
-	"github.com/dashotv/scry/nzbgeek"
 )
 
-var client *nzbgeek.Client
-
-func Routes(c *nzbgeek.Client, e *gin.Engine) {
-	client = c
-
-	r := e.Group("/nzbs")
-	r.GET("/tv", TvSearch)
-	r.GET("/movie", MovieSearch)
-}
-
-func TvSearch(c *gin.Context) {
+func NzbsTv(c *gin.Context) {
 	options := &nzbgeek.TvSearchOptions{}
 	options.RageID = c.Query("rageid")
 	options.Episode = c.Query("episode")
@@ -28,7 +18,7 @@ func TvSearch(c *gin.Context) {
 
 	logrus.Debugf("options: %#v", options)
 
-	response, err := client.TvSearch(options)
+	response, err := App().Nzbgeek.TvSearch(options)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
 		return
@@ -39,13 +29,13 @@ func TvSearch(c *gin.Context) {
 	c.JSON(http.StatusOK, response.Channel.Item)
 }
 
-func MovieSearch(c *gin.Context) {
+func NzbsMovie(c *gin.Context) {
 	options := &nzbgeek.MovieSearchOptions{}
 	options.ImdbID = c.Query("imdbid")
 
 	logrus.Debugf("options: %#v", options)
 
-	response, err := client.MovieSearch(options)
+	response, err := App().Nzbgeek.MovieSearch(options)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
 		return

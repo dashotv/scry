@@ -14,6 +14,13 @@ func (s *Server) Routes() {
 	media := s.Router.Group("/media")
 	media.GET("/", mediaIndexHandler)
 
+	nzbs := s.Router.Group("/nzbs")
+	nzbs.GET("/movie", nzbsMovieHandler)
+	nzbs.GET("/tv", nzbsTvHandler)
+
+	releases := s.Router.Group("/releases")
+	releases.GET("/", releasesIndexHandler)
+
 }
 
 func homeHandler(c *gin.Context) {
@@ -28,4 +35,21 @@ func Index(c *gin.Context) {
 func mediaIndexHandler(c *gin.Context) {
 
 	MediaIndex(c)
+}
+
+// /nzbs
+func nzbsMovieHandler(c *gin.Context) {
+
+	NzbsMovie(c)
+}
+
+func nzbsTvHandler(c *gin.Context) {
+
+	NzbsTv(c)
+}
+
+// /releases
+func releasesIndexHandler(c *gin.Context) {
+
+	ReleasesIndex(c)
 }

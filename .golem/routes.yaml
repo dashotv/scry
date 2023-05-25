@@ -6,4 +6,15 @@ groups:
     routes:
       index:
         path: /
-
+  nzbs:
+    path: /nzbs
+    routes:
+      tv:
+        path: /tv
+      movie:
+        path: /movie
+  releases:
+    path: /releases
+    routes:
+      index:
+        path: /
