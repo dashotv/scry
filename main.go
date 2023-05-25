@@ -14,14 +14,10 @@
 
 package main
 
-import (
-	"github.com/sirupsen/logrus"
+// go:generate golem generate
 
-	"github.com/dashotv/scry/cmd"
-)
+import "github.com/dashotv/scry/cmd"
 
 func main() {
-	logrus.SetLevel(logrus.InfoLevel)
-	logrus.SetFormatter(&logrus.TextFormatter{})
 	cmd.Execute()
 }

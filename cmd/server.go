@@ -18,7 +18,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	"github.com/dashotv/scry/server"
+	"github.com/dashotv/scry/app"
 )
 
 // serverCmd represents the server command
@@ -27,11 +27,12 @@ var serverCmd = &cobra.Command{
 	Short: "run the server",
 	Long:  "run the server",
 	Run: func(cmd *cobra.Command, args []string) {
-		s := &server.Server{
-			Config: cfg,
+		server, err := app.NewServer()
+		if err != nil {
+			logrus.Fatalf("error: %s", err)
 		}
 
-		err := s.Start()
+		err = server.Start()
 		if err != nil {
 			logrus.Fatalf("error: %s", err)
 		}
@@ -49,5 +50,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	//serverCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// serverCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

@@ -23,12 +23,11 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/dashotv/scry/server/config"
+	"github.com/dashotv/scry/app"
 )
 
-var cfg = &config.Config{}
 var cfgFile string
-var debug bool
+var cfg *app.Config
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -51,27 +50,16 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	cobra.OnInitialize(setLogLevel)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.scry.yaml)")
-	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "set debug")
+
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.test.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-// set logrus log level
-func setLogLevel() {
-	if debug {
-		logrus.SetLevel(logrus.DebugLevel)
-	} else {
-		logrus.SetLevel(logrus.InfoLevel)
-	}
-	logrus.Debug("log level set")
+	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -88,6 +76,7 @@ func initConfig() {
 		}
 
 		// Search config in home directory with name ".scry" (without extension).
+		viper.AddConfigPath(".")
 		viper.AddConfigPath(home)
 		viper.SetConfigName(".scry")
 	}
@@ -96,11 +85,16 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err != nil {
-		//fmt.Println("Using config file:", viper.ConfigFileUsed())
-		logrus.Fatalf("error: %s", err)
+		logrus.Warnf("unable to read config: %s\n", err)
+		return
 	}
 
+	cfg = app.ConfigInstance()
 	if err := viper.Unmarshal(cfg); err != nil {
-		logrus.Fatalf("unmarshal: %s", err)
+		logrus.Fatalf("failed to unmarshal configuration file: %s", err)
+	}
+
+	if err := cfg.Validate(); err != nil {
+		logrus.Fatalf("failed to validate config: %s", err)
 	}
 }
