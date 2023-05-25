@@ -1,5 +1,6 @@
 mode: release
 port: 10080
+cron: false
 elasticsearch:
   url: http://host.docker.internal:9200
 nzbgeek:

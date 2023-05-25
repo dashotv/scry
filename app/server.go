@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"github.com/robfig/cron/v3"
 	"github.com/sirupsen/logrus"
 
 	"github.com/dashotv/scry/nzbgeek"
@@ -19,7 +20,7 @@ type Server struct {
 	Nzbgeek *nzbgeek.Client
 }
 
-func NewServer() (*Server, error) {
+func New() (*Server, error) {
 	s := &Server{
 		Config: App().Config,
 		Log:    App().Log,
@@ -31,6 +32,19 @@ func NewServer() (*Server, error) {
 
 func (s *Server) Start() error {
 	s.Log.Info("starting scry...")
+
+	if s.Config.Cron {
+		c := cron.New(cron.WithSeconds())
+
+		//if _, err := c.AddFunc("* * * * * *", s.function); err != nil {
+		//	return errors.Wrap(err, "adding cron function")
+		//}
+
+		go func() {
+			s.Log.Info("starting cron...")
+			c.Start()
+		}()
+	}
 
 	s.Routes()
 

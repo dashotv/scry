@@ -27,7 +27,7 @@ var serverCmd = &cobra.Command{
 	Short: "run the server",
 	Long:  "run the server",
 	Run: func(cmd *cobra.Command, args []string) {
-		server, err := app.NewServer()
+		server, err := app.New()
 		if err != nil {
 			logrus.Fatalf("error: %s", err)
 		}

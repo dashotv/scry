@@ -6,7 +6,6 @@ import (
 	"github.com/dashotv/scry/nzbgeek"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 func NzbsTv(c *gin.Context) {
@@ -16,7 +15,7 @@ func NzbsTv(c *gin.Context) {
 	options.Season = c.Query("season")
 	options.TvdbID = c.Query("tvdbid")
 
-	logrus.Debugf("options: %#v", options)
+	App().Log.Debugf("options: %#v", options)
 
 	response, err := App().Nzbgeek.TvSearch(options)
 	if err != nil {
@@ -24,7 +23,7 @@ func NzbsTv(c *gin.Context) {
 		return
 	}
 
-	logrus.Debugf("response: %#v", response)
+	App().Log.Debugf("response: %#v", response)
 
 	c.JSON(http.StatusOK, response.Channel.Item)
 }
@@ -33,7 +32,7 @@ func NzbsMovie(c *gin.Context) {
 	options := &nzbgeek.MovieSearchOptions{}
 	options.ImdbID = c.Query("imdbid")
 
-	logrus.Debugf("options: %#v", options)
+	App().Log.Debugf("options: %#v", options)
 
 	response, err := App().Nzbgeek.MovieSearch(options)
 	if err != nil {
@@ -41,7 +40,7 @@ func NzbsMovie(c *gin.Context) {
 		return
 	}
 
-	logrus.Debugf("response: %#v", response)
+	App().Log.Debugf("response: %#v", response)
 
 	c.JSON(http.StatusOK, response.Channel.Item)
 }

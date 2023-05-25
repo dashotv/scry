@@ -9,9 +9,9 @@ var configOnce sync.Once
 var configInstance *Config
 
 type Config struct {
-	Mode          string `yaml:"mode"`
-	Port          int    `yaml:"port"`
-	Debug         bool
+	Mode          string                 `yaml:"mode"`
+	Port          int                    `yaml:"port"`
+	Cron          bool                   `yaml:"cron"`
 	Connections   map[string]*Connection `yaml:"connections"`
 	Elasticsearch struct {
 		URL string
@@ -36,9 +36,10 @@ func ConfigInstance() *Config {
 }
 
 func (c *Config) Validate() error {
-	if err := c.validateDefaultConnection(); err != nil {
-		return err
-	}
+	// No DB
+	//if err := c.validateDefaultConnection(); err != nil {
+	//	return err
+	//}
 	// TODO: add more validations?
 	return nil
 }

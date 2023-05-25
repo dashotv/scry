@@ -1,5 +1,6 @@
-mode: not
+mode: release
 port: 10080
+cron: false
 elasticsearch:
   url: http://10.0.4.61:9200
 nzbgeek:

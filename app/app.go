@@ -53,13 +53,13 @@ func initialize() *Application {
 	router := gin.New()
 	router.Use(ginlogrus.Logger(log), gin.Recovery())
 
-	logrus.Infof("connecting to elasticsearch: %s", cfg.Elasticsearch.URL)
+	log.Infof("connecting to elasticsearch: %s", cfg.Elasticsearch.URL)
 	client, err := search.New(cfg.Elasticsearch.URL)
 	if err != nil {
 		log.Fatalf("failed to connect to Elasticsearch: %s", err)
 	}
 
-	logrus.Infof("setting up nzbgeek...")
+	log.Infof("setting up nzbgeek...")
 	nzbg := nzbgeek.NewClient(cfg.Nzbgeek.URL, cfg.Nzbgeek.Key)
 
 	// TODO: add this to config
