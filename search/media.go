@@ -21,7 +21,7 @@ type MediaService struct {
 func (s *MediaService) NewSearch() *MediaSearch {
 	return &MediaSearch{
 		client: s.client,
-		Search: &Search{Start: 0, Limit: RELEASE_PAGE_SIZE},
+		Search: &Search{Start: 0, Limit: MEDIA_PAGE_SIZE},
 	}
 }
 
@@ -29,6 +29,7 @@ type Media struct {
 	ID          string    `json:"id"`
 	Type        string    `json:"type"`
 	Name        string    `json:"name"`
+	Kind        string    `json:"kind"`
 	SearchName  string    `json:"search_name"`
 	Display     string    `json:"display"`
 	Title       string    `json:"title"`
