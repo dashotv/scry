@@ -6,7 +6,7 @@ steps:
   - name: build
     image: golang
     commands:
-#      - go test -v ./... # tests need elasticsearch
+      #      - go test -v ./... # tests need elasticsearch
       - go build
   - name: publish
     image: plugins/docker
@@ -30,6 +30,11 @@ steps:
       command_timeout: 2m
       script:
         - sudo service scry restart
+  - name: slack
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: slack_webhook
 
 trigger:
   branch:
