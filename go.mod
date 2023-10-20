@@ -2,6 +2,8 @@ module github.com/dashotv/scry
 
 go 1.21.1
 
+toolchain go1.21.3
+
 require (
 	github.com/dashotv/golem v0.9.1
 	github.com/dashotv/tmdb v0.1.1
