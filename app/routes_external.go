@@ -15,6 +15,13 @@ func TmdbIndex(c *gin.Context) {
 		return
 	}
 
+	for _, v := range *r.JSON200.Results {
+		if *v.MediaType != "tv" && *v.MediaType != "movie" {
+			continue
+		}
+
+	}
+
 	c.JSON(http.StatusOK, gin.H{"tmdb": r.JSON200.Results})
 }
 

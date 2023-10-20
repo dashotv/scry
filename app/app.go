@@ -76,12 +76,12 @@ func initialize() *Application {
 	tvdbClient := tvdb.New(cfg.Tvdb.URL)
 	_, err = tvdbClient.Login(cfg.Tvdb.Key)
 	if err != nil {
-		log.Fatalf("failed to connect to TVDB: %s", err)
+		log.Warnf("failed to connect to TVDB: %s", err)
 	}
 
 	tmdbClient, err := tmdb.New(cfg.Tmdb.URL, cfg.Tmdb.Token)
 	if err != nil {
-		log.Fatalf("failed to connect to TMDB: %s", err)
+		log.Warnf("failed to connect to TMDB: %s", err)
 	}
 
 	return &Application{
