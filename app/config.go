@@ -1,7 +1,6 @@
 package app
 
 import (
-	"errors"
 	"sync"
 )
 
@@ -14,12 +13,20 @@ type Config struct {
 	Cron          bool                   `yaml:"cron"`
 	Connections   map[string]*Connection `yaml:"connections"`
 	Elasticsearch struct {
-		URL string
-	}
+		URL string `yaml:"url"`
+	} `yaml:"elasticsearch"`
 	Nzbgeek struct {
-		URL string
-		Key string
-	}
+		URL string `yaml:"url"`
+		Key string `yaml:"key"`
+	} `yaml:"nzbgeek"`
+	Tvdb struct {
+		URL string `yaml:"url"`
+		Key string `yaml:"key"`
+	} `yaml:"tvdb"`
+	Tmdb struct {
+		URL   string `yaml:"url"`
+		Token string `yaml:"token"`
+	} `yaml:"tmdb"`
 }
 
 type Connection struct {
@@ -44,28 +51,29 @@ func (c *Config) Validate() error {
 	return nil
 }
 
-func (c *Config) validateDefaultConnection() error {
-	if len(c.Connections) == 0 {
-		return errors.New("you must specify a default connection")
-	}
-
-	var def *Connection
-	for n, c := range c.Connections {
-		if n == "default" || n == "Default" {
-			def = c
-			break
-		}
-	}
-
-	if def == nil {
-		return errors.New("no 'default' found in connections list")
-	}
-	if def.Database == "" {
-		return errors.New("default connection must specify database")
-	}
-	if def.URI == "" {
-		return errors.New("default connection must specify URI")
-	}
-
-	return nil
-}
+// No DB
+// func (c *Config) validateDefaultConnection() error {
+// 	if len(c.Connections) == 0 {
+// 		return errors.New("you must specify a default connection")
+// 	}
+//
+// 	var def *Connection
+// 	for n, c := range c.Connections {
+// 		if n == "default" || n == "Default" {
+// 			def = c
+// 			break
+// 		}
+// 	}
+//
+// 	if def == nil {
+// 		return errors.New("no 'default' found in connections list")
+// 	}
+// 	if def.Database == "" {
+// 		return errors.New("default connection must specify database")
+// 	}
+// 	if def.URI == "" {
+// 		return errors.New("default connection must specify URI")
+// 	}
+//
+// 	return nil
+// }

@@ -1,5 +1,5 @@
-name: scry
 repo: github.com/dashotv/scry
+name: scry
 groups:
   media:
     path: /media
@@ -9,12 +9,24 @@ groups:
   nzbs:
     path: /nzbs
     routes:
-      tv:
-        path: /tv
       movie:
         path: /movie
+      tv:
+        path: /tv
   releases:
     path: /releases
+    routes:
+      index:
+        path: /
+  tmdb:
+    name: tmdb
+    path: /tmdb
+    routes:
+      index:
+        path: /
+  tvdb:
+    name: tvdb
+    path: /tvdb
     routes:
       index:
         path: /

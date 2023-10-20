@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) Routes() {
-	s.Router.GET("/", homeHandler)
+	s.Default.GET("/", homeHandler)
 
 	media := s.Router.Group("/media")
 	media.GET("/", mediaIndexHandler)
@@ -21,6 +21,12 @@ func (s *Server) Routes() {
 	releases := s.Router.Group("/releases")
 	releases.GET("/", releasesIndexHandler)
 
+	tmdb := s.Router.Group("/tmdb")
+	tmdb.GET("/", tmdbIndexHandler)
+
+	tvdb := s.Router.Group("/tvdb")
+	tvdb.GET("/", tvdbIndexHandler)
+
 }
 
 func homeHandler(c *gin.Context) {
@@ -28,7 +34,16 @@ func homeHandler(c *gin.Context) {
 }
 
 func Index(c *gin.Context) {
-	c.String(http.StatusOK, "home")
+	c.JSON(http.StatusOK, gin.H{
+		"name": "scry",
+		"routes": gin.H{
+			"media":    "/media",
+			"nzbs":     "/nzbs",
+			"releases": "/releases",
+			"tmdb":     "/tmdb",
+			"tvdb":     "/tvdb",
+		},
+	})
 }
 
 // /media
@@ -52,4 +67,16 @@ func nzbsTvHandler(c *gin.Context) {
 func releasesIndexHandler(c *gin.Context) {
 
 	ReleasesIndex(c)
+}
+
+// /tmdb
+func tmdbIndexHandler(c *gin.Context) {
+
+	TmdbIndex(c)
+}
+
+// /tvdb
+func tvdbIndexHandler(c *gin.Context) {
+
+	TvdbIndex(c)
 }

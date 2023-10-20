@@ -3,13 +3,15 @@ package app
 import (
 	"sync"
 
-	"github.com/dashotv/scry/nzbgeek"
-	"github.com/dashotv/scry/search"
-
+	"github.com/dashotv/tmdb"
+	"github.com/dashotv/tvdb"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	ginlogrus "github.com/toorop/gin-logrus"
 	prefixed "github.com/x-cray/logrus-prefixed-formatter"
+
+	"github.com/dashotv/scry/nzbgeek"
+	"github.com/dashotv/scry/search"
 )
 
 var once sync.Once
@@ -30,6 +32,8 @@ type Application struct {
 	// Add additional clients and connections
 	Client  *search.Client
 	Nzbgeek *nzbgeek.Client
+	Tvdb    *tvdb.Tvdb
+	Tmdb    *tmdb.Tmdb
 }
 
 func logger() *logrus.Entry {
@@ -69,6 +73,16 @@ func initialize() *Application {
 	// })
 
 	// Add additional clients and connections
+	tvdbClient := tvdb.New(cfg.Tvdb.URL)
+	_, err = tvdbClient.Login(cfg.Tvdb.Key)
+	if err != nil {
+		log.Fatalf("failed to connect to TVDB: %s", err)
+	}
+
+	tmdbClient, err := tmdb.New(cfg.Tmdb.URL, cfg.Tmdb.Token)
+	if err != nil {
+		log.Fatalf("failed to connect to TMDB: %s", err)
+	}
 
 	return &Application{
 		Config: cfg,
@@ -77,5 +91,7 @@ func initialize() *Application {
 		Log:     log,
 		Client:  client,
 		Nzbgeek: nzbg,
+		Tvdb:    tvdbClient,
+		Tmdb:    tmdbClient,
 	}
 }

@@ -16,15 +16,17 @@ type Server struct {
 	Config  *Config
 	Log     *logrus.Entry
 	Router  *gin.Engine
+	Default *gin.Engine
 	Client  *search.Client
 	Nzbgeek *nzbgeek.Client
 }
 
 func New() (*Server, error) {
 	s := &Server{
-		Config: App().Config,
-		Log:    App().Log,
-		Router: App().Router,
+		Config:  App().Config,
+		Log:     App().Log,
+		Router:  App().Router,
+		Default: App().Router,
 	}
 
 	return s, nil
