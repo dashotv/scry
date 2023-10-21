@@ -21,11 +21,8 @@ func (s *Server) Routes() {
 	releases := s.Router.Group("/releases")
 	releases.GET("/", releasesIndexHandler)
 
-	tmdb := s.Router.Group("/tmdb")
-	tmdb.GET("/", tmdbIndexHandler)
-
-	tvdb := s.Router.Group("/tvdb")
-	tvdb.GET("/", tvdbIndexHandler)
+	search := s.Router.Group("/search")
+	search.GET("/", searchIndexHandler)
 
 }
 
@@ -40,8 +37,7 @@ func Index(c *gin.Context) {
 			"media":    "/media",
 			"nzbs":     "/nzbs",
 			"releases": "/releases",
-			"tmdb":     "/tmdb",
-			"tvdb":     "/tvdb",
+			"search":   "/search",
 		},
 	})
 }
@@ -69,14 +65,8 @@ func releasesIndexHandler(c *gin.Context) {
 	ReleasesIndex(c)
 }
 
-// /tmdb
-func tmdbIndexHandler(c *gin.Context) {
+// /search
+func searchIndexHandler(c *gin.Context) {
 
-	TmdbIndex(c)
-}
-
-// /tvdb
-func tvdbIndexHandler(c *gin.Context) {
-
-	TvdbIndex(c)
+	SearchIndex(c)
 }
