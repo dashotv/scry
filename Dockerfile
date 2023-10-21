@@ -15,5 +15,4 @@ FROM alpine
 # Copy our static executable.
 WORKDIR /root/
 COPY --from=builder /go/bin/scry .
-COPY --from=builder /go/src/app/etc/.scry.production.yaml ./.scry.yaml
 CMD ["./scry", "server"]
