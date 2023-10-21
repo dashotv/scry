@@ -78,6 +78,7 @@ func initConfig() {
 		// Search config in home directory with name ".scry" (without extension).
 		viper.AddConfigPath(".")
 		viper.AddConfigPath(home)
+		viper.AddConfigPath("/etc/scry")
 		viper.SetConfigName(".scry")
 	}
 
