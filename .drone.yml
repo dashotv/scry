@@ -29,7 +29,7 @@ steps:
         from_secret: ssh_key
       command_timeout: 2m
       script:
-        - cd /etc/dashotv && docker compose pull scry && docker compose restart scry
+        - cd /etc/dashotv && docker compose pull scry && docker compose up -d --no-deps scry
   - name: slack
     image: plugins/slack
     settings:
