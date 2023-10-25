@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"sync"
 
 	"github.com/dashotv/tmdb"
@@ -62,10 +63,11 @@ type Response struct {
 }
 
 type Result struct {
-	ID    string
-	Title string
-	Type  string
-	Date  string
+	ID     string
+	Title  string
+	Type   string
+	Date   string
+	Source string
 }
 
 func searchMedia(c *gin.Context) ([]*Result, error) {
@@ -87,10 +89,11 @@ func searchMedia(c *gin.Context) ([]*Result, error) {
 
 	for _, v := range r.Media {
 		out = append(out, &Result{
-			ID:    v.ID,
-			Title: v.Title,
-			Type:  v.Type,
-			Date:  v.ReleaseDate,
+			ID:     v.ID,
+			Title:  v.Title,
+			Type:   v.Type,
+			Date:   v.ReleaseDate,
+			Source: "media",
 		})
 	}
 
@@ -112,10 +115,12 @@ func searchTvdb(q string) ([]*Result, error) {
 	}
 
 	for _, v := range *r.JSON200.Data {
+		s := strings.Split(*v.Id, "-")
 		a := &Result{
-			ID:    fmt.Sprintf("%d", v.Id),
-			Title: *v.Name,
-			Type:  "series",
+			ID:     s[1],
+			Title:  *v.Name,
+			Type:   "series",
+			Source: "tvdb",
 		}
 		if v.FirstAirTime != nil {
 			a.Date = *v.FirstAirTime
@@ -140,10 +145,11 @@ func searchTmdb(q string) ([]*Result, error) {
 
 	for _, v := range *r.JSON200.Results {
 		out = append(out, &Result{
-			ID:    fmt.Sprintf("%d", v.Id),
-			Title: *v.Title,
-			Type:  "movie",
-			Date:  *v.ReleaseDate,
+			ID:     fmt.Sprintf("%d", *v.Id),
+			Title:  *v.Title,
+			Type:   "movie",
+			Date:   *v.ReleaseDate,
+			Source: "tmdb",
 		})
 	}
 
