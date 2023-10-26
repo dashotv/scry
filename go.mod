@@ -7,7 +7,7 @@ toolchain go1.21.3
 require (
 	github.com/dashotv/golem v0.9.1
 	github.com/dashotv/tmdb v0.1.1
-	github.com/dashotv/tvdb v0.1.0
+	github.com/dashotv/tvdb v0.1.1
 	github.com/gin-gonic/gin v1.9.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/olivere/elastic v6.2.37+incompatible
@@ -23,8 +23,10 @@ require (
 require (
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/bytedance/sonic v1.10.2 // indirect
+	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
+	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05 // indirect
 	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect

@@ -32,7 +32,7 @@ type Application struct {
 	// Add additional clients and connections
 	Client  *search.Client
 	Nzbgeek *nzbgeek.Client
-	Tvdb    *tvdb.Tvdb
+	Tvdb    *tvdb.Client
 	Tmdb    *tmdb.Tmdb
 }
 
@@ -73,9 +73,8 @@ func initialize() *Application {
 	// })
 
 	// Add additional clients and connections
-	tvdbClient := tvdb.New(cfg.Tvdb.URL)
-	_, err = tvdbClient.Login(cfg.Tvdb.Key)
-	if err != nil {
+	tvdbClient, err := tvdb.Login(cfg.Tvdb.Key)
+	if err != nil || tvdbClient.Token == "" {
 		log.Warnf("failed to connect to TVDB: %s", err)
 	}
 
