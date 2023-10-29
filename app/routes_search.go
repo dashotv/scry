@@ -164,5 +164,8 @@ func searchTmdb(q string) ([]*Result, error) {
 		})
 	}
 
-	return out[:10], nil
+	if len(out) > 10 {
+		return out[:10], nil
+	}
+	return out, nil
 }
