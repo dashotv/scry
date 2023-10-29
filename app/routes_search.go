@@ -7,8 +7,7 @@ import (
 	"sync"
 
 	"github.com/dashotv/tmdb"
-	"github.com/dashotv/tvdb/openapi"
-	"github.com/dashotv/tvdb/openapi/models/operations"
+	"github.com/dashotv/tvdb"
 	"github.com/gin-gonic/gin"
 )
 
@@ -114,10 +113,10 @@ func searchTvdb(q string) ([]*Result, error) {
 		return out, nil
 	}
 
-	req := operations.GetSearchResultsRequest{
+	req := tvdb.GetSearchResultsRequest{
 		Query: &q,
-		Type:  openapi.String("series"),
-		Limit: openapi.Float64(10),
+		Type:  tvdb.String("series"),
+		Limit: tvdb.Int64(10),
 	}
 	r, err := App().Tvdb.GetSearchResults(req)
 	if err != nil {
@@ -147,21 +146,20 @@ func searchTmdb(q string) ([]*Result, error) {
 		return out, nil
 	}
 
-	r, err := App().Tmdb.SearchMovie(&tmdb.SearchMovieParams{Query: q})
+	p := tmdb.SearchMovieRequest{
+		Query: q,
+	}
+	r, err := App().Tmdb.SearchMovie(p)
 	if err != nil {
 		return nil, err
 	}
 
-	if r.JSON200 == nil || r.JSON200.Results == nil || len(*r.JSON200.Results) == 0 {
-		return out, nil
-	}
-
-	for _, v := range *r.JSON200.Results {
+	for _, v := range r.Results {
 		out = append(out, &Result{
-			ID:     fmt.Sprintf("%d", *v.Id),
-			Title:  *v.Title,
+			ID:     fmt.Sprintf("%d", tmdb.Int64Value(v.ID)),
+			Title:  tmdb.StringValue(v.Title),
 			Type:   "movie",
-			Date:   *v.ReleaseDate,
+			Date:   tmdb.StringValue(v.ReleaseDate),
 			Source: "tmdb",
 		})
 	}

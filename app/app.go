@@ -33,7 +33,7 @@ type Application struct {
 	Client  *search.Client
 	Nzbgeek *nzbgeek.Client
 	Tvdb    *tvdb.Client
-	Tmdb    *tmdb.Tmdb
+	Tmdb    *tmdb.Client
 }
 
 func logger() *logrus.Entry {
@@ -78,10 +78,7 @@ func initialize() *Application {
 		log.Warnf("failed to connect to TVDB: %s", err)
 	}
 
-	tmdbClient, err := tmdb.New(cfg.Tmdb.URL, cfg.Tmdb.Token)
-	if err != nil {
-		log.Warnf("failed to connect to TMDB: %s", err)
-	}
+	tmdbClient := tmdb.New(cfg.Tmdb.Token)
 
 	return &Application{
 		Config: cfg,
