@@ -30,6 +30,8 @@ type Media struct {
 	Type        string    `json:"type"`
 	Name        string    `json:"name"`
 	Kind        string    `json:"kind"`
+	Source      string    `json:"source"`
+	SourceID    string    `json:"source_id"`
 	SearchName  string    `json:"search_name"`
 	Display     string    `json:"display"`
 	Title       string    `json:"title"`
@@ -43,10 +45,12 @@ type Media struct {
 
 type MediaSearch struct {
 	//ID      string `json:"id"`
-	Type    string `json:"type"`
-	Name    string `json:"name"`
-	Display string `json:"display"`
-	Title   string `json:"title"`
+	Type     string `json:"type"`
+	Name     string `json:"name"`
+	Display  string `json:"display"`
+	Title    string `json:"title"`
+	Source   string `json:"source"`
+	SourceID string `json:"source_id"`
 
 	client *elastic.Client
 	*Search
@@ -135,6 +139,14 @@ func (s *MediaSearch) Query() (*elastic.QueryStringQuery, string) {
 
 	if s.Title != "" {
 		list = append(list, fmt.Sprintf("%s:\"%s\"", "title", s.Title))
+	}
+
+	if s.Source != "" {
+		list = append(list, fmt.Sprintf("%s:\"%s\"", "source", s.Source))
+	}
+
+	if s.SourceID != "" {
+		list = append(list, fmt.Sprintf("%s:\"%s\"", "source_id", s.SourceID))
 	}
 
 	str := strings.Join(list, " AND ")

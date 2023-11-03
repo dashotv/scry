@@ -36,6 +36,8 @@ func CreateSearch(c *gin.Context) (*search.MediaSearch, error) {
 	s.Name = c.Query("name")
 	s.Display = c.Query("display")
 	s.Title = c.Query("title")
+	s.Source = c.Query("source")
+	s.SourceID = c.Query("source_id")
 
 	App().Log.Debugf("    create: %#v", s)
 	return s, nil
