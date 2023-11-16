@@ -7,7 +7,7 @@ toolchain go1.21.3
 require (
 	github.com/dashotv/golem v0.9.1
 	github.com/dashotv/tmdb v0.2.0
-	github.com/dashotv/tvdb v0.2.1
+	github.com/dashotv/tvdb v0.3.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/olivere/elastic v6.2.37+incompatible

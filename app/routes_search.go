@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"net/http"
-	"strings"
 	"sync"
 
 	"github.com/dashotv/tmdb"
@@ -13,8 +12,6 @@ import (
 
 func SearchIndex(c *gin.Context) {
 	responses := searchAll(c)
-
-	App().Log.Infof("searchIndex: %#v", responses)
 
 	c.JSON(http.StatusOK, responses)
 }
@@ -70,11 +67,12 @@ type Response struct {
 }
 
 type Result struct {
-	ID     string
-	Title  string
-	Type   string
-	Date   string
-	Source string
+	ID          string
+	Title       string
+	Description string
+	Type        string
+	Date        string
+	Source      string
 }
 
 func searchMedia(c *gin.Context) ([]*Result, error) {
@@ -114,9 +112,10 @@ func searchTvdb(q string) ([]*Result, error) {
 	}
 
 	req := tvdb.GetSearchResultsRequest{
-		Query: &q,
-		Type:  tvdb.String("series"),
-		Limit: tvdb.Int64(10),
+		Query:    &q,
+		Type:     tvdb.String("series"),
+		Limit:    tvdb.Int64(10),
+		Language: tvdb.String("eng"),
 	}
 	r, err := App().Tvdb.GetSearchResults(req)
 	if err != nil {
@@ -124,15 +123,23 @@ func searchTvdb(q string) ([]*Result, error) {
 	}
 
 	for _, v := range r.Data {
-		s := strings.Split(*v.ID, "-")
 		a := &Result{
-			ID:     s[1],
-			Title:  *v.Name,
-			Type:   "series",
-			Source: "tvdb",
+			ID:          tvdb.StringValue(v.TvdbID),
+			Title:       tvdb.StringValue(v.Name),
+			Description: tvdb.StringValue(v.Overview),
+			Type:        "series",
+			Source:      "tvdb",
 		}
 		if v.FirstAirTime != nil {
 			a.Date = *v.FirstAirTime
+		}
+		if v.PrimaryLanguage != nil && *v.PrimaryLanguage != "eng" {
+			if v.Translations["eng"] != "" {
+				a.Title = v.Translations["eng"]
+			}
+			if v.Overviews["eng"] != "" {
+				a.Description = v.Overviews["eng"]
+			}
 		}
 		out = append(out, a)
 	}
@@ -147,7 +154,8 @@ func searchTmdb(q string) ([]*Result, error) {
 	}
 
 	p := tmdb.SearchMovieRequest{
-		Query: q,
+		Query:    q,
+		Language: tmdb.String("en-US"),
 	}
 	r, err := App().Tmdb.SearchMovie(p)
 	if err != nil {
