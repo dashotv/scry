@@ -71,8 +71,10 @@ type Result struct {
 	Title       string
 	Description string
 	Type        string
+	Kind        string
 	Date        string
 	Source      string
+	Image       string
 }
 
 func searchMedia(c *gin.Context) ([]*Result, error) {
@@ -94,11 +96,14 @@ func searchMedia(c *gin.Context) ([]*Result, error) {
 
 	for _, v := range r.Media {
 		out = append(out, &Result{
-			ID:     v.ID,
-			Title:  v.Title,
-			Type:   v.Type,
-			Date:   v.ReleaseDate,
-			Source: "media",
+			ID:          v.ID,
+			Title:       v.Title,
+			Description: v.Description,
+			Type:        v.Type,
+			Kind:        v.Kind,
+			Date:        v.ReleaseDate,
+			Source:      "media",
+			Image:       v.Cover,
 		})
 	}
 
@@ -128,7 +133,9 @@ func searchTvdb(q string) ([]*Result, error) {
 			Title:       tvdb.StringValue(v.Name),
 			Description: tvdb.StringValue(v.Overview),
 			Type:        "series",
+			Kind:        "tv",
 			Source:      "tvdb",
+			Image:       tvdb.StringValue(v.Thumbnail),
 		}
 		if v.FirstAirTime != nil {
 			a.Date = *v.FirstAirTime
@@ -163,12 +170,19 @@ func searchTmdb(q string) ([]*Result, error) {
 	}
 
 	for _, v := range r.Results {
+		img := tmdb.StringValue(v.PosterPath)
+		if img != "" {
+			img = "https://image.tmdb.org/t/p/original" + img
+		}
 		out = append(out, &Result{
-			ID:     fmt.Sprintf("%d", tmdb.Int64Value(v.ID)),
-			Title:  tmdb.StringValue(v.Title),
-			Type:   "movie",
-			Date:   tmdb.StringValue(v.ReleaseDate),
-			Source: "tmdb",
+			ID:          fmt.Sprintf("%d", tmdb.Int64Value(v.ID)),
+			Title:       tmdb.StringValue(v.Title),
+			Description: tmdb.StringValue(v.Overview),
+			Type:        "movie",
+			Kind:        "movie",
+			Date:        tmdb.StringValue(v.ReleaseDate),
+			Source:      "tmdb",
+			Image:       img,
 		})
 	}
 

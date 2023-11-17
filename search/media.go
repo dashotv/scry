@@ -35,6 +35,7 @@ type Media struct {
 	SearchName  string    `json:"search_name"`
 	Display     string    `json:"display"`
 	Title       string    `json:"title"`
+	Description string    `json:"description"`
 	Link        string    `json:"link"`
 	ReleaseDate string    `json:"release_date"`
 	Background  string    `json:"background"`
@@ -111,6 +112,7 @@ func (s *MediaSearch) processResponse(res *elastic.SearchResult) ([]*Media, erro
 	}
 
 	for _, hit := range res.Hits.Hits {
+		fmt.Printf("hit: %s\n", *hit.Source)
 		m := &Media{}
 		if err := json.Unmarshal(*hit.Source, m); err != nil {
 			return nil, err
