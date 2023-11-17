@@ -32,30 +32,42 @@ func searchAll(c *gin.Context) *searchAllResponse {
 	go func() {
 		defer wg.Done()
 		r, err := searchMedia(c)
-		responses.Media = &Response{Results: r, Error: err}
+		e := ""
+		if err != nil {
+			e = err.Error()
+		}
+		responses.Media = &Response{Results: r, Error: e}
 	}()
 
 	go func() {
 		defer wg.Done()
 		r, err := searchTmdb(name)
-		responses.Tmdb = &Response{Results: r, Error: err}
+		e := ""
+		if err != nil {
+			e = err.Error()
+		}
+		responses.Tmdb = &Response{Results: r, Error: e}
 	}()
 
 	go func() {
 		defer wg.Done()
 		r, err := searchTvdb(name)
-		responses.Tvdb = &Response{Results: r, Error: err}
+		e := ""
+		if err != nil {
+			e = err.Error()
+		}
+		responses.Tvdb = &Response{Results: r, Error: e}
 	}()
 
 	wg.Wait()
 
-	if responses.Media.Error != nil {
+	if responses.Media.Error != "" {
 		App().Log.Errorf("searchAll media error: %s", responses.Media.Error)
 	}
-	if responses.Tmdb.Error != nil {
+	if responses.Tmdb.Error != "" {
 		App().Log.Errorf("searchAll tmdb error: %s", responses.Tmdb.Error)
 	}
-	if responses.Tvdb.Error != nil {
+	if responses.Tvdb.Error != "" {
 		App().Log.Errorf("searchAll tvdb error: %s", responses.Tvdb.Error)
 	}
 	return responses
@@ -63,7 +75,7 @@ func searchAll(c *gin.Context) *searchAllResponse {
 
 type Response struct {
 	Results []*Result
-	Error   error
+	Error   string
 }
 
 type Result struct {

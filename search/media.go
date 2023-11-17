@@ -112,7 +112,6 @@ func (s *MediaSearch) processResponse(res *elastic.SearchResult) ([]*Media, erro
 	}
 
 	for _, hit := range res.Hits.Hits {
-		fmt.Printf("hit: %s\n", *hit.Source)
 		m := &Media{}
 		if err := json.Unmarshal(*hit.Source, m); err != nil {
 			return nil, err
