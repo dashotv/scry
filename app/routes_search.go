@@ -191,7 +191,7 @@ func searchTmdb(q string) ([]*Result, error) {
 			Title:       tmdb.StringValue(v.Title),
 			Description: tmdb.StringValue(v.Overview),
 			Type:        "movie",
-			Kind:        "movie",
+			Kind:        "movies",
 			Date:        tmdb.StringValue(v.ReleaseDate),
 			Source:      "tmdb",
 			Image:       img,
