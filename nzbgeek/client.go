@@ -86,26 +86,26 @@ type Response struct {
 }
 
 type SearchResult struct {
-	Title       string `json:"title"`
-	Guid        string
-	Link        string
-	Comments    string
+	Title       string     `json:"title"`
+	Guid        string     `json:"guid"`
+	Link        string     `json:"link"`
+	Comments    string     `json:"comments"`
 	Published   CustomTime `json:"pubDate"`
-	Category    string
-	Description string
+	Category    string     `json:"category"`
+	Description string     `json:"description"`
 	Enclosure   struct {
 		Attributes struct {
-			URL    string
-			Length string
-			Type   string
+			URL    string `json:"url"`
+			Length string `json:"length"`
+			Type   string `json:"type"`
 		} `json:"@attributes"`
-	}
+	} `json:"enclosure"`
 	Attributes []struct {
 		Attribute struct {
-			Name  string
-			Value string
+			Name  string `json:"name"`
+			Value string `json:"value"`
 		} `json:"@attributes"`
-	}
+	} `json:"attributes"`
 }
 
 func (c *Client) TvSearch(options *TvSearchOptions) (*Response, error) {
