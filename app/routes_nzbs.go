@@ -3,9 +3,9 @@ package app
 import (
 	"net/http"
 
-	"github.com/dashotv/scry/nzbgeek"
-
 	"github.com/gin-gonic/gin"
+
+	"github.com/dashotv/scry/nzbgeek"
 )
 
 func NzbsTv(c *gin.Context) {

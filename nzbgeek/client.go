@@ -69,12 +69,6 @@ func (o *MovieSearchOptions) Params() url.Values {
 	return params
 }
 
-type SearchResponse struct {
-	Offset int
-	Total  int
-	Result []SearchResult
-}
-
 type Response struct {
 	Attributes struct {
 		Version string
