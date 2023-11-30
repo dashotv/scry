@@ -18,7 +18,7 @@ func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {
 func (c *Client) IndexRelease(r *Release) (*elastic.IndexResponse, error) {
 	return c.client.Index().
 		Index("torrents").
-		Type("torrent").
+		Type("_doc").
 		Id(r.ID).
 		BodyJson(r).
 		Do(context.Background())
