@@ -3,12 +3,13 @@ package app
 import (
 	"fmt"
 
-	"github.com/dashotv/tmdb"
-	"github.com/dashotv/tvdb"
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+
+	"github.com/dashotv/tmdb"
+	"github.com/dashotv/tvdb"
 
 	"github.com/dashotv/scry/nzbgeek"
 	"github.com/dashotv/scry/search"
@@ -42,6 +43,7 @@ func New() (*Application, error) {
 		setupElasticsearch,
 		setupClient,
 		setupNzbgeek,
+		setupEvents,
 	}
 	for _, f := range list {
 		if err := f(app); err != nil {
@@ -54,6 +56,8 @@ func New() (*Application, error) {
 
 func (a *Application) Start() error {
 	a.Routes()
+
+	go a.Events.Start()
 
 	a.Log.Info("starting scry...")
 	if err := a.Engine.Run(fmt.Sprintf(":%d", a.Config.Port)); err != nil {

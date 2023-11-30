@@ -9,7 +9,7 @@ import (
 func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {
 	return c.client.Index().
 		Index("media").
-		Type("media").
+		Type("medium").
 		Id(m.ID).
 		BodyJson(m).
 		Do(context.Background())

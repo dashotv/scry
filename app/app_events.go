@@ -1,8 +1,9 @@
 package app
 
 import (
-	"github.com/dashotv/mercury"
 	"go.uber.org/zap"
+
+	"github.com/dashotv/mercury"
 
 	"github.com/dashotv/scry/search"
 )
@@ -49,12 +50,14 @@ func (e *Events) Start() error {
 	for {
 		select {
 		case m := <-e.Media:
+			e.Log.Debugf("indexing media: %#v", m)
 			resp, err := e.Client.IndexMedia(m)
 			if err != nil {
 				e.Log.Errorf("index media failed: %s", err)
 				e.Log.Debugf("response: %#v", resp)
 			}
 		case m := <-e.Releases:
+			e.Log.Debugf("indexing release: %#v", m)
 			resp, err := e.Client.IndexRelease(m)
 			if err != nil {
 				e.Log.Errorf("index release failed: %s", err)
