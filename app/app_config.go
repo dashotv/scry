@@ -24,4 +24,5 @@ type Config struct {
 	NzbgeekURL       string `env:"NZBGEEK_URL,required"`
 	TvdbKey          string `env:"TVDB_KEY,required"`
 	TmdbToken        string `env:"TMDB_TOKEN,required"`
+	NatsURL          string `env:"NATS_URL,required"`
 }

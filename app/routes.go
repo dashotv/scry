@@ -24,6 +24,11 @@ func (a *Application) Routes() {
 	search := a.Router.Group("/search")
 	search.GET("/", a.searchIndexHandler)
 
+	es := a.Router.Group("/es")
+	es.GET("/", a.esIndexHandler)
+	es.POST("/media", a.esMediaHandler)
+	es.POST("/release", a.esReleaseHandler)
+
 }
 
 func (a *Application) homeHandler(c *gin.Context) {
@@ -69,4 +74,17 @@ func (a *Application) releasesIndexHandler(c *gin.Context) {
 func (a *Application) searchIndexHandler(c *gin.Context) {
 
 	a.SearchIndex(c)
+}
+
+func (a *Application) esIndexHandler(c *gin.Context) {
+
+	a.EsIndex(c)
+}
+func (a *Application) esMediaHandler(c *gin.Context) {
+
+	a.EsMedia(c)
+}
+func (a *Application) esReleaseHandler(c *gin.Context) {
+
+	a.EsRelease(c)
 }

@@ -17,16 +17,17 @@ import (
 type setupFunc func(app *Application) error
 
 type Application struct {
-	Config  *Config
-	ES      *elasticsearch.Client
-	Log     *zap.SugaredLogger
-	Engine  *gin.Engine
-	Router  *gin.RouterGroup
-	Default *gin.RouterGroup
 	Client  *search.Client
+	Config  *Config
+	Default *gin.RouterGroup
+	Engine  *gin.Engine
+	ES      *elasticsearch.Client
+	Events  *Events
+	Log     *zap.SugaredLogger
 	Nzbgeek *nzbgeek.Client
-	Tvdb    *tvdb.Client
+	Router  *gin.RouterGroup
 	Tmdb    *tmdb.Client
+	Tvdb    *tvdb.Client
 }
 
 func New() (*Application, error) {
