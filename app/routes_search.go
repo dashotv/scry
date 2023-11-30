@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SearchIndex(c *gin.Context) {
-	responses := searchAll(c)
+func (a *Application) SearchIndex(c *gin.Context) {
+	responses := a.searchAll(c)
 
 	c.JSON(http.StatusOK, responses)
 }
@@ -22,7 +22,7 @@ type searchAllResponse struct {
 	Tvdb  *Response
 }
 
-func searchAll(c *gin.Context) *searchAllResponse {
+func (a *Application) searchAll(c *gin.Context) *searchAllResponse {
 	wg := sync.WaitGroup{}
 	wg.Add(3)
 
@@ -31,7 +31,7 @@ func searchAll(c *gin.Context) *searchAllResponse {
 
 	go func() {
 		defer wg.Done()
-		r, err := searchMedia(c)
+		r, err := a.searchMedia(c)
 		e := ""
 		if err != nil {
 			e = err.Error()
@@ -41,7 +41,7 @@ func searchAll(c *gin.Context) *searchAllResponse {
 
 	go func() {
 		defer wg.Done()
-		r, err := searchTmdb(name)
+		r, err := a.searchTmdb(name)
 		e := ""
 		if err != nil {
 			e = err.Error()
@@ -51,7 +51,7 @@ func searchAll(c *gin.Context) *searchAllResponse {
 
 	go func() {
 		defer wg.Done()
-		r, err := searchTvdb(name)
+		r, err := a.searchTvdb(name)
 		e := ""
 		if err != nil {
 			e = err.Error()
@@ -62,13 +62,13 @@ func searchAll(c *gin.Context) *searchAllResponse {
 	wg.Wait()
 
 	if responses.Media.Error != "" {
-		App().Log.Errorf("searchAll media error: %s", responses.Media.Error)
+		a.Log.Errorf("searchAll media error: %s", responses.Media.Error)
 	}
 	if responses.Tmdb.Error != "" {
-		App().Log.Errorf("searchAll tmdb error: %s", responses.Tmdb.Error)
+		a.Log.Errorf("searchAll tmdb error: %s", responses.Tmdb.Error)
 	}
 	if responses.Tvdb.Error != "" {
-		App().Log.Errorf("searchAll tvdb error: %s", responses.Tvdb.Error)
+		a.Log.Errorf("searchAll tvdb error: %s", responses.Tvdb.Error)
 	}
 	return responses
 }
@@ -89,10 +89,10 @@ type Result struct {
 	Image       string
 }
 
-func searchMedia(c *gin.Context) ([]*Result, error) {
+func (a *Application) searchMedia(c *gin.Context) ([]*Result, error) {
 	out := []*Result{}
 
-	s, err := CreateSearch(c)
+	s, err := a.CreateSearch(c)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func searchMedia(c *gin.Context) ([]*Result, error) {
 	return out, nil
 }
 
-func searchTvdb(q string) ([]*Result, error) {
+func (a *Application) searchTvdb(q string) ([]*Result, error) {
 	out := []*Result{}
 	if q == "" {
 		return out, nil
@@ -134,7 +134,7 @@ func searchTvdb(q string) ([]*Result, error) {
 		Limit:    tvdb.Int64(10),
 		Language: tvdb.String("eng"),
 	}
-	r, err := App().Tvdb.GetSearchResults(req)
+	r, err := a.Tvdb.GetSearchResults(req)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func searchTvdb(q string) ([]*Result, error) {
 	return out, nil
 }
 
-func searchTmdb(q string) ([]*Result, error) {
+func (a *Application) searchTmdb(q string) ([]*Result, error) {
 	out := []*Result{}
 	if q == "" {
 		return out, nil
@@ -176,7 +176,7 @@ func searchTmdb(q string) ([]*Result, error) {
 		Query:    q,
 		Language: tmdb.String("en-US"),
 	}
-	r, err := App().Tmdb.SearchMovie(p)
+	r, err := a.Tmdb.SearchMovie(p)
 	if err != nil {
 		return nil, err
 	}

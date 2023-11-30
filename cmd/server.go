@@ -15,7 +15,8 @@
 package cmd
 
 import (
-	"github.com/sirupsen/logrus"
+	"fmt"
+
 	"github.com/spf13/cobra"
 
 	"github.com/dashotv/scry/app"
@@ -27,14 +28,16 @@ var serverCmd = &cobra.Command{
 	Short: "run the server",
 	Long:  "run the server",
 	Run: func(cmd *cobra.Command, args []string) {
-		server, err := app.New()
+		a, err := app.New()
 		if err != nil {
-			logrus.Fatalf("error: %s", err)
+			fmt.Printf("error: %s\n", err)
+			return
 		}
 
-		err = server.Start()
+		err = a.Start()
 		if err != nil {
-			logrus.Fatalf("error: %s", err)
+			fmt.Printf("error: %s\n", err)
+			return
 		}
 	},
 }

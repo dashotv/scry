@@ -3,15 +3,15 @@ package app
 import (
 	"net/http"
 
+	"github.com/dashotv/golem/web"
 	"github.com/gin-gonic/gin"
 
-	"github.com/dashotv/golem/web"
 	"github.com/dashotv/scry/search"
 )
 
-func ReleasesIndex(c *gin.Context) {
-	App().Log.Debugf("    params: %#v", c.Params)
-	s, err := CreateReleasesSearch(c)
+func (a *Application) ReleasesIndex(c *gin.Context) {
+	a.Log.Debugf("params: %#v", c.Params)
+	s, err := a.CreateReleasesSearch(c)
 	if err != nil {
 		c.Error(err)
 		return
@@ -26,8 +26,8 @@ func ReleasesIndex(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func CreateReleasesSearch(c *gin.Context) (*search.ReleaseSearch, error) {
-	s := App().Client.Release.NewSearch()
+func (a *Application) CreateReleasesSearch(c *gin.Context) (*search.ReleaseSearch, error) {
+	s := a.Client.Release.NewSearch()
 
 	s.Start, _ = web.QueryDefaultInteger(c, "start", 0)
 	s.Limit, _ = web.QueryDefaultInteger(c, "limit", 25)
@@ -48,6 +48,6 @@ func CreateReleasesSearch(c *gin.Context) (*search.ReleaseSearch, error) {
 	s.Bluray = c.Query("bluray") == "true"
 	s.Exact = c.Query("exact") == "true"
 
-	App().Log.Debugf("    create: %#v", s)
+	a.Log.Debugf("create: %#v", s)
 	return s, nil
 }

@@ -1,93 +1,63 @@
 package app
 
 import (
-	"sync"
+	"fmt"
 
 	"github.com/dashotv/tmdb"
 	"github.com/dashotv/tvdb"
+	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
-	ginlogrus "github.com/toorop/gin-logrus"
-	prefixed "github.com/x-cray/logrus-prefixed-formatter"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/dashotv/scry/nzbgeek"
 	"github.com/dashotv/scry/search"
 )
 
-var once sync.Once
-var instance *Application
-
-func App() *Application {
-	once.Do(func() {
-		instance = initialize()
-	})
-	return instance
-}
+type setupFunc func(app *Application) error
 
 type Application struct {
-	Config *Config
-	Router *gin.Engine
-	// Cache  *redis.Client
-	Log *logrus.Entry
-	// Add additional clients and connections
+	Config  *Config
+	ES      *elasticsearch.Client
+	Log     *zap.SugaredLogger
+	Engine  *gin.Engine
+	Router  *gin.RouterGroup
+	Default *gin.RouterGroup
 	Client  *search.Client
 	Nzbgeek *nzbgeek.Client
 	Tvdb    *tvdb.Client
 	Tmdb    *tmdb.Client
 }
 
-func logger() *logrus.Entry {
-	logrus.SetLevel(logrus.InfoLevel)
-	logrus.SetFormatter(&prefixed.TextFormatter{DisableTimestamp: false, FullTimestamp: true})
-	return logrus.WithField("prefix", "app")
+func New() (*Application, error) {
+	app := &Application{}
+
+	list := []setupFunc{
+		setupConfig,
+		setupLogger,
+		setupRoutes,
+		setupTmdb,
+		setupTvdb,
+		setupElasticsearch,
+		setupClient,
+		setupNzbgeek,
+	}
+	for _, f := range list {
+		if err := f(app); err != nil {
+			return nil, err
+		}
+	}
+
+	return app, nil
 }
 
-func initialize() *Application {
-	cfg := ConfigInstance()
-	log := logger()
+func (a *Application) Start() error {
+	a.Routes()
 
-	if cfg.Mode == "dev" {
-		logrus.SetLevel(logrus.DebugLevel)
+	a.Log.Info("starting scry...")
+	if err := a.Engine.Run(fmt.Sprintf(":%d", a.Config.Port)); err != nil {
+		return errors.Wrap(err, "starting router")
 	}
 
-	if cfg.Mode == "release" {
-		gin.SetMode(cfg.Mode)
-	}
-
-	router := gin.New()
-	router.Use(ginlogrus.Logger(log), gin.Recovery())
-
-	log.Infof("connecting to elasticsearch: %s", cfg.Elasticsearch.URL)
-	client, err := search.New(cfg.Elasticsearch.URL)
-	if err != nil {
-		log.Fatalf("failed to connect to Elasticsearch: %s", err)
-	}
-
-	log.Infof("setting up nzbgeek...")
-	nzbg := nzbgeek.NewClient(cfg.Nzbgeek.URL, cfg.Nzbgeek.Key)
-
-	// TODO: add this to config
-	// cache := redis.NewClient(&redis.Options{
-	//	Addr: "localhost:6379",
-	//	DB:   15, // use default DB
-	// })
-
-	// Add additional clients and connections
-	tvdbClient, err := tvdb.Login(cfg.Tvdb.Key)
-	if err != nil || tvdbClient.Token == "" {
-		log.Warnf("failed to connect to TVDB: %s", err)
-	}
-
-	tmdbClient := tmdb.New(cfg.Tmdb.Token)
-
-	return &Application{
-		Config: cfg,
-		Router: router,
-		// Cache:    cache,
-		Log:     log,
-		Client:  client,
-		Nzbgeek: nzbg,
-		Tvdb:    tvdbClient,
-		Tmdb:    tmdbClient,
-	}
+	return nil
 }

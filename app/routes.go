@@ -8,29 +8,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Server) Routes() {
-	s.Default.GET("/", homeHandler)
+func (a *Application) Routes() {
+	a.Default.GET("/", a.homeHandler)
 
-	media := s.Router.Group("/media")
-	media.GET("/", mediaIndexHandler)
+	media := a.Router.Group("/media")
+	media.GET("/", a.mediaIndexHandler)
 
-	nzbs := s.Router.Group("/nzbs")
-	nzbs.GET("/movie", nzbsMovieHandler)
-	nzbs.GET("/tv", nzbsTvHandler)
+	nzbs := a.Router.Group("/nzbs")
+	nzbs.GET("/movie", a.nzbsMovieHandler)
+	nzbs.GET("/tv", a.nzbsTvHandler)
 
-	releases := s.Router.Group("/releases")
-	releases.GET("/", releasesIndexHandler)
+	releases := a.Router.Group("/releases")
+	releases.GET("/", a.releasesIndexHandler)
 
-	search := s.Router.Group("/search")
-	search.GET("/", searchIndexHandler)
+	search := a.Router.Group("/search")
+	search.GET("/", a.searchIndexHandler)
 
 }
 
-func homeHandler(c *gin.Context) {
-	Index(c)
+func (a *Application) homeHandler(c *gin.Context) {
+	a.Index(c)
 }
 
-func Index(c *gin.Context) {
+func (a *Application) Index(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"name": "scry",
 		"routes": gin.H{
@@ -43,30 +43,30 @@ func Index(c *gin.Context) {
 }
 
 // /media
-func mediaIndexHandler(c *gin.Context) {
+func (a *Application) mediaIndexHandler(c *gin.Context) {
 
-	MediaIndex(c)
+	a.MediaIndex(c)
 }
 
 // /nzbs
-func nzbsMovieHandler(c *gin.Context) {
+func (a *Application) nzbsMovieHandler(c *gin.Context) {
 
-	NzbsMovie(c)
+	a.NzbsMovie(c)
 }
 
-func nzbsTvHandler(c *gin.Context) {
+func (a *Application) nzbsTvHandler(c *gin.Context) {
 
-	NzbsTv(c)
+	a.NzbsTv(c)
 }
 
 // /releases
-func releasesIndexHandler(c *gin.Context) {
+func (a *Application) releasesIndexHandler(c *gin.Context) {
 
-	ReleasesIndex(c)
+	a.ReleasesIndex(c)
 }
 
 // /search
-func searchIndexHandler(c *gin.Context) {
+func (a *Application) searchIndexHandler(c *gin.Context) {
 
-	SearchIndex(c)
+	a.SearchIndex(c)
 }
