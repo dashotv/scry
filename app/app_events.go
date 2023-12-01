@@ -15,7 +15,8 @@ type Events struct {
 	Client   *search.Client
 	Merc     *mercury.Mercury
 	Log      *zap.SugaredLogger
-	Media    chan *search.Media
+	Series   chan *search.Media
+	Movies   chan *search.Media
 	Releases chan *search.Release
 }
 
@@ -29,11 +30,15 @@ func setupEvents(app *Application) error {
 		Client:   app.Client,
 		Merc:     m,
 		Log:      app.Log.Named("events"),
-		Media:    make(chan *search.Media),
+		Series:   make(chan *search.Media),
+		Movies:   make(chan *search.Media),
 		Releases: make(chan *search.Release),
 	}
 
-	if err := e.Merc.Receiver("tower.index.media", e.Media); err != nil {
+	if err := e.Merc.Receiver("tower.index.series", e.Series); err != nil {
+		return err
+	}
+	if err := e.Merc.Receiver("tower.index.movies", e.Movies); err != nil {
 		return err
 	}
 	if err := e.Merc.Receiver("tower.index.releases", e.Releases); err != nil {
@@ -49,8 +54,15 @@ func (e *Events) Start() error {
 
 	for {
 		select {
-		case m := <-e.Media:
-			e.Log.Debugf("indexing media: %#v", m)
+		case m := <-e.Series:
+			e.Log.Debugf("indexing series: %#v", m)
+			resp, err := e.Client.IndexMedia(m)
+			if err != nil {
+				e.Log.Errorf("index media failed: %s", err)
+				e.Log.Debugf("response: %#v", resp)
+			}
+		case m := <-e.Movies:
+			e.Log.Debugf("indexing movie: %#v", m)
 			resp, err := e.Client.IndexMedia(m)
 			if err != nil {
 				e.Log.Errorf("index media failed: %s", err)
