@@ -30,6 +30,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
+	github.com/dotenv-org/godotenvvault v0.6.0 // indirect
 	github.com/ericlagergren/decimal v0.0.0-20221120152707-495c53812d05 // indirect
 	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect

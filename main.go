@@ -16,8 +16,19 @@ package main
 
 // go:generate golem generate
 
-import "github.com/dashotv/scry/cmd"
+import (
+	"fmt"
+	"os"
+
+	"github.com/dotenv-org/godotenvvault"
+
+	"github.com/dashotv/scry/cmd"
+)
 
 func main() {
+	if err := godotenvvault.Load(); err != nil {
+		fmt.Printf("failed to load env: %s\n", err)
+		os.Exit(1)
+	}
 	cmd.Execute()
 }
