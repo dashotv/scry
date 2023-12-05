@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var elasticURL = os.Getenv("ELASTIC_URL")
+var elasticURL = os.Getenv("ELASTICSEARCH_URL")
 
 func TestMediaSearch_Find(t *testing.T) {
 	logrus.SetLevel(logrus.DebugLevel)

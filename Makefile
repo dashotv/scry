@@ -7,7 +7,8 @@ test: generate
 	[ -f .env ] && source .env; go test -v ./...
 
 generate:
-	golem generate
+	# TODO: disabled for now, since I'm trying a bunch of new things here
+	# golem generate
 
 build: generate
 	go build
