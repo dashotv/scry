@@ -29,4 +29,7 @@ deps:
 	go install github.com/dashotv/golem@latest
 	go install github.com/codegangsta/gin@latest
 
+dotenv:
+	npx dotenv-vault local build
+
 .PHONY: server test deps docker docker-run

@@ -1,2 +1,7 @@
 /scry
 /tmp/*
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
