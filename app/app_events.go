@@ -1,9 +1,10 @@
 package app
 
 import (
-	"go.uber.org/zap"
-
 	"github.com/dashotv/mercury"
+	"github.com/nats-io/nats.go"
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"github.com/dashotv/scry/search"
 )
@@ -18,6 +19,15 @@ type Events struct {
 	Series   chan *search.Media
 	Movies   chan *search.Media
 	Releases chan *search.Release
+}
+
+func healthEvents(app *Application) error {
+	switch app.Events.Merc.Status() {
+	case nats.CONNECTED:
+		return nil
+	default:
+		return errors.Errorf("nats status: %s", app.Events.Merc.Status())
+	}
 }
 
 func setupEvents(app *Application) error {

@@ -10,6 +10,7 @@ import (
 
 func (a *Application) Routes() {
 	a.Default.GET("/", a.homeHandler)
+	a.Default.GET("/health", a.healthHandler)
 
 	media := a.Router.Group("/media")
 	media.GET("/", a.mediaIndexHandler)
@@ -45,6 +46,17 @@ func (a *Application) Index(c *gin.Context) {
 			"search":   "/search",
 		},
 	})
+}
+
+func (a *Application) healthHandler(c *gin.Context) {
+	health, err := a.Health()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"name": "scry", "health": health})
 }
 
 // /media

@@ -20,8 +20,8 @@ github.com/chenzhuoyu/iasm v0.9.0/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLI
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/dashotv/golem v0.9.1 h1:rE4eAyWww7m3arsftkw3SZlkCiQ3h2oeSQD1B+Pq6fg=
 github.com/dashotv/golem v0.9.1/go.mod h1:A+IRXbdtlcLjQj/Cs66b1Pauw4XvEhopstWV9GUQKwg=
-github.com/dashotv/mercury v0.2.0 h1:v7XVyXTXP68LumjTi+6+INyREix442wuhIwk+auiX1I=
-github.com/dashotv/mercury v0.2.0/go.mod h1:OF7xiKpyMwBG1JdjSkrWm/LFNIlQoDnGKF+Hx/+6ITk=
+github.com/dashotv/mercury v0.3.1 h1:+I0anxSsSoXNa3m915nUAbspYWUFiRmrb1aQPIAZerA=
+github.com/dashotv/mercury v0.3.1/go.mod h1:OF7xiKpyMwBG1JdjSkrWm/LFNIlQoDnGKF+Hx/+6ITk=
 github.com/dashotv/tmdb v0.2.0 h1:Vd8DKZrrzVqob5k8wsNRfyyFUDj2jix5gIyJR6OWpdo=
 github.com/dashotv/tmdb v0.2.0/go.mod h1:XPLyPCuK16hlLIrAt/Bva8fBTUL+vD9VaOgFWtBAv+Q=
 github.com/dashotv/tvdb v0.3.0 h1:yiJzVqLTaPCtejbLk9FYl5AoMAwbReXD4KnCNugN9Pg=

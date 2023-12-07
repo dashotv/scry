@@ -16,6 +16,7 @@ import (
 )
 
 type setupFunc func(app *Application) error
+type healthFunc func(app *Application) error
 
 type Application struct {
 	Client  *search.Client
@@ -65,4 +66,22 @@ func (a *Application) Start() error {
 	}
 
 	return nil
+}
+
+func (a *Application) Health() (map[string]bool, error) {
+	list := map[string]healthFunc{
+		// "elasticsearch": healthElasticsearch,
+		// "nzbgeek":       healthNzbgeek,
+		// "tvdb":          healthTvdb,
+		// "tmdb":          healthTmdb,
+		"events": healthEvents,
+	}
+
+	resp := make(map[string]bool)
+	for n, f := range list {
+		err := f(a)
+		resp[n] = err == nil
+	}
+
+	return resp, nil
 }

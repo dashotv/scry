@@ -7,7 +7,7 @@ toolchain go1.21.3
 require (
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/dashotv/golem v0.9.1
-	github.com/dashotv/mercury v0.2.0
+	github.com/dashotv/mercury v0.3.1
 	github.com/dashotv/tmdb v0.2.0
 	github.com/dashotv/tvdb v0.3.0
 	github.com/dotenv-org/godotenvvault v0.6.0
@@ -15,6 +15,7 @@ require (
 	github.com/gin-contrib/zap v0.2.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
+	github.com/nats-io/nats.go v1.31.0
 	github.com/olivere/elastic v6.2.37+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
@@ -52,7 +53,6 @@ require (
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/nats-io/nats.go v1.31.0 // indirect
 	github.com/nats-io/nkeys v0.4.5 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
