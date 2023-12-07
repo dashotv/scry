@@ -23,8 +23,6 @@ func (a *Application) NzbsTv(c *gin.Context) {
 		return
 	}
 
-	a.Log.Debugf("response: %#v", response)
-
 	c.JSON(http.StatusOK, response.Channel.Item)
 }
 
@@ -36,11 +34,10 @@ func (a *Application) NzbsMovie(c *gin.Context) {
 
 	response, err := a.Nzbgeek.MovieSearch(options)
 	if err != nil {
+		a.Log.Errorf("nzbgeek movie search: %s", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
-
-	a.Log.Debugf("response: %#v", response)
 
 	c.JSON(http.StatusOK, response.Channel.Item)
 }
