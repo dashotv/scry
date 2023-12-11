@@ -1,10 +1,11 @@
 package app
 
 import (
-	"github.com/dashotv/mercury"
 	"github.com/nats-io/nats.go"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+
+	"github.com/dashotv/mercury"
 
 	"github.com/dashotv/scry/search"
 )
@@ -65,25 +66,25 @@ func (e *Events) Start() error {
 	for {
 		select {
 		case m := <-e.Series:
-			e.Log.Debugf("indexing series: %#v", m)
+			e.Log.Infof("indexing series: %#v", m)
 			resp, err := e.Client.IndexMedia(m)
 			if err != nil {
 				e.Log.Errorf("index media failed: %s", err)
-				e.Log.Debugf("response: %#v", resp)
+				e.Log.Infof("response: %#v", resp)
 			}
 		case m := <-e.Movies:
-			e.Log.Debugf("indexing movie: %#v", m)
+			e.Log.Infof("indexing movie: %#v", m)
 			resp, err := e.Client.IndexMedia(m)
 			if err != nil {
 				e.Log.Errorf("index media failed: %s", err)
-				e.Log.Debugf("response: %#v", resp)
+				e.Log.Infof("response: %#v", resp)
 			}
 		case m := <-e.Releases:
-			e.Log.Debugf("indexing release: %#v", m)
+			e.Log.Infof("indexing release: %#v", m)
 			resp, err := e.Client.IndexRelease(m)
 			if err != nil {
 				e.Log.Errorf("index release failed: %s", err)
-				e.Log.Debugf("response: %#v", resp)
+				e.Log.Infof("response: %#v", resp)
 			}
 		}
 	}
