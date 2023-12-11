@@ -3,13 +3,12 @@ package app
 import (
 	"fmt"
 
+	"github.com/dashotv/tmdb"
+	"github.com/dashotv/tvdb"
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
-
-	"github.com/dashotv/tmdb"
-	"github.com/dashotv/tvdb"
 
 	"github.com/dashotv/scry/nzbgeek"
 	"github.com/dashotv/scry/search"
