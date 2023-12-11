@@ -66,25 +66,25 @@ func (e *Events) Start() error {
 	for {
 		select {
 		case m := <-e.Series:
-			e.Log.Infof("indexing series: %#v", m)
+			e.Log.Debugf("indexing series: %#v", m)
 			resp, err := e.Client.IndexMedia(m)
 			if err != nil {
 				e.Log.Errorf("index media failed: %s", err)
-				e.Log.Infof("response: %#v", resp)
+				e.Log.Debugf("response: %#v", resp)
 			}
 		case m := <-e.Movies:
-			e.Log.Infof("indexing movie: %#v", m)
+			e.Log.Debugf("indexing movie: %#v", m)
 			resp, err := e.Client.IndexMedia(m)
 			if err != nil {
 				e.Log.Errorf("index media failed: %s", err)
-				e.Log.Infof("response: %#v", resp)
+				e.Log.Debugf("response: %#v", resp)
 			}
 		case m := <-e.Releases:
-			e.Log.Infof("indexing release: %#v", m)
+			e.Log.Debugf("indexing release: %#v", m)
 			resp, err := e.Client.IndexRelease(m)
 			if err != nil {
 				e.Log.Errorf("index release failed: %s", err)
-				e.Log.Infof("response: %#v", resp)
+				e.Log.Debugf("response: %#v", resp)
 			}
 		}
 	}
