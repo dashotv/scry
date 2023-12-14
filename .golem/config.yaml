@@ -1,0 +1,16 @@
+version: "2.0"
+name: scry
+repo: github.com/dashotv/scry
+package: app
+output: app
+plugins:
+    models: false
+    routes: true
+    workers: false
+    cache: false
+    events: true
+definitions:
+    models: .golem/models
+    routes: .golem/routes
+    events: .golem/events
+    workers: .golem/workers

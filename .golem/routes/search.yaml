@@ -1,0 +1,6 @@
+name: search
+path: /search
+routes:
+    - name: index
+      path: /
+      method: GET

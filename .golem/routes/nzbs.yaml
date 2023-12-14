@@ -1,0 +1,9 @@
+name: nzbs
+path: /nzbs
+routes:
+    - name: movie
+      path: /movie
+      method: GET
+    - name: tv
+      path: /tv
+      method: GET

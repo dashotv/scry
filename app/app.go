@@ -3,81 +3,82 @@ package app
 import (
 	"fmt"
 
-	"github.com/dashotv/tmdb"
-	"github.com/dashotv/tvdb"
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
+	"github.com/dashotv/tmdb"
+	"github.com/dashotv/tvdb"
+
 	"github.com/dashotv/scry/nzbgeek"
 	"github.com/dashotv/scry/search"
 )
 
+var app *Application
+
 type setupFunc func(app *Application) error
 type healthFunc func(app *Application) error
 
+var initializers = []setupFunc{setupConfig, setupLogger}
+var healthchecks = map[string]healthFunc{}
+
 type Application struct {
-	Client  *search.Client
-	Config  *Config
-	Default *gin.RouterGroup
+	Config *Config
+	Log    *zap.SugaredLogger
+
+	//golem:template:app/app_partial_definitions
+	// DO NOT EDIT. This section is managed by github.com/dashotv/golem.
+	// Routes
 	Engine  *gin.Engine
-	ES      *elasticsearch.Client
-	Events  *Events
-	Log     *zap.SugaredLogger
-	Nzbgeek *nzbgeek.Client
+	Default *gin.RouterGroup
 	Router  *gin.RouterGroup
+
+	// Events
+	Events *Events
+
+	//golem:template:app/app_partial_definitions
+
+	Client  *search.Client
+	ES      *elasticsearch.Client
+	Nzbgeek *nzbgeek.Client
 	Tmdb    *tmdb.Client
 	Tvdb    *tvdb.Client
 }
 
-func New() (*Application, error) {
+func Start() error {
+	if app != nil {
+		return errors.New("application already started")
+	}
+
 	app := &Application{}
 
-	list := []setupFunc{
-		setupConfig,
-		setupLogger,
-		setupRoutes,
-		setupTmdb,
-		setupTvdb,
-		setupElasticsearch,
-		setupClient,
-		setupNzbgeek,
-		setupEvents,
-	}
-	for _, f := range list {
+	for _, f := range initializers {
 		if err := f(app); err != nil {
-			return nil, err
+			return err
 		}
 	}
 
-	return app, nil
-}
+	app.Log.Info("starting scry...")
 
-func (a *Application) Start() error {
-	a.Routes()
+	//golem:template:app/app_partial_start
+	// DO NOT EDIT. This section is managed by github.com/dashotv/golem.
+	go app.Events.Start()
 
-	go a.Events.Start()
-
-	a.Log.Info("starting scry...")
-	if err := a.Engine.Run(fmt.Sprintf(":%d", a.Config.Port)); err != nil {
+	app.Routes()
+	app.Log.Info("starting routes...")
+	if err := app.Engine.Run(fmt.Sprintf(":%d", app.Config.Port)); err != nil {
 		return errors.Wrap(err, "starting router")
 	}
+
+	//golem:template:app/app_partial_start
 
 	return nil
 }
 
 func (a *Application) Health() (map[string]bool, error) {
-	list := map[string]healthFunc{
-		// "elasticsearch": healthElasticsearch,
-		// "nzbgeek":       healthNzbgeek,
-		// "tvdb":          healthTvdb,
-		// "tmdb":          healthTmdb,
-		"events": healthEvents,
-	}
-
 	resp := make(map[string]bool)
-	for n, f := range list {
+	for n, f := range healthchecks {
 		err := f(a)
 		resp[n] = err == nil
 	}

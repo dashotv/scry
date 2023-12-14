@@ -9,6 +9,10 @@ import (
 	"golang.org/x/term"
 )
 
+func init() {
+	initializers = append(initializers, setupLogger)
+}
+
 func setupLogger(app *Application) (err error) {
 	switch app.Config.Logger {
 	case "dev":

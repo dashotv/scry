@@ -1,0 +1,4 @@
+name: series
+channel: scry.series
+receiver: true
+existing_payload: search.Media

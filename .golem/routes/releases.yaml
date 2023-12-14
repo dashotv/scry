@@ -1,0 +1,6 @@
+name: releases
+path: /releases
+routes:
+    - name: index
+      path: /
+      method: GET

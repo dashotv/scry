@@ -8,6 +8,10 @@ import (
 	"github.com/pkg/errors"
 )
 
+func init() {
+	initializers = append(initializers, setupElasticsearch)
+}
+
 func setupElasticsearch(app *Application) error {
 	c := elasticsearch.Config{
 		Addresses: []string{

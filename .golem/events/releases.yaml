@@ -1,0 +1,4 @@
+name: releases
+channel: scry.releases
+receiver: true
+existing_payload: search.Release

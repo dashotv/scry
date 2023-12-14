@@ -1,0 +1,6 @@
+name: media
+path: /media
+routes:
+    - name: index
+      path: /
+      method: GET

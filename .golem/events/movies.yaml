@@ -1,0 +1,4 @@
+name: movies
+channel: scry.movies
+receiver: true
+existing_payload: search.Media
