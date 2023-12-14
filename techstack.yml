@@ -1,11 +1,11 @@
 repo_name: dashotv/scry
-report_id: ff26dcc0312a5c82bcb0b2989ac62b13
+report_id: b1390505c509f3c4bd4dd4498ebce21c
 repo_type: Public
-timestamp: '2023-11-10T00:16:31+00:00'
+timestamp: '2023-12-14T10:04:18+00:00'
 requested_by: shawncatz
 provider: github
 branch: main
-detected_tools_count: 7
+detected_tools_count: 36
 tools:
 - name: Golang
   description: An open source programming language that makes it easy to build simple,
@@ -83,4 +83,413 @@ tools:
   image_url: https://img.stackshare.io/service/8695/stretchr.png
   detection_source: go.mod
   last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:01:05.000000000 Z
+- name: Shell
+  description: A shell is a text-based terminal, used for manipulating programs and
+    files. Shell scripts typically manage program execution.
+  website_url: https://en.wikipedia.org/wiki/Shell_script
+  open_source: false
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png
+  detection_source: Repo Metadata
+- name: check.v1
+  description: Package check is a rich testing extension for Go's testing package
+  package_url: https://pkg.go.dev/gopkg.in/check.v1
+  version: 0.0.0
+  open_source: false
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 23:14:23.000000000 Z
+- name: cobra
+  description: A Commander for modern Go CLI interactions
+  package_url: https://pkg.go.dev/github.com/spf13/cobra
+  version: 1.7.0
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: codec
+  description: Idiomatic codec and rpc lib for msgpack, cbor, json, etc
+  package_url: https://pkg.go.dev/github.com/ugorji/go/codec
+  version: 1.2.11
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: compress
+  description: Optimized compression packages
+  package_url: https://pkg.go.dev/github.com/klauspost/compress
+  version: 1.17.1
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:47:43.000000000 Z
+- name: crypto
+  description: Go supplementary cryptography libraries
+  package_url: https://pkg.go.dev/golang.org/x/crypto
+  version: 0.0.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+  vulnerabilities:
+  - name: Improper Verification of Cryptographic Signature in golang.org/x/crypto
+    cve_id: CVE-2020-9283
+    cve_url: https://github.com/advisories/GHSA-ffhg-7mh4-33c4
+    detected_date: Aug 22
+    severity: moderate
+    first_patched: 0.0.0-20200220183623-bac4c82f6975
+- name: easyjson
+  description: Fast JSON serializer for golang
+  package_url: https://pkg.go.dev/github.com/mailru/easyjson
+  version: 0.7.7
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: elastic
+  description: Elasticsearch client for Go
+  package_url: https://pkg.go.dev/github.com/olivere/elastic
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:01:05.000000000 Z
+- name: errors
+  description: Simple error handling primitives
+  package_url: https://pkg.go.dev/github.com/pkg/errors
+  version: 0.8.1
+  license: BSD-2-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2020-04-14 23:42:15.000000000 Z
+- name: gin
+  description: Gin is a HTTP web framework written in Go
+  package_url: https://pkg.go.dev/github.com/gin-gonic/gin
+  version: 1.9.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2019-01-08 23:48:21.000000000 Z
+- name: go-difflib
+  description: Partial port of Python difflib package to Go
+  package_url: https://pkg.go.dev/github.com/pmezard/go-difflib
+  version: 1.0.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
   last_updated_on: 2023-10-29 23:27:33.000000000 Z
+- name: go-isatty
+  description: Package isatty implements interface to isatty
+  package_url: https://pkg.go.dev/github.com/mattn/go-isatty
+  version: 0.0.20
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: go-spew
+  description: Implements a deep pretty printer for Go data structures to aid in debugging
+  package_url: https://pkg.go.dev/github.com/davecgh/go-spew
+  version: 1.1.0
+  license: ISC
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-29 23:27:33.000000000 Z
+- name: go-testing-interface
+  description: Go
+  package_url: https://pkg.go.dev/github.com/mitchellh/go-testing-interface
+  version: 1.14.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:01:05.000000000 Z
+- name: godotenv
+  description: A Go port of Ruby's dotenv library
+  package_url: https://pkg.go.dev/github.com/joho/godotenv
+  version: 1.5.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-12-05 20:43:44.000000000 Z
+- name: json-iterator/go
+  description: A high-performance 100% compatible drop-in replacement of "encoding/json"
+  package_url: https://pkg.go.dev/github.com/json-iterator/go
+  version: 1.1.12
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: leaktest
+  description: Goroutine Leak Detector
+  package_url: https://pkg.go.dev/github.com/fortytw2/leaktest
+  version: 1.3.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:01:05.000000000 Z
+- name: locales
+  description: ":earth_americas: a set of locales generated from the CLDR Project
+    which can be used independently or within an i18n package; these were built for
+    use with"
+  package_url: https://pkg.go.dev/github.com/go-playground/locales
+  version: 0.14.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: logrus
+  description: Structured, pluggable logging for Go
+  package_url: https://pkg.go.dev/github.com/sirupsen/logrus
+  version: 1.9.3
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:01:05.000000000 Z
+- name: mimetype
+  description: A golang library for detecting the MIME type and file extension
+  package_url: https://pkg.go.dev/github.com/gabriel-vasile/mimetype
+  version: 1.4.3
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: mousetrap
+  description: Detect starting from Windows explorer
+  package_url: https://pkg.go.dev/github.com/inconshreveable/mousetrap
+  version: 1.1.0
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: net
+  description: Go supplementary network libraries
+  package_url: https://pkg.go.dev/golang.org/x/net
+  version: 0.0.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2019-01-08 23:48:21.000000000 Z
+- name: nuid
+  description: NATS Unique Identifiers
+  package_url: https://pkg.go.dev/github.com/nats-io/nuid
+  version: 1.0.1
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:47:43.000000000 Z
+- name: pflag
+  description: Drop-in replacement for Go's flag package
+  package_url: https://pkg.go.dev/github.com/spf13/pflag
+  version: 1.0.5
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: reflect2
+  description: Reflect api without runtime reflect.Value cost
+  package_url: https://pkg.go.dev/github.com/modern-go/reflect2
+  version: 1.0.2
+  license: Apache-2.0
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: sys
+  description: Go packages for low-level interaction with the operating system
+  package_url: https://pkg.go.dev/golang.org/x/sys
+  version: 0.0.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2019-01-08 23:48:21.000000000 Z
+- name: text
+  description: Go text processing support
+  package_url: https://pkg.go.dev/golang.org/x/text
+  version: 0.3.0
+  license: BSD-3-Clause
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-10-20 06:04:14.000000000 Z
+- name: universal-translator
+  description: ":speech_balloon: i18n Translator for Go/Golang using CLDR data + pluralization
+    rules"
+  package_url: https://pkg.go.dev/github.com/go-playground/universal-translator
+  version: 0.18.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2023-11-30 22:01:05.000000000 Z
+- name: zap
+  description: Blazing fast, structured, leveled logging in Go
+  package_url: https://pkg.go.dev/go.uber.org/zap
+  version: 1.10.0
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: Go Modules Packages
+  image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.sum
+  detection_source: go.mod
+  last_updated_by: Shawn Catanzarite
+  last_updated_on: 2019-01-08 23:48:21.000000000 Z
