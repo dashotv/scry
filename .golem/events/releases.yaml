@@ -1,4 +1,4 @@
 name: releases
-channel: scry.releases
+channel: tower.index.releases
 receiver: true
 existing_payload: search.Release

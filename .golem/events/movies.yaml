@@ -1,4 +1,10 @@
 name: movies
-channel: scry.movies
+channel: tower.movies
 receiver: true
-existing_payload: search.Media
+fields:
+  - name: event
+    type: string
+  - name: id
+    type: string
+  - name: movie
+    type: "*search.Media"

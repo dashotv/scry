@@ -1,6 +1,7 @@
 /scry
 /tmp/*
 
+.md5*
 .env*
 .flaskenv*
 !.env.project

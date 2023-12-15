@@ -44,9 +44,9 @@ type Events struct {
 	App      *Application
 	Merc     *mercury.Mercury
 	Log      *zap.SugaredLogger
-	Movies   chan *search.Media
+	Movies   chan *EventMovies
 	Releases chan *search.Release
-	Series   chan *search.Media
+	Series   chan *EventSeries
 }
 
 func NewEvents(app *Application) (*Events, error) {
@@ -59,20 +59,20 @@ func NewEvents(app *Application) (*Events, error) {
 		App:      app,
 		Merc:     m,
 		Log:      app.Log.Named("events"),
-		Movies:   make(chan *search.Media),
+		Movies:   make(chan *EventMovies),
 		Releases: make(chan *search.Release),
-		Series:   make(chan *search.Media),
+		Series:   make(chan *EventSeries),
 	}
 
-	if err := e.Merc.Receiver("scry.movies", e.Movies); err != nil {
+	if err := e.Merc.Receiver("tower.movies", e.Movies); err != nil {
 		return nil, err
 	}
 
-	if err := e.Merc.Receiver("scry.releases", e.Releases); err != nil {
+	if err := e.Merc.Receiver("tower.index.releases", e.Releases); err != nil {
 		return nil, err
 	}
 
-	if err := e.Merc.Receiver("scry.series", e.Series); err != nil {
+	if err := e.Merc.Receiver("tower.series", e.Series); err != nil {
 		return nil, err
 	}
 	return e, nil
@@ -119,4 +119,16 @@ func (e *Events) doSend(topic EventsTopic, data any) error {
 		e.Log.Warnf("events.send: unknown topic: %s", topic)
 	}
 	return nil
+}
+
+type EventMovies struct { // movies
+	Event string        `bson:"event,omitempty" json:"event,omitempty"`
+	Id    string        `bson:"id,omitempty" json:"id,omitempty"`
+	Movie *search.Media `bson:"movie,omitempty" json:"movie,omitempty"`
+}
+
+type EventSeries struct { // series
+	Event  string        `bson:"event,omitempty" json:"event,omitempty"`
+	Id     string        `bson:"id,omitempty" json:"id,omitempty"`
+	Series *search.Media `bson:"series,omitempty" json:"series,omitempty"`
 }

@@ -1,4 +1,10 @@
 name: series
-channel: scry.series
+channel: tower.series
 receiver: true
-existing_payload: search.Media
+fields:
+  - name: event
+    type: string
+  - name: id
+    type: string
+  - name: series
+    type: "*search.Media"
