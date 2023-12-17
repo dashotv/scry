@@ -6,6 +6,8 @@ func onMovies(app *Application, event *EventMovies) error {
 	if msg.Display != "" {
 		msg.Name = msg.Display
 	}
+	msg.Type = "movie"
+
 	_, err := app.Client.IndexMedia(msg)
 	if err != nil {
 		return err

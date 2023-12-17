@@ -2,11 +2,13 @@ package search
 
 import (
 	"context"
+	"strings"
 
 	"github.com/olivere/elastic"
 )
 
 func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {
+	m.Type = strings.ToLower(m.Type)
 	return c.client.Index().
 		Index("media").
 		Type("medium").
