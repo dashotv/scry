@@ -3,7 +3,7 @@ package search
 import (
 	"context"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v6"
 )
 
 type Client struct {
@@ -37,7 +37,7 @@ func New(url string) (*Client, error) {
 	var err error
 	c := &Client{url: url}
 
-	e, err := elastic.NewClient(elastic.SetURL(url))
+	e, err := elastic.NewClient(elastic.SetURL(url), elastic.SetSniff(false))
 	if err != nil {
 		return nil, err
 	}

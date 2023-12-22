@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v6"
 )
 
 func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {

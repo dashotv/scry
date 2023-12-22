@@ -22,7 +22,7 @@ func setupElasticsearch(app *Application) error {
 	var err error
 	app.ES, err = elasticsearch.NewClient(c)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "creating elasticsearch client")
 	}
 
 	return nil

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/olivere/elastic"
+	"github.com/olivere/elastic/v6"
 	"github.com/sirupsen/logrus"
 )
 
