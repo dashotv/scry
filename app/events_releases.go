@@ -7,5 +7,6 @@ func onReleases(app *Application, msg *search.Release) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
