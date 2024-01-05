@@ -1,7 +1,8 @@
 repo_name: dashotv/scry
-report_id: b1390505c509f3c4bd4dd4498ebce21c
+report_id: ff26dcc0312a5c82bcb0b2989ac62b13
+version: 0.1
 repo_type: Public
-timestamp: '2023-12-14T10:04:18+00:00'
+timestamp: '2024-01-05T09:04:40+00:00'
 requested_by: shawncatz
 provider: github
 branch: main
@@ -17,6 +18,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1005/O6AczwfV_400x400.png
+  detection_source_url: https://github.com/dashotv/scry
   detection_source: Repo Metadata
 - name: Gin Gonic
   description: 'HTTP web framework written in Go '
@@ -27,6 +29,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/4221/7894478.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.mod
   detection_source: go.mod
   last_updated_by: Shawn Catanzarite
   last_updated_on: 2023-10-20 06:04:14.000000000 Z
@@ -38,6 +41,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Serialization Frameworks
   image_url: https://img.stackshare.io/service/4393/ma2jqJKH_400x400.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.mod
   detection_source: go.mod
   last_updated_by: Shawn Catanzarite
   last_updated_on: 2023-10-20 06:04:14.000000000 Z
@@ -50,6 +54,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Virtual Machine Platforms & Containers
   image_url: https://img.stackshare.io/service/586/n4u37v9t_400x400.png
+  detection_source_url: https://github.com/dashotv/scry
   detection_source: Repo Metadata
 - name: Drone.io
   description: Open source continuous integration platform built on Docker
@@ -59,6 +64,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Continuous Integration
   image_url: https://img.stackshare.io/service/668/R_wMcCqN_400x400.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/.drone.yml
   detection_source: ".drone.yml"
   last_updated_by: Shawn Catanzarite
   last_updated_on: 2022-10-23 22:30:08.000000000 Z
@@ -70,6 +76,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/dashotv/scry
   detection_source: Repo Metadata
 - name: Testify
   description: A toolkit with common assertions and mocks that plays nicely with the
@@ -81,6 +88,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Go Testing
   image_url: https://img.stackshare.io/service/8695/stretchr.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.mod
   detection_source: go.mod
   last_updated_by: Shawn Catanzarite
   last_updated_on: 2023-11-30 22:01:05.000000000 Z
@@ -93,6 +101,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png
+  detection_source_url: https://github.com/dashotv/scry
   detection_source: Repo Metadata
 - name: check.v1
   description: Package check is a rich testing extension for Go's testing package
@@ -193,6 +202,7 @@ tools:
   category: Libraries
   sub_category: Go Modules Packages
   image_url: https://img.stackshare.io/package/go-packages/image.png
+  detection_source_url: https://github.com/dashotv/scry/blob/main/go.mod
   detection_source: go.mod
   last_updated_by: Shawn Catanzarite
   last_updated_on: 2023-11-30 22:01:05.000000000 Z
