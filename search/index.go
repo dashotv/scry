@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"github.com/olivere/elastic/v6"
+
+	runic "github.com/dashotv/runic/app"
 )
 
 func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {
@@ -22,6 +24,15 @@ func (c *Client) IndexRelease(r *Release) (*elastic.IndexResponse, error) {
 		Index("torrents").
 		Type("_doc").
 		Id(r.ID).
+		BodyJson(r).
+		Do(context.Background())
+}
+
+func (c *Client) IndexRunic(r *runic.Release) (*elastic.IndexResponse, error) {
+	return c.client.Index().
+		Index("runic").
+		Type("_doc").
+		Id(r.ID.Hex()).
 		BodyJson(r).
 		Do(context.Background())
 }

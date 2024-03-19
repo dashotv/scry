@@ -103,6 +103,9 @@ func (a *Application) Routes() {
 	releases := a.Router.Group("/releases")
 	releases.GET("/", a.ReleasesIndexHandler)
 
+	runic := a.Router.Group("/runic")
+	runic.GET("/", a.RunicIndexHandler)
+
 	search := a.Router.Group("/search")
 	search.GET("/", a.SearchIndexHandler)
 
@@ -116,6 +119,7 @@ func (a *Application) indexHandler(c echo.Context) error {
 			"media":    "/media",
 			"nzbs":     "/nzbs",
 			"releases": "/releases",
+			"runic":    "/runic",
 			"search":   "/search",
 		},
 	})
@@ -156,6 +160,11 @@ func (a *Application) NzbsTvHandler(c echo.Context) error {
 // Releases (/releases)
 func (a *Application) ReleasesIndexHandler(c echo.Context) error {
 	return a.ReleasesIndex(c)
+}
+
+// Runic (/runic)
+func (a *Application) RunicIndexHandler(c echo.Context) error {
+	return a.RunicIndex(c)
 }
 
 // Search (/search)

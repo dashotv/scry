@@ -15,6 +15,7 @@ type Client struct {
 
 	Release *ReleaseService
 	Media   *MediaService
+	Runic   *RunicService
 }
 
 type Service struct {
@@ -52,6 +53,7 @@ func New(url string) (*Client, error) {
 
 	c.client = e
 	c.Release = &ReleaseService{Service: Service{client: e}}
+	c.Runic = &RunicService{Service: Service{client: e}}
 	c.Media = &MediaService{Service: Service{client: e}}
 
 	return c, nil

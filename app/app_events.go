@@ -11,8 +11,8 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/dashotv/mercury"
-	"github.com/dashotv/scry/search"
 	runic "github.com/dashotv/runic/app"
+	"github.com/dashotv/scry/search"
 )
 
 func init() {

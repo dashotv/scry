@@ -5,28 +5,27 @@ import (
 	"os"
 	"testing"
 
-	"github.com/sirupsen/logrus"
+	"github.com/joho/godotenv"
+	"github.com/stretchr/testify/require"
 )
 
-var elasticURL = os.Getenv("ELASTICSEARCH_URL")
+var elasticURL string
+
+func init() {
+	godotenv.Load("../.env")
+	elasticURL = os.Getenv("ELASTICSEARCH_URL")
+}
 
 func TestMediaSearch_Find(t *testing.T) {
-	logrus.SetLevel(logrus.DebugLevel)
 	c, err := New(elasticURL)
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	require.NoError(t, err)
 
 	s := c.Media.NewSearch()
 	s.Type = "series"
 	s.Name = "my hero academia"
 
 	r, err := s.Find()
-	if err != nil {
-		t.Error(err)
-		return
-	}
+	require.NoError(t, err)
 
 	fmt.Printf("found: %d/%d\n", r.Count, r.Total)
 	for _, f := range r.Media {

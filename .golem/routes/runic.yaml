@@ -1,0 +1,6 @@
+name: runic
+path: /runic
+routes:
+    - name: index
+      path: /
+      method: GET

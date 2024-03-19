@@ -6,8 +6,8 @@ toolchain go1.22.1
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0
-	github.com/dashotv/golem v0.10.4
 	github.com/dashotv/mercury v0.3.2
+	github.com/dashotv/runic v0.2.1
 	github.com/dashotv/tmdb v0.2.0
 	github.com/dashotv/tvdb v0.3.0
 	github.com/dotenv-org/godotenvvault v0.6.0
@@ -21,6 +21,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
 	github.com/streamingfast/logging v0.0.0-20230608130331-f22c91403091
+	github.com/stretchr/testify v1.9.0
 	go.infratographer.com/x v0.3.9
 	go.uber.org/zap v1.27.0
 	golang.org/x/term v0.18.0
@@ -36,7 +37,6 @@ require (
 	github.com/dashotv/grimoire v0.5.1 // indirect
 	github.com/dashotv/minion v0.3.3 // indirect
 	github.com/dashotv/rift v0.1.2 // indirect
-	github.com/dashotv/runic v0.2.1 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/ericlagergren/decimal v0.0.0-20240305081647-93d586550569 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -54,7 +54,6 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
@@ -91,7 +90,6 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.18.2 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
