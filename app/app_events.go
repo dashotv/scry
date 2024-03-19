@@ -2,6 +2,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -11,11 +12,13 @@ import (
 
 	"github.com/dashotv/mercury"
 	"github.com/dashotv/scry/search"
+	runic "github.com/dashotv/runic/app"
 )
 
 func init() {
 	initializers = append(initializers, setupEvents)
 	healthchecks["events"] = checkEvents
+	starters = append(starters, startEvents)
 }
 
 type EventsChannel string
@@ -28,6 +31,11 @@ func setupEvents(app *Application) error {
 	}
 
 	app.Events = events
+	return nil
+}
+
+func startEvents(ctx context.Context, app *Application) error {
+	go app.Events.Start()
 	return nil
 }
 
@@ -46,6 +54,7 @@ type Events struct {
 	Log      *zap.SugaredLogger
 	Movies   chan *EventMovies
 	Releases chan *search.Release
+	Runic    chan *runic.Release
 	Series   chan *EventSeries
 }
 
@@ -61,6 +70,7 @@ func NewEvents(app *Application) (*Events, error) {
 		Log:      app.Log.Named("events"),
 		Movies:   make(chan *EventMovies),
 		Releases: make(chan *search.Release),
+		Runic:    make(chan *runic.Release),
 		Series:   make(chan *EventSeries),
 	}
 
@@ -69,6 +79,10 @@ func NewEvents(app *Application) (*Events, error) {
 	}
 
 	if err := e.Merc.Receiver("tower.index.releases", e.Releases); err != nil {
+		return nil, err
+	}
+
+	if err := e.Merc.Receiver("runic.releases", e.Runic); err != nil {
 		return nil, err
 	}
 
@@ -89,6 +103,9 @@ func (e *Events) Start() error {
 
 			case m := <-e.Releases:
 				onReleases(e.App, m)
+
+			case m := <-e.Runic:
+				onRunic(e.App, m)
 
 			case m := <-e.Series:
 				onSeries(e.App, m)
@@ -122,13 +139,13 @@ func (e *Events) doSend(topic EventsTopic, data any) error {
 }
 
 type EventMovies struct { // movies
-	Event string        `bson:"event,omitempty" json:"event,omitempty"`
-	Id    string        `bson:"id,omitempty" json:"id,omitempty"`
-	Movie *search.Media `bson:"movie,omitempty" json:"movie,omitempty"`
+	Event string        `bson:"event" json:"event"`
+	Id    string        `bson:"id" json:"id"`
+	Movie *search.Media `bson:"movie" json:"movie"`
 }
 
 type EventSeries struct { // series
-	Event  string        `bson:"event,omitempty" json:"event,omitempty"`
-	Id     string        `bson:"id,omitempty" json:"id,omitempty"`
-	Series *search.Media `bson:"series,omitempty" json:"series,omitempty"`
+	Event  string        `bson:"event" json:"event"`
+	Id     string        `bson:"id" json:"id"`
+	Series *search.Media `bson:"series" json:"series"`
 }

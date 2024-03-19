@@ -2,16 +2,19 @@
 package app
 
 import (
+	"context"
+	"fmt"
 	"net/http"
-	"time"
 
-	ginzap "github.com/gin-contrib/zap"
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"go.infratographer.com/x/echox/echozap"
 )
 
 func init() {
 	initializers = append(initializers, setupRoutes)
 	healthchecks["routes"] = checkRoutes
+	starters = append(starters, startRoutes)
 }
 
 func checkRoutes(app *Application) error {
@@ -19,22 +22,29 @@ func checkRoutes(app *Application) error {
 	return nil
 }
 
+func startRoutes(ctx context.Context, app *Application) error {
+	go func() {
+		app.Routes()
+		app.Log.Info("starting routes...")
+		if err := app.Engine.Start(fmt.Sprintf(":%d", app.Config.Port)); err != nil {
+			app.Log.Errorf("routes: %s", err)
+		}
+	}()
+	return nil
+}
+
 func setupRoutes(app *Application) error {
-	if app.Config.Mode == "release" {
-		gin.SetMode(gin.ReleaseMode)
-	}
-
 	logger := app.Log.Named("routes").Desugar()
+	e := echo.New()
+	e.HideBanner = true
+	e.Use(middleware.Recover())
+	e.Use(echozap.Middleware(logger))
 
-	app.Engine = gin.New()
-	app.Engine.Use(
-		ginzap.Ginzap(logger, time.RFC3339, true),
-		ginzap.RecoveryWithZap(logger, true),
-	)
+	app.Engine = e
 	// unauthenticated routes
-	app.Default = app.Engine.Group("/")
+	app.Default = app.Engine.Group("")
 	// authenticated routes (if enabled, otherwise same as default)
-	app.Router = app.Engine.Group("/")
+	app.Router = app.Engine.Group("")
 
 	// if app.Config.Auth {
 	// 	clerkSecret := app.Config.ClerkSecretKey
@@ -57,7 +67,7 @@ func setupRoutes(app *Application) error {
 // also add this import: "github.com/clerkinc/clerk-sdk-go/clerk"
 //
 // requireSession wraps the clerk.RequireSession middleware
-// func requireSession(client clerk.Client) gin.HandlerFunc {
+// func requireSession(client clerk.Client) HandlerFunc {
 // 	requireActiveSession := clerk.RequireSessionV2(client)
 // 	return func(gctx *gin.Context) {
 // 		var skip = true
@@ -67,7 +77,7 @@ func setupRoutes(app *Application) error {
 // 		requireActiveSession(handler).ServeHTTP(gctx.Writer, gctx.Request)
 // 		switch {
 // 		case skip:
-// 			gctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "session required"})
+// 			gctx.AbortWithStatusJSON(http.StatusBadRequest, H{"error": "session required"})
 // 		default:
 // 			gctx.Next()
 // 		}
@@ -98,10 +108,10 @@ func (a *Application) Routes() {
 
 }
 
-func (a *Application) indexHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
+func (a *Application) indexHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, H{
 		"name": "scry",
-		"routes": gin.H{
+		"routes": H{
 			"es":       "/es",
 			"media":    "/media",
 			"nzbs":     "/nzbs",
@@ -111,47 +121,44 @@ func (a *Application) indexHandler(c *gin.Context) {
 	})
 }
 
-func (a *Application) healthHandler(c *gin.Context) {
+func (a *Application) healthHandler(c echo.Context) error {
 	health, err := a.Health()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
+		return err
 	}
-	c.JSON(http.StatusOK, gin.H{"name": "scry", "health": health})
+	return c.JSON(http.StatusOK, H{"name": "scry", "health": health})
 }
 
 // Es (/es)
-func (a *Application) EsIndexHandler(c *gin.Context) {
-	a.EsIndex(c)
+func (a *Application) EsIndexHandler(c echo.Context) error {
+	return a.EsIndex(c)
 }
-func (a *Application) EsMediaHandler(c *gin.Context) {
-	a.EsMedia(c)
+func (a *Application) EsMediaHandler(c echo.Context) error {
+	return a.EsMedia(c)
 }
-func (a *Application) EsReleaseHandler(c *gin.Context) {
-	a.EsRelease(c)
+func (a *Application) EsReleaseHandler(c echo.Context) error {
+	return a.EsRelease(c)
 }
 
 // Media (/media)
-func (a *Application) MediaIndexHandler(c *gin.Context) {
-	a.MediaIndex(c)
+func (a *Application) MediaIndexHandler(c echo.Context) error {
+	return a.MediaIndex(c)
 }
 
 // Nzbs (/nzbs)
-func (a *Application) NzbsMovieHandler(c *gin.Context) {
-	a.NzbsMovie(c)
+func (a *Application) NzbsMovieHandler(c echo.Context) error {
+	return a.NzbsMovie(c)
 }
-func (a *Application) NzbsTvHandler(c *gin.Context) {
-	a.NzbsTv(c)
+func (a *Application) NzbsTvHandler(c echo.Context) error {
+	return a.NzbsTv(c)
 }
 
 // Releases (/releases)
-func (a *Application) ReleasesIndexHandler(c *gin.Context) {
-	a.ReleasesIndex(c)
+func (a *Application) ReleasesIndexHandler(c echo.Context) error {
+	return a.ReleasesIndex(c)
 }
 
 // Search (/search)
-func (a *Application) SearchIndexHandler(c *gin.Context) {
-	a.SearchIndex(c)
+func (a *Application) SearchIndexHandler(c echo.Context) error {
+	return a.SearchIndex(c)
 }

@@ -3,41 +3,39 @@ package app
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 
 	"github.com/dashotv/scry/nzbgeek"
 )
 
-func (a *Application) NzbsTv(c *gin.Context) {
+func (a *Application) NzbsTv(c echo.Context) error {
 	options := &nzbgeek.TvSearchOptions{}
-	options.RageID = c.Query("rageid")
-	options.Episode = c.Query("episode")
-	options.Season = c.Query("season")
-	options.TvdbID = c.Query("tvdbid")
+	options.RageID = c.QueryParam("rageid")
+	options.Episode = c.QueryParam("episode")
+	options.Season = c.QueryParam("season")
+	options.TvdbID = c.QueryParam("tvdbid")
 
 	a.Log.Debugf("options: %#v", options)
 
 	response, err := a.Nzbgeek.TvSearch(options)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
-		return
+		return c.JSON(http.StatusBadRequest, H{"error": err})
 	}
 
-	c.JSON(http.StatusOK, response.Channel.Item)
+	return c.JSON(http.StatusOK, response.Channel.Item)
 }
 
-func (a *Application) NzbsMovie(c *gin.Context) {
+func (a *Application) NzbsMovie(c echo.Context) error {
 	options := &nzbgeek.MovieSearchOptions{}
-	options.ImdbID = c.Query("imdbid")
+	options.ImdbID = c.QueryParam("imdbid")
 
 	a.Log.Debugf("options: %#v", options)
 
 	response, err := a.Nzbgeek.MovieSearch(options)
 	if err != nil {
 		a.Log.Errorf("nzbgeek movie search: %s", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err})
-		return
+		return c.JSON(http.StatusBadRequest, H{"error": err})
 	}
 
-	c.JSON(http.StatusOK, response.Channel.Item)
+	return c.JSON(http.StatusOK, response.Channel.Item)
 }

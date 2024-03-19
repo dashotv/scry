@@ -5,15 +5,15 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/labstack/echo/v4"
+
 	"github.com/dashotv/tmdb"
 	"github.com/dashotv/tvdb"
-	"github.com/gin-gonic/gin"
 )
 
-func (a *Application) SearchIndex(c *gin.Context) {
+func (a *Application) SearchIndex(c echo.Context) error {
 	responses := a.searchAll(c)
-
-	c.JSON(http.StatusOK, responses)
+	return c.JSON(http.StatusOK, responses)
 }
 
 type searchAllResponse struct {
@@ -22,11 +22,11 @@ type searchAllResponse struct {
 	Tvdb  *Response
 }
 
-func (a *Application) searchAll(c *gin.Context) *searchAllResponse {
+func (a *Application) searchAll(c echo.Context) *searchAllResponse {
 	wg := sync.WaitGroup{}
 	wg.Add(3)
 
-	name := c.Query("q")
+	name := c.QueryParam("q")
 	responses := &searchAllResponse{}
 
 	go func() {
@@ -89,7 +89,7 @@ type Result struct {
 	Image       string
 }
 
-func (a *Application) searchMedia(c *gin.Context) ([]*Result, error) {
+func (a *Application) searchMedia(c echo.Context) ([]*Result, error) {
 	out := []*Result{}
 
 	s, err := a.CreateSearch(c)
