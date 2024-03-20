@@ -12,7 +12,6 @@ require (
 	github.com/dashotv/tvdb v0.3.0
 	github.com/dotenv-org/godotenvvault v0.6.0
 	github.com/elastic/go-elasticsearch/v7 v7.17.10
-	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/nats-io/nats.go v1.33.1
@@ -44,6 +43,7 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
+	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
