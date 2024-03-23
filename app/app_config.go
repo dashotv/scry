@@ -40,6 +40,7 @@ type Config struct {
 	NzbgeekURL       string `env:"NZBGEEK_URL,required"`
 	TvdbKey          string `env:"TVDB_KEY,required"`
 	TmdbToken        string `env:"TMDB_TOKEN,required"`
+	Production       bool   `env:"PRODUCTION" envDefault:"false"`
 }
 
 type Connection struct {

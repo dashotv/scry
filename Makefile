@@ -30,6 +30,6 @@ deps:
 	go install github.com/codegangsta/gin@latest
 
 dotenv:
-	npx dotenv-vault local build
+	npx @dotenvx/dotenvx encrypt
 
 .PHONY: server test deps docker docker-run

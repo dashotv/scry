@@ -11,7 +11,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const RELEASE_SEARCH_INDEX = "torrents" // TODO: Fix
 const RELEASE_PAGE_SIZE = 25
 
 type ReleaseService struct {
@@ -24,7 +23,7 @@ func (s *ReleaseService) NewSearch() *ReleaseSearch {
 		Season:     -1,
 		Episode:    -1,
 		Resolution: -1,
-		Search:     &Search{Start: 0, Limit: RELEASE_PAGE_SIZE},
+		Search:     &Search{Start: 0, Limit: RELEASE_PAGE_SIZE, Index: s.index},
 	}
 }
 
@@ -90,7 +89,7 @@ func (s *ReleaseSearch) Find() (*ReleaseSearchResponse, error) {
 	r := &ReleaseSearchResponse{SearchResponse: &SearchResponse{}}
 	ctx := context.Background()
 
-	search := s.client.Search().Index(RELEASE_SEARCH_INDEX)
+	search := s.client.Search().Index(s.Index)
 	logrus.Debugf("Find(): start=%d limit=%d", s.Start, s.Limit)
 	search = search.From(s.Start)
 	search = search.Size(s.Limit)

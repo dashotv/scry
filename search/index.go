@@ -12,7 +12,7 @@ import (
 func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {
 	m.Type = strings.ToLower(m.Type)
 	return c.client.Index().
-		Index("media").
+		Index(c.MediaIndex).
 		Type("medium").
 		Id(m.ID).
 		BodyJson(m).
@@ -21,7 +21,7 @@ func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {
 
 func (c *Client) IndexRelease(r *Release) (*elastic.IndexResponse, error) {
 	return c.client.Index().
-		Index("torrents").
+		Index(c.ReleaseIndex).
 		Type("_doc").
 		Id(r.ID).
 		BodyJson(r).
@@ -30,7 +30,7 @@ func (c *Client) IndexRelease(r *Release) (*elastic.IndexResponse, error) {
 
 func (c *Client) IndexRunic(r *runic.Release) (*elastic.IndexResponse, error) {
 	return c.client.Index().
-		Index("runic").
+		Index(c.RunicIndex).
 		Type("_doc").
 		Id(r.ID.Hex()).
 		BodyJson(r).

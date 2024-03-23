@@ -10,21 +10,27 @@ type Client struct {
 	client *elastic.Client
 	url    string
 
-	Code    int
-	Version string
+	Production bool
+	Code       int
+	Version    string
 
-	Release *ReleaseService
-	Media   *MediaService
-	Runic   *RunicService
+	Release      *ReleaseService
+	ReleaseIndex string
+	Media        *MediaService
+	MediaIndex   string
+	Runic        *RunicService
+	RunicIndex   string
 }
 
 type Service struct {
 	client *elastic.Client
+	index  string
 }
 
 type Search struct {
 	Start int
 	Limit int
+	Index string
 }
 
 type SearchResponse struct {
@@ -33,16 +39,20 @@ type SearchResponse struct {
 	Count  int
 }
 
-func New(url string) (*Client, error) {
-	ctx := context.Background()
+func New(url string, production bool) (*Client, error) {
 	var err error
-	c := &Client{url: url}
+	c := &Client{url: url, Production: production}
+	a := ""
+	if !production {
+		a = "_development"
+	}
 
 	e, err := elastic.NewClient(elastic.SetURL(url), elastic.SetSniff(false))
 	if err != nil {
 		return nil, err
 	}
 
+	ctx := context.Background()
 	info, code, err := e.Ping(url).Do(ctx)
 	if err != nil {
 		return nil, err
@@ -52,9 +62,12 @@ func New(url string) (*Client, error) {
 	c.Version = info.Version.Number
 
 	c.client = e
-	c.Release = &ReleaseService{Service: Service{client: e}}
-	c.Runic = &RunicService{Service: Service{client: e}}
-	c.Media = &MediaService{Service: Service{client: e}}
+	c.Release = &ReleaseService{Service: Service{client: e, index: "torrents" + a}}
+	c.ReleaseIndex = "torrents" + a
+	c.Runic = &RunicService{Service: Service{client: e, index: "runic" + a}}
+	c.RunicIndex = "runic" + a
+	c.Media = &MediaService{Service: Service{client: e, index: "media" + a}}
+	c.MediaIndex = "media" + a
 
 	return c, nil
 }

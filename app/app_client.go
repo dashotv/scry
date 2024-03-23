@@ -11,7 +11,7 @@ func init() {
 }
 
 func setupClient(app *Application) error {
-	client, err := search.New(app.Config.ElasticsearchURL)
+	client, err := search.New(app.Config.ElasticsearchURL, app.Config.Production)
 	if err != nil {
 		return errors.Wrap(err, "failed to create search client")
 	}

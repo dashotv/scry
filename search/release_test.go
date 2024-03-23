@@ -6,7 +6,7 @@ import (
 )
 
 func TestReleaseSearch_Find(t *testing.T) {
-	c, err := New(elasticURL)
+	c, err := New(elasticURL, false)
 	if err != nil {
 		t.Error(err)
 		return

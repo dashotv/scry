@@ -17,7 +17,7 @@ func init() {
 }
 
 func TestMediaSearch_Find(t *testing.T) {
-	c, err := New(elasticURL)
+	c, err := New(elasticURL, false)
 	require.NoError(t, err)
 
 	s := c.Media.NewSearch()

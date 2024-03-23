@@ -12,7 +12,6 @@ import (
 	runic "github.com/dashotv/runic/app"
 )
 
-const RUNIC_SEARCH_INDEX = "runic" // TODO: Fix
 const RUNIC_PAGE_SIZE = 25
 
 type RunicService struct {
@@ -25,7 +24,7 @@ func (s *RunicService) NewSearch() *RunicSearch {
 		Season:     -1,
 		Episode:    -1,
 		Resolution: -1,
-		Search:     &Search{Start: 0, Limit: RUNIC_PAGE_SIZE},
+		Search:     &Search{Start: 0, Limit: RUNIC_PAGE_SIZE, Index: s.index},
 	}
 }
 
@@ -72,7 +71,7 @@ func (s *RunicSearch) Find() (*RunicSearchResponse, error) {
 	r := &RunicSearchResponse{SearchResponse: &SearchResponse{}}
 	ctx := context.Background()
 
-	search := s.client.Search().Index(RUNIC_SEARCH_INDEX)
+	search := s.client.Search().Index(s.Index)
 	logrus.Debugf("Find(): start=%d limit=%d", s.Start, s.Limit)
 	search = search.From(s.Start)
 	search = search.Size(s.Limit)

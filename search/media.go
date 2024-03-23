@@ -11,7 +11,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const MEDIA_SEARCH_INDEX = "media" // TODO: Fix
 const MEDIA_PAGE_SIZE = 25
 
 type MediaService struct {
@@ -21,7 +20,7 @@ type MediaService struct {
 func (s *MediaService) NewSearch() *MediaSearch {
 	return &MediaSearch{
 		client: s.client,
-		Search: &Search{Start: 0, Limit: MEDIA_PAGE_SIZE},
+		Search: &Search{Start: 0, Limit: MEDIA_PAGE_SIZE, Index: s.index},
 	}
 }
 
@@ -68,7 +67,7 @@ func (s *MediaSearch) Find() (*MediaSearchResponse, error) {
 	r := &MediaSearchResponse{SearchResponse: &SearchResponse{}}
 	ctx := context.Background()
 
-	search := s.client.Search().Index(MEDIA_SEARCH_INDEX)
+	search := s.client.Search().Index(s.Index)
 	logrus.Debugf("Find(): start=%d limit=%d", s.Start, s.Limit)
 	search = search.From(s.Start)
 	search = search.Size(s.Limit)
