@@ -31,7 +31,7 @@ func (a *Application) RunicIndex(c echo.Context) error {
 func (a *Application) CreateRunicSearch(c echo.Context) (*search.RunicSearch, error) {
 	s := a.Client.Runic.NewSearch()
 
-	s.Start, _ = QueryDefaultInteger(c, "start", 0)
+	s.Start, _ = QueryDefaultInteger(c, "skip", 0)
 	s.Limit, _ = QueryDefaultInteger(c, "limit", 25)
 
 	s.Source = c.QueryParam("source")
