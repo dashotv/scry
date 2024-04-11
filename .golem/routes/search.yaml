@@ -1,6 +1,7 @@
 name: search
 path: /search
 routes:
-    - name: index
-      path: /
-      method: GET
+  - name: index
+    path: /
+    result: "*searchAllResponse"
+    method: GET

@@ -1,12 +1,14 @@
 name: es
 path: /es
 routes:
-    - name: index
-      path: /
-      method: GET
-    - name: media
-      path: /media
-      method: GET
-    - name: release
-      path: /release
-      method: GET
+  - name: index
+    path: /
+    method: GET
+  - name: media
+    path: /media
+    result: "*elastic.IndexResponse"
+    method: GET
+  - name: release
+    path: /release
+    result: "*elastic.IndexResponse"
+    method: GET

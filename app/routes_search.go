@@ -17,9 +17,9 @@ func (a *Application) SearchIndex(c echo.Context) error {
 }
 
 type searchAllResponse struct {
-	Media *Response
-	Tmdb  *Response
-	Tvdb  *Response
+	Media *SearchResponse
+	Tmdb  *SearchResponse
+	Tvdb  *SearchResponse
 }
 
 func (a *Application) searchAll(c echo.Context) *searchAllResponse {
@@ -36,7 +36,7 @@ func (a *Application) searchAll(c echo.Context) *searchAllResponse {
 		if err != nil {
 			e = err.Error()
 		}
-		responses.Media = &Response{Results: r, Error: e}
+		responses.Media = &SearchResponse{Results: r, Error: e}
 	}()
 
 	go func() {
@@ -46,7 +46,7 @@ func (a *Application) searchAll(c echo.Context) *searchAllResponse {
 		if err != nil {
 			e = err.Error()
 		}
-		responses.Tmdb = &Response{Results: r, Error: e}
+		responses.Tmdb = &SearchResponse{Results: r, Error: e}
 	}()
 
 	go func() {
@@ -56,7 +56,7 @@ func (a *Application) searchAll(c echo.Context) *searchAllResponse {
 		if err != nil {
 			e = err.Error()
 		}
-		responses.Tvdb = &Response{Results: r, Error: e}
+		responses.Tvdb = &SearchResponse{Results: r, Error: e}
 	}()
 
 	wg.Wait()
@@ -73,7 +73,7 @@ func (a *Application) searchAll(c echo.Context) *searchAllResponse {
 	return responses
 }
 
-type Response struct {
+type SearchResponse struct {
 	Results []*Result
 	Error   string
 }

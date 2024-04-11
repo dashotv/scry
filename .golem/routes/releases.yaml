@@ -1,6 +1,7 @@
 name: releases
 path: /releases
 routes:
-    - name: index
-      path: /
-      method: GET
+  - name: index
+    path: /
+    result: "*search.ReleaseSearchResponse"
+    method: GET

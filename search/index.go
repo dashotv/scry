@@ -6,7 +6,7 @@ import (
 
 	"github.com/olivere/elastic/v6"
 
-	runic "github.com/dashotv/runic/app"
+	runic "github.com/dashotv/runic/client"
 )
 
 func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {

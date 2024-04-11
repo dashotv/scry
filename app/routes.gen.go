@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/dashotv/fae"
+	"github.com/dashotv/golem/plugins/router"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	"go.infratographer.com/x/echox/echozap"
 )
 
 func init() {
@@ -35,54 +35,50 @@ func startRoutes(ctx context.Context, app *Application) error {
 
 func setupRoutes(app *Application) error {
 	logger := app.Log.Named("routes").Desugar()
-	e := echo.New()
-	e.HideBanner = true
-	e.Use(middleware.Recover())
-	e.Use(echozap.Middleware(logger))
-
+	e, err := router.New(logger)
+	if err != nil {
+		return fae.Wrap(err, "router plugin")
+	}
 	app.Engine = e
 	// unauthenticated routes
 	app.Default = app.Engine.Group("")
 	// authenticated routes (if enabled, otherwise same as default)
 	app.Router = app.Engine.Group("")
 
-	// if app.Config.Auth {
-	// 	clerkSecret := app.Config.ClerkSecretKey
-	// 	if clerkSecret == "" {
-	// 		app.Log.Fatal("CLERK_SECRET_KEY is not set")
-	// 	}
-	//
-	// 	clerkClient, err := clerk.NewClient(clerkSecret)
-	// 	if err != nil {
-	// 		app.Log.Fatalf("clerk: %s", err)
-	// 	}
-	//
-	// 	app.Router.Use(requireSession(clerkClient))
-	// }
+	// TODO: fix auth
+	if app.Config.Auth {
+		clerkSecret := app.Config.ClerkSecretKey
+		if clerkSecret == "" {
+			app.Log.Fatal("CLERK_SECRET_KEY is not set")
+		}
+		clerkToken := app.Config.ClerkToken
+		if clerkToken == "" {
+			app.Log.Fatal("CLERK_TOKEN is not set")
+		}
+
+		app.Router.Use(router.ClerkAuth(clerkSecret, clerkToken))
+	}
 
 	return nil
 }
 
-// Enable Auth and uncomment to use Clerk to manage auth
-// also add this import: "github.com/clerkinc/clerk-sdk-go/clerk"
-//
-// requireSession wraps the clerk.RequireSession middleware
-// func requireSession(client clerk.Client) HandlerFunc {
-// 	requireActiveSession := clerk.RequireSessionV2(client)
-// 	return func(gctx *gin.Context) {
-// 		var skip = true
-// 		var handler http.HandlerFunc = func(http.ResponseWriter, *http.Request) {
-// 			skip = false
-// 		}
-// 		requireActiveSession(handler).ServeHTTP(gctx.Writer, gctx.Request)
-// 		switch {
-// 		case skip:
-// 			gctx.AbortWithStatusJSON(http.StatusBadRequest, H{"error": "session required"})
-// 		default:
-// 			gctx.Next()
-// 		}
-// 	}
-// }
+type Setting struct {
+	Name  string `json:"name"`
+	Value bool   `json:"value"`
+}
+
+type SettingsBatch struct {
+	IDs   []string `json:"ids"`
+	Name  string   `json:"name"`
+	Value bool     `json:"value"`
+}
+
+type Response struct {
+	Error   bool        `json:"error"`
+	Message string      `json:"message,omitempty"`
+	Result  interface{} `json:"result,omitempty"`
+	Total   int64       `json:"total,omitempty"`
+}
 
 func (a *Application) Routes() {
 	a.Default.GET("/", a.indexHandler)

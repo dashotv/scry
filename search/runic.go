@@ -9,7 +9,7 @@ import (
 	"github.com/olivere/elastic/v6"
 	"github.com/sirupsen/logrus"
 
-	runic "github.com/dashotv/runic/app"
+	runic "github.com/dashotv/runic/client"
 )
 
 const RUNIC_PAGE_SIZE = 25

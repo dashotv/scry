@@ -1,6 +1,6 @@
 package app
 
-import runic "github.com/dashotv/runic/app"
+import runic "github.com/dashotv/runic/client"
 
 func onRunic(app *Application, msg *runic.Release) error {
 	// app.Log.Named("runic").Debugf("index: %+v", msg)

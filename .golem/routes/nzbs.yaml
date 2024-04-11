@@ -1,9 +1,11 @@
 name: nzbs
 path: /nzbs
 routes:
-    - name: movie
-      path: /movie
-      method: GET
-    - name: tv
-      path: /tv
-      method: GET
+  - name: movie
+    path: /movie
+    result: "[]nzbgeek.SearchResult"
+    method: GET
+  - name: tv
+    path: /tv
+    result: "[]nzbgeek.SearchResult"
+    method: GET

@@ -1,6 +1,7 @@
 name: runic
 path: /runic
 routes:
-    - name: index
-      path: /
-      method: GET
+  - name: index
+    path: /
+    result: "*search.RunicSearchResponse"
+    method: GET

@@ -1,6 +1,7 @@
 name: media
 path: /media
 routes:
-    - name: index
-      path: /
-      method: GET
+  - name: index
+    path: /
+    result: "*search.MediaResponse"
+    method: GET

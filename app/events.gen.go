@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/nats-io/nats.go"
-	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
+	"github.com/dashotv/fae"
 	"github.com/dashotv/mercury"
-	runic "github.com/dashotv/runic/app"
+	runic "github.com/dashotv/runic/client"
 	"github.com/dashotv/scry/search"
 )
 
@@ -44,7 +44,7 @@ func checkEvents(app *Application) error {
 	case nats.CONNECTED:
 		return nil
 	default:
-		return errors.Errorf("nats status: %s", app.Events.Merc.Status())
+		return fae.Errorf("nats status: %s", app.Events.Merc.Status())
 	}
 }
 
@@ -125,7 +125,7 @@ func (e *Events) Send(topic EventsTopic, data any) error {
 	}
 	if err != nil {
 		e.Log.Errorf("sending: %s", err)
-		return errors.Wrap(err.(error), "events.send")
+		return fae.Wrap(err.(error), "events.send")
 	}
 	return nil
 }
@@ -140,12 +140,12 @@ func (e *Events) doSend(topic EventsTopic, data any) error {
 
 type EventMovies struct { // movies
 	Event string        `bson:"event" json:"event"`
-	Id    string        `bson:"id" json:"id"`
+	ID    string        `bson:"id" json:"id"`
 	Movie *search.Media `bson:"movie" json:"movie"`
 }
 
 type EventSeries struct { // series
 	Event  string        `bson:"event" json:"event"`
-	Id     string        `bson:"id" json:"id"`
+	ID     string        `bson:"id" json:"id"`
 	Series *search.Media `bson:"series" json:"series"`
 }
