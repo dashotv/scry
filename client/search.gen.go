@@ -22,7 +22,7 @@ func NewSearchService(client *Client) *SearchService {
 type SearchIndexRequest struct {
 	Start int    `json:"start"`
 	Limit int    `json:"limit"`
-	Types string `json:"types"`
+	Type  string `json:"type"`
 	Q     string `json:"q"`
 	Name  string `json:"name"`
 }
@@ -41,7 +41,7 @@ func (s *SearchService) Index(ctx context.Context, req *SearchIndexRequest) (*Se
 		SetResult(result).
 		SetQueryParam("start", fmt.Sprintf("%v", req.Start)).
 		SetQueryParam("limit", fmt.Sprintf("%v", req.Limit)).
-		SetQueryParam("types", fmt.Sprintf("%v", req.Types)).
+		SetQueryParam("type", fmt.Sprintf("%v", req.Type)).
 		SetQueryParam("q", fmt.Sprintf("%v", req.Q)).
 		SetQueryParam("name", fmt.Sprintf("%v", req.Name)).
 		Get("/search/")

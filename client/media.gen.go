@@ -23,7 +23,7 @@ func NewMediaService(client *Client) *MediaService {
 type MediaIndexRequest struct {
 	Start    int    `json:"start"`
 	Limit    int    `json:"limit"`
-	Types    string `json:"types"`
+	Type     string `json:"type"`
 	Name     string `json:"name"`
 	Display  string `json:"display"`
 	Title    string `json:"title"`
@@ -45,7 +45,7 @@ func (s *MediaService) Index(ctx context.Context, req *MediaIndexRequest) (*Medi
 		SetResult(result).
 		SetQueryParam("start", fmt.Sprintf("%v", req.Start)).
 		SetQueryParam("limit", fmt.Sprintf("%v", req.Limit)).
-		SetQueryParam("types", fmt.Sprintf("%v", req.Types)).
+		SetQueryParam("type", fmt.Sprintf("%v", req.Type)).
 		SetQueryParam("name", fmt.Sprintf("%v", req.Name)).
 		SetQueryParam("display", fmt.Sprintf("%v", req.Display)).
 		SetQueryParam("title", fmt.Sprintf("%v", req.Title)).

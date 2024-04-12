@@ -9,13 +9,13 @@ import (
 )
 
 // GET /runic/
-func (a *Application) RunicIndex(c echo.Context, start, limit int, types, text string, year, season, episode int, group, website string, resolution int, source string, uncensored, bluray, verified, exact bool) error {
+func (a *Application) RunicIndex(c echo.Context, start, limit int, type_, text string, year, season, episode int, group, website string, resolution int, source string, uncensored, bluray, verified, exact bool) error {
 	s := a.Client.Runic.NewSearch()
 
 	s.Start = start
 	s.Limit = limit
 	s.Source = source
-	s.Type = types
+	s.Type = type_
 	s.Title = text
 	s.Year = year
 	s.Website = website

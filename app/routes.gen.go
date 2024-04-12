@@ -144,13 +144,13 @@ func (a *Application) EsReleaseHandler(c echo.Context) error {
 func (a *Application) MediaIndexHandler(c echo.Context) error {
 	start := router.QueryParamIntDefault(c, "start", "0")
 	limit := router.QueryParamIntDefault(c, "limit", "25")
-	types := router.QueryParamString(c, "types")
+	type_ := router.QueryParamString(c, "type")
 	name := router.QueryParamString(c, "name")
 	display := router.QueryParamString(c, "display")
 	title := router.QueryParamString(c, "title")
 	source := router.QueryParamString(c, "source")
 	source_id := router.QueryParamString(c, "source_id")
-	return a.MediaIndex(c, start, limit, types, name, display, title, source, source_id)
+	return a.MediaIndex(c, start, limit, type_, name, display, title, source, source_id)
 }
 
 // Nzbs (/nzbs)
@@ -165,7 +165,7 @@ func (a *Application) NzbsTvHandler(c echo.Context) error {
 func (a *Application) ReleasesIndexHandler(c echo.Context) error {
 	start := router.QueryParamIntDefault(c, "start", "0")
 	limit := router.QueryParamIntDefault(c, "limit", "25")
-	types := router.QueryParamString(c, "types")
+	type_ := router.QueryParamString(c, "type")
 	text := router.QueryParamString(c, "text")
 	year := router.QueryParamInt(c, "year")
 	season := router.QueryParamInt(c, "season")
@@ -178,14 +178,14 @@ func (a *Application) ReleasesIndexHandler(c echo.Context) error {
 	bluray := router.QueryParamBool(c, "bluray")
 	verified := router.QueryParamBool(c, "verified")
 	exact := router.QueryParamBool(c, "exact")
-	return a.ReleasesIndex(c, start, limit, types, text, year, season, episode, group, author, resolution, source, uncensored, bluray, verified, exact)
+	return a.ReleasesIndex(c, start, limit, type_, text, year, season, episode, group, author, resolution, source, uncensored, bluray, verified, exact)
 }
 
 // Runic (/runic)
 func (a *Application) RunicIndexHandler(c echo.Context) error {
 	start := router.QueryParamIntDefault(c, "start", "0")
 	limit := router.QueryParamIntDefault(c, "limit", "25")
-	types := router.QueryParamString(c, "types")
+	type_ := router.QueryParamString(c, "type")
 	text := router.QueryParamString(c, "text")
 	year := router.QueryParamInt(c, "year")
 	season := router.QueryParamInt(c, "season")
@@ -198,15 +198,15 @@ func (a *Application) RunicIndexHandler(c echo.Context) error {
 	bluray := router.QueryParamBool(c, "bluray")
 	verified := router.QueryParamBool(c, "verified")
 	exact := router.QueryParamBool(c, "exact")
-	return a.RunicIndex(c, start, limit, types, text, year, season, episode, group, website, resolution, source, uncensored, bluray, verified, exact)
+	return a.RunicIndex(c, start, limit, type_, text, year, season, episode, group, website, resolution, source, uncensored, bluray, verified, exact)
 }
 
 // Search (/search)
 func (a *Application) SearchIndexHandler(c echo.Context) error {
 	start := router.QueryParamIntDefault(c, "start", "0")
 	limit := router.QueryParamIntDefault(c, "limit", "25")
-	types := router.QueryParamString(c, "types")
+	type_ := router.QueryParamString(c, "type")
 	q := router.QueryParamString(c, "q")
 	name := router.QueryParamString(c, "name")
-	return a.SearchIndex(c, start, limit, types, q, name)
+	return a.SearchIndex(c, start, limit, type_, q, name)
 }

@@ -23,7 +23,7 @@ func NewRunicService(client *Client) *RunicService {
 type RunicIndexRequest struct {
 	Start      int    `json:"start"`
 	Limit      int    `json:"limit"`
-	Types      string `json:"types"`
+	Type       string `json:"type"`
 	Text       string `json:"text"`
 	Year       int    `json:"year"`
 	Season     int    `json:"season"`
@@ -52,7 +52,7 @@ func (s *RunicService) Index(ctx context.Context, req *RunicIndexRequest) (*Runi
 		SetResult(result).
 		SetQueryParam("start", fmt.Sprintf("%v", req.Start)).
 		SetQueryParam("limit", fmt.Sprintf("%v", req.Limit)).
-		SetQueryParam("types", fmt.Sprintf("%v", req.Types)).
+		SetQueryParam("type", fmt.Sprintf("%v", req.Type)).
 		SetQueryParam("text", fmt.Sprintf("%v", req.Text)).
 		SetQueryParam("year", fmt.Sprintf("%v", req.Year)).
 		SetQueryParam("season", fmt.Sprintf("%v", req.Season)).

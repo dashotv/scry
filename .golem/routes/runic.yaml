@@ -14,7 +14,7 @@ routes:
         type: int
         query: true
         default: 25
-      - name: types
+      - name: type
         type: string
         query: true
       - name: text

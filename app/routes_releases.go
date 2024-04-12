@@ -8,13 +8,13 @@ import (
 	"github.com/dashotv/scry/search"
 )
 
-func (a *Application) ReleasesIndex(c echo.Context, start, limit int, types, text string, year, season, episode int, group, author string, resolution int, source string, uncensored, bluray, verified, exact bool) error {
+func (a *Application) ReleasesIndex(c echo.Context, start, limit int, type_, text string, year, season, episode int, group, author string, resolution int, source string, uncensored, bluray, verified, exact bool) error {
 	s := a.Client.Release.NewSearch()
 
 	s.Start = start
 	s.Limit = limit
 	s.Source = source
-	s.Type = types
+	s.Type = type_
 	s.Name = text
 	s.Year = year
 	s.Author = author
