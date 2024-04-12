@@ -6,6 +6,14 @@ routes:
     result: "*search.ReleaseSearchResponse"
     method: GET
     params:
+      - name: start
+        type: int
+        query: true
+        default: 0
+      - name: limit
+        type: int
+        query: true
+        default: 25
       - name: types
         type: string
         query: true
@@ -13,13 +21,13 @@ routes:
         type: string
         query: true
       - name: year
-        type: string
+        type: int
         query: true
       - name: season
-        type: string
+        type: int
         query: true
       - name: episode
-        type: string
+        type: int
         query: true
       - name: group
         type: string
@@ -28,7 +36,7 @@ routes:
         type: string
         query: true
       - name: resolution
-        type: string
+        type: int
         query: true
       - name: source
         type: string

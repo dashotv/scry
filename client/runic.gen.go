@@ -21,14 +21,16 @@ func NewRunicService(client *Client) *RunicService {
 }
 
 type RunicIndexRequest struct {
+	Start      int    `json:"start"`
+	Limit      int    `json:"limit"`
 	Types      string `json:"types"`
 	Text       string `json:"text"`
-	Year       string `json:"year"`
-	Season     string `json:"season"`
-	Episode    string `json:"episode"`
+	Year       int    `json:"year"`
+	Season     int    `json:"season"`
+	Episode    int    `json:"episode"`
 	Group      string `json:"group"`
 	Website    string `json:"website"`
-	Resolution string `json:"resolution"`
+	Resolution int    `json:"resolution"`
 	Source     string `json:"source"`
 	Uncensored bool   `json:"uncensored"`
 	Bluray     bool   `json:"bluray"`
@@ -48,6 +50,8 @@ func (s *RunicService) Index(ctx context.Context, req *RunicIndexRequest) (*Runi
 		SetContext(ctx).
 		SetBody(req).
 		SetResult(result).
+		SetQueryParam("start", fmt.Sprintf("%v", req.Start)).
+		SetQueryParam("limit", fmt.Sprintf("%v", req.Limit)).
 		SetQueryParam("types", fmt.Sprintf("%v", req.Types)).
 		SetQueryParam("text", fmt.Sprintf("%v", req.Text)).
 		SetQueryParam("year", fmt.Sprintf("%v", req.Year)).

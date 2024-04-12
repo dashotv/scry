@@ -9,16 +9,24 @@ import (
 )
 
 // GET /runic/
-func (a *Application) RunicIndex(c echo.Context) error {
-	// list, err := a.DB.RunicList()
-	// if err != nil {
-	//     return c.JSON(http.StatusInternalServerError, H{"error": true, "message": "error loading Runic"})
-	// }
-	// TODO: implement the route
-	s, err := a.CreateRunicSearch(c)
-	if err != nil {
-		return err
-	}
+func (a *Application) RunicIndex(c echo.Context, start, limit int, types, text string, year, season, episode int, group, website string, resolution int, source string, uncensored, bluray, verified, exact bool) error {
+	s := a.Client.Runic.NewSearch()
+
+	s.Start = start
+	s.Limit = limit
+	s.Source = source
+	s.Type = types
+	s.Title = text
+	s.Year = year
+	s.Website = website
+	s.Group = group
+	s.Season = season
+	s.Episode = episode
+	s.Resolution = resolution
+	s.Verified = verified
+	s.Uncensored = uncensored
+	s.Bluray = bluray
+	s.Exact = exact
 
 	res, err := s.Find()
 	if err != nil {
