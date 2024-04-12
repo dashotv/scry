@@ -16,18 +16,12 @@ func (a *Application) SearchIndex(c echo.Context) error {
 	return c.JSON(http.StatusOK, responses)
 }
 
-type searchAllResponse struct {
-	Media *SearchResponse
-	Tmdb  *SearchResponse
-	Tvdb  *SearchResponse
-}
-
-func (a *Application) searchAll(c echo.Context) *searchAllResponse {
+func (a *Application) searchAll(c echo.Context) *SearchAllResponse {
 	wg := sync.WaitGroup{}
 	wg.Add(3)
 
 	name := c.QueryParam("q")
-	responses := &searchAllResponse{}
+	responses := &SearchAllResponse{}
 
 	go func() {
 		defer wg.Done()
@@ -73,24 +67,8 @@ func (a *Application) searchAll(c echo.Context) *searchAllResponse {
 	return responses
 }
 
-type SearchResponse struct {
-	Results []*Result
-	Error   string
-}
-
-type Result struct {
-	ID          string
-	Title       string
-	Description string
-	Type        string
-	Kind        string
-	Date        string
-	Source      string
-	Image       string
-}
-
-func (a *Application) searchMedia(c echo.Context) ([]*Result, error) {
-	out := []*Result{}
+func (a *Application) searchMedia(c echo.Context) ([]*SearchResult, error) {
+	out := []*SearchResult{}
 
 	s, err := a.CreateSearch(c)
 	if err != nil {
@@ -107,7 +85,7 @@ func (a *Application) searchMedia(c echo.Context) ([]*Result, error) {
 	}
 
 	for _, v := range r.Media {
-		out = append(out, &Result{
+		out = append(out, &SearchResult{
 			ID:          v.ID,
 			Title:       v.Title,
 			Description: v.Description,
@@ -122,8 +100,8 @@ func (a *Application) searchMedia(c echo.Context) ([]*Result, error) {
 	return out, nil
 }
 
-func (a *Application) searchTvdb(q string) ([]*Result, error) {
-	out := []*Result{}
+func (a *Application) searchTvdb(q string) ([]*SearchResult, error) {
+	out := []*SearchResult{}
 	if q == "" {
 		return out, nil
 	}
@@ -140,7 +118,7 @@ func (a *Application) searchTvdb(q string) ([]*Result, error) {
 	}
 
 	for _, v := range r.Data {
-		a := &Result{
+		a := &SearchResult{
 			ID:          tvdb.StringValue(v.TvdbID),
 			Title:       tvdb.StringValue(v.Name),
 			Description: tvdb.StringValue(v.Overview),
@@ -166,8 +144,8 @@ func (a *Application) searchTvdb(q string) ([]*Result, error) {
 	return out, nil
 }
 
-func (a *Application) searchTmdb(q string) ([]*Result, error) {
-	out := []*Result{}
+func (a *Application) searchTmdb(q string) ([]*SearchResult, error) {
+	out := []*SearchResult{}
 	if q == "" {
 		return out, nil
 	}
@@ -186,7 +164,7 @@ func (a *Application) searchTmdb(q string) ([]*Result, error) {
 		if img != "" {
 			img = "https://image.tmdb.org/t/p/original" + img
 		}
-		out = append(out, &Result{
+		out = append(out, &SearchResult{
 			ID:          fmt.Sprintf("%d", tmdb.Int64Value(v.ID)),
 			Title:       tmdb.StringValue(v.Title),
 			Description: tmdb.StringValue(v.Overview),

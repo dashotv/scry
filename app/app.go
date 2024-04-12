@@ -36,6 +36,9 @@ type Application struct {
 	Default *echo.Group
 	Router  *echo.Group
 
+	// Models
+	DB *Connector
+
 	// Events
 	Events *Events
 

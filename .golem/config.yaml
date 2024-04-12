@@ -4,13 +4,15 @@ repo: github.com/dashotv/scry
 package: app
 output: app
 plugins:
-    models: false
+    models: true
     routes: true
     workers: false
     cache: false
     events: true
+    clients: true
 definitions:
     models: .golem/models
     routes: .golem/routes
     events: .golem/events
     workers: .golem/workers
+    clients: .golem/clients

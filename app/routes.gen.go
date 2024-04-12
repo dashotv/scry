@@ -108,9 +108,9 @@ func (a *Application) Routes() {
 }
 
 func (a *Application) indexHandler(c echo.Context) error {
-	return c.JSON(http.StatusOK, H{
+	return c.JSON(http.StatusOK, router.H{
 		"name": "scry",
-		"routes": H{
+		"routes": router.H{
 			"es":       "/es",
 			"media":    "/media",
 			"nzbs":     "/nzbs",
@@ -126,7 +126,7 @@ func (a *Application) healthHandler(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.JSON(http.StatusOK, H{"name": "scry", "health": health})
+	return c.JSON(http.StatusOK, router.H{"name": "scry", "health": health})
 }
 
 // Es (/es)

@@ -3,5 +3,5 @@ path: /search
 routes:
   - name: index
     path: /
-    result: "*searchAllResponse"
+    result: "*SearchAllResponse"
     method: GET

@@ -3,5 +3,5 @@ path: /media
 routes:
   - name: index
     path: /
-    result: "*search.MediaResponse"
+    result: "*search.MediaSearchResponse"
     method: GET

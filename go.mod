@@ -6,17 +6,21 @@ toolchain go1.22.2
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0
-	github.com/dashotv/fae v0.1.5
-	github.com/dashotv/golem v0.14.17
+	github.com/dashotv/fae v0.1.6
+	github.com/dashotv/golem v0.14.19
+	github.com/dashotv/grimoire v0.5.4
 	github.com/dashotv/mercury v0.3.2
 	github.com/dashotv/runic v0.4.0
 	github.com/dashotv/tmdb v0.2.0
 	github.com/dashotv/tvdb v0.3.0
 	github.com/dotenv-org/godotenvvault v0.6.0
 	github.com/elastic/go-elasticsearch/v7 v7.17.10
+	github.com/go-resty/resty/v2 v2.12.0
 	github.com/joho/godotenv v1.5.1
+	github.com/kamva/mgm/v3 v3.5.0
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/nats-io/nats.go v1.34.1
+	github.com/olivere/elastic v6.2.37+incompatible
 	github.com/olivere/elastic/v6 v6.2.1
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
@@ -33,7 +37,6 @@ require (
 	github.com/blendle/zapdriver v1.3.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/clerk/clerk-sdk-go/v2 v2.0.0 // indirect
-	github.com/dashotv/grimoire v0.5.4 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/ericlagergren/decimal v0.0.0-20240305081647-93d586550569 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -43,7 +46,6 @@ require (
 	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-resty/resty/v2 v2.12.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -51,7 +53,6 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
-	github.com/kamva/mgm/v3 v3.5.0 // indirect
 	github.com/klauspost/compress v1.17.8 // indirect
 	github.com/labstack/echo-jwt/v4 v4.2.0 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
@@ -65,8 +66,7 @@ require (
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
-	github.com/olivere/elastic v6.2.37+incompatible // indirect
-	github.com/pelletier/go-toml/v2 v2.2.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.2.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect

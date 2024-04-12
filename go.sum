@@ -12,10 +12,10 @@ github.com/cenkalti/backoff/v4 v4.3.0/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyY
 github.com/clerk/clerk-sdk-go/v2 v2.0.0 h1:JG4SFx6FlkQ83/WaPyejlgsxXiDd+7nDjuPj7eMr8o4=
 github.com/clerk/clerk-sdk-go/v2 v2.0.0/go.mod h1:SD9fe+omcaigqL/B3fbzIFREkeBqiC0CwSM7/qt7Xw4=
 github.com/cpuguy83/go-md2man/v2 v2.0.3/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/dashotv/fae v0.1.5 h1:kC/7G7uvpTQIyLlcuqo1m/ctgX0sEMthUmA1Pu20r0U=
-github.com/dashotv/fae v0.1.5/go.mod h1:+deep7H052Bz6GxW7HXiel4S+Rqkva1mPETS+3tQOVU=
-github.com/dashotv/golem v0.14.17 h1:g10Gi/1ProuaWaOl3YhQzDM/G/sbnBTLIzhU1DCo1oQ=
-github.com/dashotv/golem v0.14.17/go.mod h1:JMnR38w66hIs8IT8JR2k+Ifkq1dgVMMNbBsQVn/BVmM=
+github.com/dashotv/fae v0.1.6 h1:T/Yz7Bv+p/p0wRY2xpeoDXJ54TolfIBBvpPmEzkU++g=
+github.com/dashotv/fae v0.1.6/go.mod h1:+deep7H052Bz6GxW7HXiel4S+Rqkva1mPETS+3tQOVU=
+github.com/dashotv/golem v0.14.19 h1:3yt4eO23X9pcfCsp1Lmsf/KWU6F7Cd1ExcgSzGZ5knw=
+github.com/dashotv/golem v0.14.19/go.mod h1:JMnR38w66hIs8IT8JR2k+Ifkq1dgVMMNbBsQVn/BVmM=
 github.com/dashotv/grimoire v0.5.4 h1:rr9p4YK9Sp6qcwiLjlHAcpBwfLfTX3kzUzTrLouqcME=
 github.com/dashotv/grimoire v0.5.4/go.mod h1:oeSS1+bBA0ip8ULTaqX6tAnkxqNDg7NF7+mwwiByM3M=
 github.com/dashotv/mercury v0.3.2 h1:88bvWsp5l823wTR1XbIB+LBiAFeCRZfe+JyIKf4nV/0=
@@ -126,8 +126,8 @@ github.com/olivere/elastic v6.2.37+incompatible/go.mod h1:J+q1zQJTgAz9woqsbVRqGe
 github.com/olivere/elastic/v6 v6.2.1 h1:tZ2NZWoFCdFnuQg1q9JCyjN6YTczNF03tLj954ptqNc=
 github.com/olivere/elastic/v6 v6.2.1/go.mod h1:OeCPPyGCIn9j7/1Dk+tGE7gsezYo9lsJIiHhZjT/qQ4=
 github.com/opentracing/opentracing-go v1.0.2/go.mod h1:UkNAQd3GIcIGf0SeVgPpRdFStlNbqXla1AfSYxPUl2o=
-github.com/pelletier/go-toml/v2 v2.2.0 h1:QLgLl2yMN7N+ruc31VynXs1vhMZa7CeHHejIeBAsoHo=
-github.com/pelletier/go-toml/v2 v2.2.0/go.mod h1:1t835xjRzz80PqgE6HHgN2JOsmgYu/h4qDAS4n929Rs=
+github.com/pelletier/go-toml/v2 v2.2.1 h1:9TA9+T8+8CUCO2+WYnDLCgrYi9+omqKXyjDtosvtEhg=
+github.com/pelletier/go-toml/v2 v2.2.1/go.mod h1:1t835xjRzz80PqgE6HHgN2JOsmgYu/h4qDAS4n929Rs=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=

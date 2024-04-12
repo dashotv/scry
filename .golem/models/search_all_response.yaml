@@ -1,0 +1,9 @@
+name: search_all_response
+type: struct
+fields:
+    - name: media
+      type: '*SearchResponse'
+    - name: tmdb
+      type: '*SearchResponse'
+    - name: tvdb
+      type: '*SearchResponse'

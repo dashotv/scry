@@ -1,0 +1,7 @@
+name: search_response
+type: struct
+fields:
+    - name: results
+      type: '[]*SearchResult'
+    - name: error
+      type: string
