@@ -25,7 +25,7 @@ func (a *Application) RunicIndex(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, res)
+	return c.JSON(http.StatusOK, &Response{Error: false, Result: res})
 }
 
 func (a *Application) CreateRunicSearch(c echo.Context) (*search.RunicSearch, error) {

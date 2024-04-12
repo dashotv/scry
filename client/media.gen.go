@@ -3,6 +3,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/dashotv/fae"
 	"github.com/dashotv/scry/search"
@@ -19,17 +20,37 @@ func NewMediaService(client *Client) *MediaService {
 	}
 }
 
+type MediaIndexRequest struct {
+	Start    int    `json:"start"`
+	Limit    int    `json:"limit"`
+	Types    string `json:"types"`
+	Name     string `json:"name"`
+	Display  string `json:"display"`
+	Title    string `json:"title"`
+	Source   string `json:"source"`
+	SourceID string `json:"source_id"`
+}
+
 type MediaIndexResponse struct {
 	*Response
 	Result *search.MediaSearchResponse `json:"result"`
 	Total  int64                       `json:"total"`
 }
 
-func (s *MediaService) Index(ctx context.Context) (*MediaIndexResponse, error) {
+func (s *MediaService) Index(ctx context.Context, req *MediaIndexRequest) (*MediaIndexResponse, error) {
 	result := &MediaIndexResponse{Response: &Response{}}
 	resp, err := s.client.Resty.R().
 		SetContext(ctx).
+		SetBody(req).
 		SetResult(result).
+		SetQueryParam("start", fmt.Sprintf("%v", req.Start)).
+		SetQueryParam("limit", fmt.Sprintf("%v", req.Limit)).
+		SetQueryParam("types", fmt.Sprintf("%v", req.Types)).
+		SetQueryParam("name", fmt.Sprintf("%v", req.Name)).
+		SetQueryParam("display", fmt.Sprintf("%v", req.Display)).
+		SetQueryParam("title", fmt.Sprintf("%v", req.Title)).
+		SetQueryParam("source", fmt.Sprintf("%v", req.Source)).
+		SetQueryParam("source_id", fmt.Sprintf("%v", req.SourceID)).
 		Get("/media/")
 	if err != nil {
 		return nil, fae.Wrap(err, "failed to make request")

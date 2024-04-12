@@ -5,3 +5,30 @@ routes:
     path: /
     result: "*search.MediaSearchResponse"
     method: GET
+    params:
+      - name: start
+        type: int
+        query: true
+        default: 0
+      - name: limit
+        type: int
+        query: true
+        default: 25
+      - name: types
+        type: string
+        query: true
+      - name: name
+        type: string
+        query: true
+      - name: display
+        type: string
+        query: true
+      - name: title
+        type: string
+        query: true
+      - name: source
+        type: string
+        query: true
+      - name: source_id
+        type: string
+        query: true

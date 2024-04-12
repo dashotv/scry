@@ -19,7 +19,7 @@ func (a *Application) ReleasesIndex(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, res)
+	return c.JSON(http.StatusOK, &Response{Error: false, Result: res})
 }
 
 func (a *Application) CreateReleasesSearch(c echo.Context) (*search.ReleaseSearch, error) {

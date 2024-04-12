@@ -3,6 +3,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/dashotv/fae"
 	"github.com/dashotv/scry/search"
@@ -19,17 +20,47 @@ func NewReleasesService(client *Client) *ReleasesService {
 	}
 }
 
+type ReleasesIndexRequest struct {
+	Types      string `json:"types"`
+	Text       string `json:"text"`
+	Year       string `json:"year"`
+	Season     string `json:"season"`
+	Episode    string `json:"episode"`
+	Group      string `json:"group"`
+	Author     string `json:"author"`
+	Resolution string `json:"resolution"`
+	Source     string `json:"source"`
+	Uncensored bool   `json:"uncensored"`
+	Bluray     bool   `json:"bluray"`
+	Verified   bool   `json:"verified"`
+	Exact      bool   `json:"exact"`
+}
+
 type ReleasesIndexResponse struct {
 	*Response
 	Result *search.ReleaseSearchResponse `json:"result"`
 	Total  int64                         `json:"total"`
 }
 
-func (s *ReleasesService) Index(ctx context.Context) (*ReleasesIndexResponse, error) {
+func (s *ReleasesService) Index(ctx context.Context, req *ReleasesIndexRequest) (*ReleasesIndexResponse, error) {
 	result := &ReleasesIndexResponse{Response: &Response{}}
 	resp, err := s.client.Resty.R().
 		SetContext(ctx).
+		SetBody(req).
 		SetResult(result).
+		SetQueryParam("types", fmt.Sprintf("%v", req.Types)).
+		SetQueryParam("text", fmt.Sprintf("%v", req.Text)).
+		SetQueryParam("year", fmt.Sprintf("%v", req.Year)).
+		SetQueryParam("season", fmt.Sprintf("%v", req.Season)).
+		SetQueryParam("episode", fmt.Sprintf("%v", req.Episode)).
+		SetQueryParam("group", fmt.Sprintf("%v", req.Group)).
+		SetQueryParam("author", fmt.Sprintf("%v", req.Author)).
+		SetQueryParam("resolution", fmt.Sprintf("%v", req.Resolution)).
+		SetQueryParam("source", fmt.Sprintf("%v", req.Source)).
+		SetQueryParam("uncensored", fmt.Sprintf("%v", req.Uncensored)).
+		SetQueryParam("bluray", fmt.Sprintf("%v", req.Bluray)).
+		SetQueryParam("verified", fmt.Sprintf("%v", req.Verified)).
+		SetQueryParam("exact", fmt.Sprintf("%v", req.Exact)).
 		Get("/releases/")
 	if err != nil {
 		return nil, fae.Wrap(err, "failed to make request")

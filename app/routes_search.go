@@ -7,25 +7,32 @@ import (
 
 	"github.com/labstack/echo/v4"
 
+	"github.com/dashotv/scry/search"
 	"github.com/dashotv/tmdb"
 	"github.com/dashotv/tvdb"
 )
 
-func (a *Application) SearchIndex(c echo.Context) error {
-	responses := a.searchAll(c)
+func (a *Application) SearchIndex(c echo.Context, start, limit int, types, q, name string) error {
+	responses := a.searchAll(limit, q, name, types)
 	return c.JSON(http.StatusOK, responses)
 }
 
-func (a *Application) searchAll(c echo.Context) *SearchAllResponse {
+func (a *Application) searchAll(limit int, q, name, types string) *SearchAllResponse {
 	wg := sync.WaitGroup{}
 	wg.Add(3)
 
-	name := c.QueryParam("q")
 	responses := &SearchAllResponse{}
 
 	go func() {
 		defer wg.Done()
-		r, err := a.searchMedia(c)
+
+		s := a.Client.Media.NewSearch()
+		s.Start = 0
+		s.Limit = limit
+		s.Type = types
+		s.Name = name
+
+		r, err := a.searchMedia(s)
 		e := ""
 		if err != nil {
 			e = err.Error()
@@ -35,7 +42,7 @@ func (a *Application) searchAll(c echo.Context) *SearchAllResponse {
 
 	go func() {
 		defer wg.Done()
-		r, err := a.searchTmdb(name)
+		r, err := a.searchTmdb(q, limit)
 		e := ""
 		if err != nil {
 			e = err.Error()
@@ -45,7 +52,7 @@ func (a *Application) searchAll(c echo.Context) *SearchAllResponse {
 
 	go func() {
 		defer wg.Done()
-		r, err := a.searchTvdb(name)
+		r, err := a.searchTvdb(q, limit)
 		e := ""
 		if err != nil {
 			e = err.Error()
@@ -67,13 +74,8 @@ func (a *Application) searchAll(c echo.Context) *SearchAllResponse {
 	return responses
 }
 
-func (a *Application) searchMedia(c echo.Context) ([]*SearchResult, error) {
+func (a *Application) searchMedia(s *search.MediaSearch) ([]*SearchResult, error) {
 	out := []*SearchResult{}
-
-	s, err := a.CreateSearch(c)
-	if err != nil {
-		return nil, err
-	}
 
 	r, err := s.Find()
 	if err != nil {
@@ -100,7 +102,7 @@ func (a *Application) searchMedia(c echo.Context) ([]*SearchResult, error) {
 	return out, nil
 }
 
-func (a *Application) searchTvdb(q string) ([]*SearchResult, error) {
+func (a *Application) searchTvdb(q string, limit int) ([]*SearchResult, error) {
 	out := []*SearchResult{}
 	if q == "" {
 		return out, nil
@@ -109,7 +111,7 @@ func (a *Application) searchTvdb(q string) ([]*SearchResult, error) {
 	req := tvdb.GetSearchResultsRequest{
 		Query:    &q,
 		Type:     tvdb.String("series"),
-		Limit:    tvdb.Int64(10),
+		Limit:    tvdb.Int64(int64(limit)),
 		Language: tvdb.String("eng"),
 	}
 	r, err := a.Tvdb.GetSearchResults(req)
@@ -144,7 +146,7 @@ func (a *Application) searchTvdb(q string) ([]*SearchResult, error) {
 	return out, nil
 }
 
-func (a *Application) searchTmdb(q string) ([]*SearchResult, error) {
+func (a *Application) searchTmdb(q string, limit int) ([]*SearchResult, error) {
 	out := []*SearchResult{}
 	if q == "" {
 		return out, nil
@@ -176,8 +178,8 @@ func (a *Application) searchTmdb(q string) ([]*SearchResult, error) {
 		})
 	}
 
-	if len(out) > 10 {
-		return out[:10], nil
+	if len(out) > limit {
+		return out[:limit], nil
 	}
 	return out, nil
 }

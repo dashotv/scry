@@ -8,11 +8,16 @@ import (
 	"github.com/dashotv/scry/search"
 )
 
-func (a *Application) MediaIndex(c echo.Context) error {
-	s, err := a.CreateSearch(c)
-	if err != nil {
-		return err
-	}
+func (a *Application) MediaIndex(c echo.Context, start, limit int, types, name, display, title, source, source_id string) error {
+	s := a.Client.Media.NewSearch()
+	s.Start = start
+	s.Limit = limit
+	s.Type = types
+	s.Name = name
+	s.Display = display
+	s.Title = title
+	s.Source = source
+	s.SourceID = source_id
 
 	res, err := s.Find()
 	if err != nil {

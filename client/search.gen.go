@@ -3,6 +3,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/dashotv/fae"
 )
@@ -18,17 +19,31 @@ func NewSearchService(client *Client) *SearchService {
 	}
 }
 
+type SearchIndexRequest struct {
+	Start int    `json:"start"`
+	Limit int    `json:"limit"`
+	Types string `json:"types"`
+	Q     string `json:"q"`
+	Name  string `json:"name"`
+}
+
 type SearchIndexResponse struct {
 	*Response
 	Result *SearchAllResponse `json:"result"`
 	Total  int64              `json:"total"`
 }
 
-func (s *SearchService) Index(ctx context.Context) (*SearchIndexResponse, error) {
+func (s *SearchService) Index(ctx context.Context, req *SearchIndexRequest) (*SearchIndexResponse, error) {
 	result := &SearchIndexResponse{Response: &Response{}}
 	resp, err := s.client.Resty.R().
 		SetContext(ctx).
+		SetBody(req).
 		SetResult(result).
+		SetQueryParam("start", fmt.Sprintf("%v", req.Start)).
+		SetQueryParam("limit", fmt.Sprintf("%v", req.Limit)).
+		SetQueryParam("types", fmt.Sprintf("%v", req.Types)).
+		SetQueryParam("q", fmt.Sprintf("%v", req.Q)).
+		SetQueryParam("name", fmt.Sprintf("%v", req.Name)).
 		Get("/search/")
 	if err != nil {
 		return nil, fae.Wrap(err, "failed to make request")

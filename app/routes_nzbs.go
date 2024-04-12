@@ -19,10 +19,10 @@ func (a *Application) NzbsTv(c echo.Context) error {
 
 	response, err := a.Nzbgeek.TvSearch(options)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, H{"error": err})
+		return c.JSON(http.StatusBadRequest, &Response{Error: true, Message: err.Error()})
 	}
 
-	return c.JSON(http.StatusOK, response.Channel.Item)
+	return c.JSON(http.StatusOK, &Response{Error: false, Result: response.Channel.Item})
 }
 
 func (a *Application) NzbsMovie(c echo.Context) error {
@@ -34,8 +34,8 @@ func (a *Application) NzbsMovie(c echo.Context) error {
 	response, err := a.Nzbgeek.MovieSearch(options)
 	if err != nil {
 		a.Log.Errorf("nzbgeek movie search: %s", err)
-		return c.JSON(http.StatusBadRequest, H{"error": err})
+		return c.JSON(http.StatusBadRequest, &Response{Error: true, Message: err.Error()})
 	}
 
-	return c.JSON(http.StatusOK, response.Channel.Item)
+	return c.JSON(http.StatusOK, &Response{Error: false, Result: response.Channel.Item})
 }

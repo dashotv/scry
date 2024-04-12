@@ -5,3 +5,43 @@ routes:
     path: /
     result: "*search.ReleaseSearchResponse"
     method: GET
+    params:
+      - name: types
+        type: string
+        query: true
+      - name: text
+        type: string
+        query: true
+      - name: year
+        type: string
+        query: true
+      - name: season
+        type: string
+        query: true
+      - name: episode
+        type: string
+        query: true
+      - name: group
+        type: string
+        query: true
+      - name: author
+        type: string
+        query: true
+      - name: resolution
+        type: string
+        query: true
+      - name: source
+        type: string
+        query: true
+      - name: uncensored
+        type: bool
+        query: true
+      - name: bluray
+        type: bool
+        query: true
+      - name: verified
+        type: bool
+        query: true
+      - name: exact
+        type: bool
+        query: true
