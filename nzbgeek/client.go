@@ -30,8 +30,8 @@ type SearchOptions struct {
 
 type TvSearchOptions struct {
 	SearchOptions
-	Season  string
-	Episode string
+	Season  int
+	Episode int
 	RageID  string
 	TvdbID  string
 }
@@ -42,15 +42,15 @@ func (o *TvSearchOptions) Params() url.Values {
 	if o.TvdbID != "" {
 		params.Add("tvdbid", o.TvdbID)
 	}
-	if o.Season != "" {
-		params.Add("season", o.Season)
+	if o.Season >= 0 {
+		params.Add("season", fmt.Sprintf("%d", o.Season))
 	}
-	if o.Episode != "" {
-		params.Add("ep", o.Episode)
+	if o.Episode >= 0 {
+		params.Add("ep", fmt.Sprintf("%d", o.Episode))
 	}
-	if o.RageID != "" {
-		params.Add("rid", o.RageID)
-	}
+	// if o.RageID != "" {
+	// 	params.Add("rid", o.RageID)
+	// }
 	return params
 }
 

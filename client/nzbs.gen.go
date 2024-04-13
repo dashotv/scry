@@ -3,6 +3,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/dashotv/fae"
 	"github.com/dashotv/scry/nzbgeek"
@@ -19,16 +20,24 @@ func NewNzbsService(client *Client) *NzbsService {
 	}
 }
 
+type NzbsMovieRequest struct {
+	Imdbid string `json:"imdbid"`
+	Tmdbid string `json:"tmdbid"`
+}
+
 type NzbsMovieResponse struct {
 	*Response
 	Result []nzbgeek.SearchResult `json:"result"`
 }
 
-func (s *NzbsService) Movie(ctx context.Context) (*NzbsMovieResponse, error) {
+func (s *NzbsService) Movie(ctx context.Context, req *NzbsMovieRequest) (*NzbsMovieResponse, error) {
 	result := &NzbsMovieResponse{Response: &Response{}}
 	resp, err := s.client.Resty.R().
 		SetContext(ctx).
+		SetBody(req).
 		SetResult(result).
+		SetQueryParam("imdbid", fmt.Sprintf("%v", req.Imdbid)).
+		SetQueryParam("tmdbid", fmt.Sprintf("%v", req.Tmdbid)).
 		Get("/nzbs/movie")
 	if err != nil {
 		return nil, fae.Wrap(err, "failed to make request")
@@ -43,16 +52,26 @@ func (s *NzbsService) Movie(ctx context.Context) (*NzbsMovieResponse, error) {
 	return result, nil
 }
 
+type NzbsTvRequest struct {
+	Tvdbid  string `json:"tvdbid"`
+	Season  int    `json:"season"`
+	Episode int    `json:"episode"`
+}
+
 type NzbsTvResponse struct {
 	*Response
 	Result []nzbgeek.SearchResult `json:"result"`
 }
 
-func (s *NzbsService) Tv(ctx context.Context) (*NzbsTvResponse, error) {
+func (s *NzbsService) Tv(ctx context.Context, req *NzbsTvRequest) (*NzbsTvResponse, error) {
 	result := &NzbsTvResponse{Response: &Response{}}
 	resp, err := s.client.Resty.R().
 		SetContext(ctx).
+		SetBody(req).
 		SetResult(result).
+		SetQueryParam("tvdbid", fmt.Sprintf("%v", req.Tvdbid)).
+		SetQueryParam("season", fmt.Sprintf("%v", req.Season)).
+		SetQueryParam("episode", fmt.Sprintf("%v", req.Episode)).
 		Get("/nzbs/tv")
 	if err != nil {
 		return nil, fae.Wrap(err, "failed to make request")

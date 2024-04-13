@@ -155,10 +155,15 @@ func (a *Application) MediaIndexHandler(c echo.Context) error {
 
 // Nzbs (/nzbs)
 func (a *Application) NzbsMovieHandler(c echo.Context) error {
-	return a.NzbsMovie(c)
+	imdbid := router.QueryParamString(c, "imdbid")
+	tmdbid := router.QueryParamString(c, "tmdbid")
+	return a.NzbsMovie(c, imdbid, tmdbid)
 }
 func (a *Application) NzbsTvHandler(c echo.Context) error {
-	return a.NzbsTv(c)
+	tvdbid := router.QueryParamString(c, "tvdbid")
+	season := router.QueryParamInt(c, "season")
+	episode := router.QueryParamInt(c, "episode")
+	return a.NzbsTv(c, tvdbid, season, episode)
 }
 
 // Releases (/releases)

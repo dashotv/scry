@@ -5,7 +5,24 @@ routes:
     path: /movie
     result: "[]nzbgeek.SearchResult"
     method: GET
+    params:
+      - name: imdbid
+        type: string
+        query: true
+      - name: tmdbid
+        type: string
+        query: true
   - name: tv
     path: /tv
     result: "[]nzbgeek.SearchResult"
     method: GET
+    params:
+      - name: tvdbid
+        type: string
+        query: true
+      - name: season
+        type: int
+        query: true
+      - name: episode
+        type: int
+        query: true
