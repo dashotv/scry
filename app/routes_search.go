@@ -14,7 +14,7 @@ import (
 
 func (a *Application) SearchIndex(c echo.Context, start, limit int, types, q, name string) error {
 	responses := a.searchAll(limit, q, name, types)
-	return c.JSON(http.StatusOK, responses)
+	return c.JSON(http.StatusOK, &Response{Error: false, Result: responses})
 }
 
 func (a *Application) searchAll(limit int, q, name, types string) *SearchAllResponse {

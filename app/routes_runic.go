@@ -17,12 +17,24 @@ func (a *Application) RunicIndex(c echo.Context, start, limit int, type_, text s
 	s.Source = source
 	s.Type = type_
 	s.Title = text
-	s.Year = year
+	s.Year = -1
+	if year > 0 {
+		s.Year = year
+	}
 	s.Website = website
 	s.Group = group
-	s.Season = season
-	s.Episode = episode
-	s.Resolution = resolution
+	s.Season = -1
+	if season > 0 {
+		s.Season = season
+	}
+	s.Episode = -1
+	if episode > 0 {
+		s.Episode = episode
+	}
+	s.Resolution = -1
+	if resolution > 0 {
+		s.Resolution = resolution
+	}
 	s.Verified = verified
 	s.Uncensored = uncensored
 	s.Bluray = bluray
