@@ -39,6 +39,7 @@ type Media struct {
 	ReleaseDate string    `json:"release_date,omitempty"`
 	Background  string    `json:"background,omitempty"`
 	Cover       string    `json:"cover,omitempty"`
+	Completed   bool      `json:"completed,omitempty"`
 	Created     time.Time `json:"created_at,omitempty"`
 	Updated     time.Time `json:"updated_at,omitempty"`
 }

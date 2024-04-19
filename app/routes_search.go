@@ -96,6 +96,7 @@ func (a *Application) searchMedia(s *search.MediaSearch) ([]*SearchResult, error
 			Date:        v.ReleaseDate,
 			Source:      "media",
 			Image:       v.Cover,
+			Completed:   v.Completed,
 		})
 	}
 

@@ -73,4 +73,5 @@ type SearchResult struct { // struct
 	Date        string `bson:"date" json:"date"`
 	Source      string `bson:"source" json:"source"`
 	Image       string `bson:"image" json:"image"`
+	Completed   bool   `bson:"completed" json:"completed"`
 }
