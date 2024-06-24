@@ -21,14 +21,20 @@ func NewMediaService(client *Client) *MediaService {
 }
 
 type MediaIndexRequest struct {
-	Start    int    `json:"start"`
-	Limit    int    `json:"limit"`
-	Type     string `json:"type"`
-	Name     string `json:"name"`
-	Display  string `json:"display"`
-	Title    string `json:"title"`
-	Source   string `json:"source"`
-	SourceID string `json:"source_id"`
+	Start      int    `json:"start"`
+	Limit      int    `json:"limit"`
+	Type       string `json:"type"`
+	Name       string `json:"name"`
+	Display    string `json:"display"`
+	Title      string `json:"title"`
+	Source     string `json:"source"`
+	SourceID   string `json:"source_id"`
+	Season     int    `json:"season"`
+	Episode    int    `json:"episode"`
+	Absolute   int    `json:"absolute"`
+	Downloaded string `json:"downloaded"`
+	Completed  string `json:"completed"`
+	Skipped    string `json:"skipped"`
 }
 
 type MediaIndexResponse struct {
@@ -51,6 +57,12 @@ func (s *MediaService) Index(ctx context.Context, req *MediaIndexRequest) (*Medi
 		SetQueryParam("title", fmt.Sprintf("%v", req.Title)).
 		SetQueryParam("source", fmt.Sprintf("%v", req.Source)).
 		SetQueryParam("source_id", fmt.Sprintf("%v", req.SourceID)).
+		SetQueryParam("season", fmt.Sprintf("%v", req.Season)).
+		SetQueryParam("episode", fmt.Sprintf("%v", req.Episode)).
+		SetQueryParam("absolute", fmt.Sprintf("%v", req.Absolute)).
+		SetQueryParam("downloaded", fmt.Sprintf("%v", req.Downloaded)).
+		SetQueryParam("completed", fmt.Sprintf("%v", req.Completed)).
+		SetQueryParam("skipped", fmt.Sprintf("%v", req.Skipped)).
 		Get("/media/")
 	if err != nil {
 		return nil, fae.Wrap(err, "failed to make request")

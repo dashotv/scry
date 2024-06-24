@@ -1,0 +1,10 @@
+name: episodes
+channel: tower.episodes
+receiver: true
+fields:
+  - name: event
+    type: string
+  - name: id
+    type: string
+  - name: episode
+    type: "*search.Media"

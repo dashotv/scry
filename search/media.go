@@ -39,6 +39,11 @@ type Media struct {
 	ReleaseDate string    `json:"release_date,omitempty"`
 	Background  string    `json:"background,omitempty"`
 	Cover       string    `json:"cover,omitempty"`
+	Season      int       `json:"season_number,omitempty"`
+	Episode     int       `json:"episode_number,omitempty"`
+	Absolute    int       `json:"absolute_number,omitempty"`
+	Skipped     bool      `json:"skipped,omitempty"`
+	Downloaded  bool      `json:"downloaded,omitempty"`
 	Completed   bool      `json:"completed,omitempty"`
 	Created     time.Time `json:"created_at,omitempty"`
 	Updated     time.Time `json:"updated_at,omitempty"`
@@ -46,12 +51,18 @@ type Media struct {
 
 type MediaSearch struct {
 	//ID      string `json:"id"`
-	Type     string `json:"type"`
-	Name     string `json:"name"`
-	Display  string `json:"display"`
-	Title    string `json:"title"`
-	Source   string `json:"source"`
-	SourceID string `json:"source_id"`
+	Type       string `json:"type"`
+	Name       string `json:"name"`
+	Display    string `json:"display"`
+	Title      string `json:"title"`
+	Source     string `json:"source"`
+	SourceID   string `json:"source_id"`
+	Season     int    `json:"season"`
+	Episode    int    `json:"episode"`
+	Absolute   int    `json:"absolute"`
+	Skipped    bool   `json:"skipped"`
+	Downloaded bool   `json:"downloaded"`
+	Completed  bool   `json:"completed"`
 
 	client *elastic.Client
 	*Search
@@ -148,6 +159,25 @@ func (s *MediaSearch) Query() (*elastic.QueryStringQuery, string) {
 
 	if s.SourceID != "" {
 		list = append(list, fmt.Sprintf("%s:\"%s\"", "source_id", s.SourceID))
+	}
+
+	if s.Season > 0 {
+		list = append(list, fmt.Sprintf("%s:%d", "season_number", s.Season))
+	}
+	if s.Episode > 0 {
+		list = append(list, fmt.Sprintf("%s:%d", "episode_number", s.Episode))
+	}
+	if s.Absolute > 0 {
+		list = append(list, fmt.Sprintf("%s:%d", "absolute_number", s.Absolute))
+	}
+	if s.Skipped {
+		list = append(list, fmt.Sprintf("%s:%t", "skipped", s.Skipped))
+	}
+	if s.Downloaded {
+		list = append(list, fmt.Sprintf("%s:%t", "downloaded", s.Downloaded))
+	}
+	if s.Completed {
+		list = append(list, fmt.Sprintf("%s:%t", "completed", s.Completed))
 	}
 
 	str := strings.Join(list, " AND ")

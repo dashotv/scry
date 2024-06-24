@@ -150,7 +150,13 @@ func (a *Application) MediaIndexHandler(c echo.Context) error {
 	title := router.QueryParamString(c, "title")
 	source := router.QueryParamString(c, "source")
 	source_id := router.QueryParamString(c, "source_id")
-	return a.MediaIndex(c, start, limit, type_, name, display, title, source, source_id)
+	season := router.QueryParamInt(c, "season")
+	episode := router.QueryParamInt(c, "episode")
+	absolute := router.QueryParamInt(c, "absolute")
+	downloaded := router.QueryParamString(c, "downloaded")
+	completed := router.QueryParamString(c, "completed")
+	skipped := router.QueryParamString(c, "skipped")
+	return a.MediaIndex(c, start, limit, type_, name, display, title, source, source_id, season, episode, absolute, downloaded, completed, skipped)
 }
 
 // Nzbs (/nzbs)

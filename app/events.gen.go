@@ -52,6 +52,7 @@ type Events struct {
 	App      *Application
 	Merc     *mercury.Mercury
 	Log      *zap.SugaredLogger
+	Episodes chan *EventEpisodes
 	Movies   chan *EventMovies
 	Releases chan *search.Release
 	Runic    chan *runic.Release
@@ -68,10 +69,15 @@ func NewEvents(app *Application) (*Events, error) {
 		App:      app,
 		Merc:     m,
 		Log:      app.Log.Named("events"),
+		Episodes: make(chan *EventEpisodes),
 		Movies:   make(chan *EventMovies),
 		Releases: make(chan *search.Release),
 		Runic:    make(chan *runic.Release),
 		Series:   make(chan *EventSeries),
+	}
+
+	if err := e.Merc.Receiver("tower.episodes", e.Episodes); err != nil {
+		return nil, err
 	}
 
 	if err := e.Merc.Receiver("tower.movies", e.Movies); err != nil {
@@ -98,6 +104,9 @@ func (e *Events) Start() error {
 		// wire up receivers
 		for {
 			select {
+			case m := <-e.Episodes:
+				onEpisodes(e.App, m)
+
 			case m := <-e.Movies:
 				onMovies(e.App, m)
 
@@ -136,6 +145,12 @@ func (e *Events) doSend(topic EventsTopic, data any) error {
 		e.Log.Warnf("events.send: unknown topic: %s", topic)
 	}
 	return nil
+}
+
+type EventEpisodes struct { // episodes
+	Event   string        `bson:"event" json:"event"`
+	ID      string        `bson:"id" json:"id"`
+	Episode *search.Media `bson:"episode" json:"episode"`
 }
 
 type EventMovies struct { // movies

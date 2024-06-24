@@ -32,3 +32,21 @@ routes:
       - name: source_id
         type: string
         query: true
+      - name: season
+        type: int
+        query: true
+      - name: episode
+        type: int
+        query: true
+      - name: absolute
+        type: int
+        query: true
+      - name: downloaded
+        type: string
+        query: true
+      - name: completed
+        type: string
+        query: true
+      - name: skipped
+        type: string
+        query: true

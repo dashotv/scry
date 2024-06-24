@@ -29,7 +29,7 @@ type Config struct {
 	//golem:template:app/config_partial_struct
 	// DO NOT EDIT. This section is managed by github.com/dashotv/golem.
 	// Models (Database)
-	Connections ConnectionSet `env:"CONNECTIONS"`
+	Connections ConnectionSet `env:"CONNECTIONS,required"`
 
 	// Router Auth
 	Auth           bool   `env:"AUTH" envDefault:"false"`
@@ -37,7 +37,7 @@ type Config struct {
 	ClerkToken     string `env:"CLERK_TOKEN"`
 
 	// Events
-	NatsURL string `env:"NATS_URL"`
+	NatsURL string `env:"NATS_URL,required"`
 
 	//golem:template:app/config_partial_struct
 

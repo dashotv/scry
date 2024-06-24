@@ -8,7 +8,7 @@ import (
 	"github.com/dashotv/scry/search"
 )
 
-func (a *Application) MediaIndex(c echo.Context, start, limit int, types, name, display, title, source, source_id string) error {
+func (a *Application) MediaIndex(c echo.Context, start, limit int, types, name, display, title, source, source_id string, season, episode, absolute int, downloaded, completed, skipped string) error {
 	s := a.Client.Media.NewSearch()
 	s.Start = start
 	s.Limit = limit
@@ -18,6 +18,33 @@ func (a *Application) MediaIndex(c echo.Context, start, limit int, types, name, 
 	s.Title = title
 	s.Source = source
 	s.SourceID = source_id
+	if season > 0 {
+		s.Season = season
+	}
+	if episode > 0 {
+		s.Episode = episode
+	}
+	if absolute > 0 {
+		s.Absolute = absolute
+	}
+	switch downloaded {
+	case "true":
+		s.Downloaded = true
+	case "false":
+		s.Downloaded = false
+	}
+	switch completed {
+	case "true":
+		s.Completed = true
+	case "false":
+		s.Completed = false
+	}
+	switch skipped {
+	case "true":
+		s.Skipped = true
+	case "false":
+		s.Skipped = false
+	}
 
 	res, err := s.Find()
 	if err != nil {
