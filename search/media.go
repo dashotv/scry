@@ -27,26 +27,26 @@ func (s *MediaService) NewSearch() *MediaSearch {
 type Media struct {
 	ID          string    `json:"id"`
 	Type        string    `json:"type"`
-	Name        string    `json:"name,omitempty"`
+	Name        string    `json:"name"`
 	Kind        string    `json:"kind"`
-	Source      string    `json:"source,omitempty"`
-	SourceID    string    `json:"source_id,omitempty"`
-	SearchName  string    `json:"search_name,omitempty"`
-	Display     string    `json:"display,omitempty"`
-	Title       string    `json:"title,omitempty"`
-	Description string    `json:"description,omitempty"`
-	Link        string    `json:"link,omitempty"`
-	ReleaseDate string    `json:"release_date,omitempty"`
-	Background  string    `json:"background,omitempty"`
-	Cover       string    `json:"cover,omitempty"`
-	Season      int       `json:"season_number,omitempty"`
-	Episode     int       `json:"episode_number,omitempty"`
-	Absolute    int       `json:"absolute_number,omitempty"`
-	Skipped     bool      `json:"skipped,omitempty"`
-	Downloaded  bool      `json:"downloaded,omitempty"`
-	Completed   bool      `json:"completed,omitempty"`
-	Created     time.Time `json:"created_at,omitempty"`
-	Updated     time.Time `json:"updated_at,omitempty"`
+	Source      string    `json:"source"`
+	SourceID    string    `json:"source_id"`
+	SearchName  string    `json:"search_name"`
+	Display     string    `json:"display"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	Link        string    `json:"link"`
+	ReleaseDate string    `json:"release_date"`
+	Background  string    `json:"background"`
+	Cover       string    `json:"cover"`
+	Season      int       `json:"season_number"`
+	Episode     int       `json:"episode_number"`
+	Absolute    int       `json:"absolute_number"`
+	Skipped     bool      `json:"skipped"`
+	Downloaded  bool      `json:"downloaded"`
+	Completed   bool      `json:"completed"`
+	Created     time.Time `json:"created_at"`
+	Updated     time.Time `json:"updated_at"`
 }
 
 type MediaSearch struct {
