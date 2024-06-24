@@ -3,6 +3,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/dashotv/fae"
 	"github.com/olivere/elastic"
@@ -73,6 +74,31 @@ func (s *EsService) Release(ctx context.Context) (*EsReleaseResponse, error) {
 		SetContext(ctx).
 		SetResult(result).
 		Get("/es/release")
+	if err != nil {
+		return nil, fae.Wrap(err, "failed to make request")
+	}
+	if !resp.IsSuccess() {
+		return nil, fae.Errorf("%d: %v", resp.StatusCode(), resp.String())
+	}
+	if result.Error {
+		return nil, fae.New(result.Message)
+	}
+
+	return result, nil
+}
+
+type EsDeleteRequest struct {
+	Index string `json:"index"`
+}
+
+func (s *EsService) Delete(ctx context.Context, req *EsDeleteRequest) (*Response, error) {
+	result := &Response{}
+	resp, err := s.client.Resty.R().
+		SetContext(ctx).
+		SetBody(req).
+		SetResult(result).
+		SetPathParam("index", fmt.Sprintf("%v", req.Index)).
+		Delete("/es/{index}")
 	if err != nil {
 		return nil, fae.Wrap(err, "failed to make request")
 	}

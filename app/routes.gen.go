@@ -88,6 +88,7 @@ func (a *Application) Routes() {
 	es.GET("/", a.EsIndexHandler)
 	es.GET("/media", a.EsMediaHandler)
 	es.GET("/release", a.EsReleaseHandler)
+	es.DELETE("/:index", a.EsDeleteHandler)
 
 	media := a.Router.Group("/media")
 	media.GET("/", a.MediaIndexHandler)
@@ -138,6 +139,10 @@ func (a *Application) EsMediaHandler(c echo.Context) error {
 }
 func (a *Application) EsReleaseHandler(c echo.Context) error {
 	return a.EsRelease(c)
+}
+func (a *Application) EsDeleteHandler(c echo.Context) error {
+	index := c.Param("index")
+	return a.EsDelete(c, index)
 }
 
 // Media (/media)

@@ -12,3 +12,9 @@ routes:
     path: /release
     result: "*elastic.IndexResponse"
     method: GET
+  - name: delete
+    path: /:index
+    method: DELETE
+    params:
+      - name: index
+        type: string

@@ -9,6 +9,11 @@ import (
 	runic "github.com/dashotv/runic/client"
 )
 
+func (c *Client) DeleteIndex(index string) error {
+	_, err := c.client.DeleteIndex(index).Do(context.Background())
+	return err
+}
+
 func (c *Client) IndexMedia(m *Media) (*elastic.IndexResponse, error) {
 	m.Type = strings.ToLower(m.Type)
 	return c.client.Index().
