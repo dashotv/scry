@@ -14,8 +14,8 @@ github.com/clerk/clerk-sdk-go/v2 v2.0.4/go.mod h1:SD9fe+omcaigqL/B3fbzIFREkeBqiC
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/dashotv/fae v0.1.9 h1:tB4ECFDSGTTF5fJF9xegUyAgGiT5dZGgeeiVfvZaGwE=
 github.com/dashotv/fae v0.1.9/go.mod h1:+deep7H052Bz6GxW7HXiel4S+Rqkva1mPETS+3tQOVU=
-github.com/dashotv/golem v0.15.0 h1:oTdNQSQ0ODC31rFQrHxLGlb19pHZ3vH6vvnHKc2gA00=
-github.com/dashotv/golem v0.15.0/go.mod h1:nQICFzLDGx3W/13vZVp0O42suG04CFu6jSYVhqgBkpw=
+github.com/dashotv/golem v0.14.29 h1:3g3zOx/IEhg6ex52w9Zd6/Mzm+v2NIykzzezLKpqhzE=
+github.com/dashotv/golem v0.14.29/go.mod h1:nQICFzLDGx3W/13vZVp0O42suG04CFu6jSYVhqgBkpw=
 github.com/dashotv/grimoire v0.5.4 h1:rr9p4YK9Sp6qcwiLjlHAcpBwfLfTX3kzUzTrLouqcME=
 github.com/dashotv/grimoire v0.5.4/go.mod h1:oeSS1+bBA0ip8ULTaqX6tAnkxqNDg7NF7+mwwiByM3M=
 github.com/dashotv/mercury v0.3.2 h1:88bvWsp5l823wTR1XbIB+LBiAFeCRZfe+JyIKf4nV/0=
