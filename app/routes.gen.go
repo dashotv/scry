@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/dashotv/fae"
-	"github.com/dashotv/golem/plugins/router"
+	golemrouter "github.com/dashotv/golem/plugins/golemrouter"
 	"github.com/labstack/echo/v4"
 )
 
@@ -35,7 +35,7 @@ func startRoutes(ctx context.Context, app *Application) error {
 
 func setupRoutes(app *Application) error {
 	logger := app.Log.Named("routes").Desugar()
-	e, err := router.New(logger)
+	e, err := golemrouter.New(logger)
 	if err != nil {
 		return fae.Wrap(err, "router plugin")
 	}
@@ -56,7 +56,7 @@ func setupRoutes(app *Application) error {
 			app.Log.Fatal("CLERK_TOKEN is not set")
 		}
 
-		app.Router.Use(router.ClerkAuth(clerkSecret, clerkToken))
+		app.Router.Use(golemrouter.ClerkAuth(clerkSecret, clerkToken))
 	}
 
 	return nil
@@ -109,9 +109,9 @@ func (a *Application) Routes() {
 }
 
 func (a *Application) indexHandler(c echo.Context) error {
-	return c.JSON(http.StatusOK, router.H{
+	return c.JSON(http.StatusOK, golemrouter.H{
 		"name": "scry",
-		"routes": router.H{
+		"routes": golemrouter.H{
 			"es":       "/es",
 			"media":    "/media",
 			"nzbs":     "/nzbs",
@@ -127,7 +127,7 @@ func (a *Application) healthHandler(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.JSON(http.StatusOK, router.H{"name": "scry", "health": health})
+	return c.JSON(http.StatusOK, golemrouter.H{"name": "scry", "health": health})
 }
 
 // Es (/es)
@@ -147,82 +147,82 @@ func (a *Application) EsDeleteHandler(c echo.Context) error {
 
 // Media (/media)
 func (a *Application) MediaIndexHandler(c echo.Context) error {
-	start := router.QueryParamIntDefault(c, "start", "0")
-	limit := router.QueryParamIntDefault(c, "limit", "25")
-	type_ := router.QueryParamString(c, "type")
-	name := router.QueryParamString(c, "name")
-	display := router.QueryParamString(c, "display")
-	title := router.QueryParamString(c, "title")
-	source := router.QueryParamString(c, "source")
-	source_id := router.QueryParamString(c, "source_id")
-	season := router.QueryParamInt(c, "season")
-	episode := router.QueryParamInt(c, "episode")
-	absolute := router.QueryParamInt(c, "absolute")
-	downloaded := router.QueryParamString(c, "downloaded")
-	completed := router.QueryParamString(c, "completed")
-	skipped := router.QueryParamString(c, "skipped")
+	start := golemrouter.QueryParamIntDefault(c, "start", "0")
+	limit := golemrouter.QueryParamIntDefault(c, "limit", "25")
+	type_ := golemrouter.QueryParamString(c, "type")
+	name := golemrouter.QueryParamString(c, "name")
+	display := golemrouter.QueryParamString(c, "display")
+	title := golemrouter.QueryParamString(c, "title")
+	source := golemrouter.QueryParamString(c, "source")
+	source_id := golemrouter.QueryParamString(c, "source_id")
+	season := golemrouter.QueryParamInt(c, "season")
+	episode := golemrouter.QueryParamInt(c, "episode")
+	absolute := golemrouter.QueryParamInt(c, "absolute")
+	downloaded := golemrouter.QueryParamString(c, "downloaded")
+	completed := golemrouter.QueryParamString(c, "completed")
+	skipped := golemrouter.QueryParamString(c, "skipped")
 	return a.MediaIndex(c, start, limit, type_, name, display, title, source, source_id, season, episode, absolute, downloaded, completed, skipped)
 }
 
 // Nzbs (/nzbs)
 func (a *Application) NzbsMovieHandler(c echo.Context) error {
-	imdbid := router.QueryParamString(c, "imdbid")
-	tmdbid := router.QueryParamString(c, "tmdbid")
+	imdbid := golemrouter.QueryParamString(c, "imdbid")
+	tmdbid := golemrouter.QueryParamString(c, "tmdbid")
 	return a.NzbsMovie(c, imdbid, tmdbid)
 }
 func (a *Application) NzbsTvHandler(c echo.Context) error {
-	tvdbid := router.QueryParamString(c, "tvdbid")
-	season := router.QueryParamInt(c, "season")
-	episode := router.QueryParamInt(c, "episode")
+	tvdbid := golemrouter.QueryParamString(c, "tvdbid")
+	season := golemrouter.QueryParamInt(c, "season")
+	episode := golemrouter.QueryParamInt(c, "episode")
 	return a.NzbsTv(c, tvdbid, season, episode)
 }
 
 // Releases (/releases)
 func (a *Application) ReleasesIndexHandler(c echo.Context) error {
-	start := router.QueryParamIntDefault(c, "start", "0")
-	limit := router.QueryParamIntDefault(c, "limit", "25")
-	type_ := router.QueryParamString(c, "type")
-	text := router.QueryParamString(c, "text")
-	year := router.QueryParamInt(c, "year")
-	season := router.QueryParamInt(c, "season")
-	episode := router.QueryParamInt(c, "episode")
-	group := router.QueryParamString(c, "group")
-	author := router.QueryParamString(c, "author")
-	resolution := router.QueryParamInt(c, "resolution")
-	source := router.QueryParamString(c, "source")
-	uncensored := router.QueryParamBool(c, "uncensored")
-	bluray := router.QueryParamBool(c, "bluray")
-	verified := router.QueryParamBool(c, "verified")
-	exact := router.QueryParamBool(c, "exact")
+	start := golemrouter.QueryParamIntDefault(c, "start", "0")
+	limit := golemrouter.QueryParamIntDefault(c, "limit", "25")
+	type_ := golemrouter.QueryParamString(c, "type")
+	text := golemrouter.QueryParamString(c, "text")
+	year := golemrouter.QueryParamInt(c, "year")
+	season := golemrouter.QueryParamInt(c, "season")
+	episode := golemrouter.QueryParamInt(c, "episode")
+	group := golemrouter.QueryParamString(c, "group")
+	author := golemrouter.QueryParamString(c, "author")
+	resolution := golemrouter.QueryParamInt(c, "resolution")
+	source := golemrouter.QueryParamString(c, "source")
+	uncensored := golemrouter.QueryParamBool(c, "uncensored")
+	bluray := golemrouter.QueryParamBool(c, "bluray")
+	verified := golemrouter.QueryParamBool(c, "verified")
+	exact := golemrouter.QueryParamBool(c, "exact")
 	return a.ReleasesIndex(c, start, limit, type_, text, year, season, episode, group, author, resolution, source, uncensored, bluray, verified, exact)
 }
 
 // Runic (/runic)
 func (a *Application) RunicIndexHandler(c echo.Context) error {
-	start := router.QueryParamIntDefault(c, "start", "0")
-	limit := router.QueryParamIntDefault(c, "limit", "25")
-	type_ := router.QueryParamString(c, "type")
-	text := router.QueryParamString(c, "text")
-	year := router.QueryParamInt(c, "year")
-	season := router.QueryParamInt(c, "season")
-	episode := router.QueryParamInt(c, "episode")
-	group := router.QueryParamString(c, "group")
-	website := router.QueryParamString(c, "website")
-	resolution := router.QueryParamInt(c, "resolution")
-	source := router.QueryParamString(c, "source")
-	uncensored := router.QueryParamBool(c, "uncensored")
-	bluray := router.QueryParamBool(c, "bluray")
-	verified := router.QueryParamBool(c, "verified")
-	exact := router.QueryParamBool(c, "exact")
+	start := golemrouter.QueryParamIntDefault(c, "start", "0")
+	limit := golemrouter.QueryParamIntDefault(c, "limit", "25")
+	type_ := golemrouter.QueryParamString(c, "type")
+	text := golemrouter.QueryParamString(c, "text")
+	year := golemrouter.QueryParamInt(c, "year")
+	season := golemrouter.QueryParamInt(c, "season")
+	episode := golemrouter.QueryParamInt(c, "episode")
+	group := golemrouter.QueryParamString(c, "group")
+	website := golemrouter.QueryParamString(c, "website")
+	resolution := golemrouter.QueryParamInt(c, "resolution")
+	source := golemrouter.QueryParamString(c, "source")
+	uncensored := golemrouter.QueryParamBool(c, "uncensored")
+	bluray := golemrouter.QueryParamBool(c, "bluray")
+	verified := golemrouter.QueryParamBool(c, "verified")
+	exact := golemrouter.QueryParamBool(c, "exact")
 	return a.RunicIndex(c, start, limit, type_, text, year, season, episode, group, website, resolution, source, uncensored, bluray, verified, exact)
 }
 
 // Search (/search)
 func (a *Application) SearchIndexHandler(c echo.Context) error {
-	start := router.QueryParamIntDefault(c, "start", "0")
-	limit := router.QueryParamIntDefault(c, "limit", "25")
-	type_ := router.QueryParamString(c, "type")
-	q := router.QueryParamString(c, "q")
-	name := router.QueryParamString(c, "name")
+	start := golemrouter.QueryParamIntDefault(c, "start", "0")
+	limit := golemrouter.QueryParamIntDefault(c, "limit", "25")
+	type_ := golemrouter.QueryParamString(c, "type")
+	q := golemrouter.QueryParamString(c, "q")
+	name := golemrouter.QueryParamString(c, "name")
 	return a.SearchIndex(c, start, limit, type_, q, name)
 }
