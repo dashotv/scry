@@ -31,6 +31,11 @@ type Config struct {
 	// Models (Database)
 	Connections ConnectionSet `env:"CONNECTIONS,required"`
 
+	// APM
+	APMServiceName string `env:"ELASTIC_APM_SERVICE_NAME,required"`
+	APMServerURL   string `env:"ELASTIC_APM_SERVER_URL,required"`
+	APMSecretToken string `env:"ELASTIC_APM_SECRET_TOKEN" envDefault:"0"`
+
 	// Router Auth
 	Auth           bool   `env:"AUTH" envDefault:"false"`
 	ClerkSecretKey string `env:"CLERK_SECRET_KEY"`
