@@ -9,7 +9,7 @@ require (
 	github.com/dashotv/fae v0.1.9
 	github.com/dashotv/golem v0.14.30
 	github.com/dashotv/grimoire v0.5.4
-	github.com/dashotv/mercury v0.3.2
+	github.com/dashotv/mercury v0.4.0
 	github.com/dashotv/runic v0.4.0
 	github.com/dashotv/tmdb v0.2.0
 	github.com/dashotv/tvdb v0.3.0
@@ -19,7 +19,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/kamva/mgm/v3 v3.5.0
 	github.com/labstack/echo/v4 v4.12.0
-	github.com/nats-io/nats.go v1.34.1
+	github.com/nats-io/nats.go v1.36.0
 	github.com/olivere/elastic v6.2.37+incompatible
 	github.com/olivere/elastic/v6 v6.2.1
 	github.com/pkg/errors v0.9.1
@@ -29,7 +29,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	go.elastic.co/apm/module/apmechov4/v2 v2.6.0
 	go.uber.org/zap v1.27.0
-	golang.org/x/term v0.21.0
+	golang.org/x/term v0.22.0
 )
 
 require (
@@ -58,7 +58,7 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/joeshaw/multierror v0.0.0-20140124173710-69b34d4ec901 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
-	github.com/klauspost/compress v1.17.8 // indirect
+	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/labstack/echo-jwt/v4 v4.2.0 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/logrusorgru/aurora v2.0.3+incompatible // indirect
@@ -99,11 +99,11 @@ require (
 	go.opentelemetry.io/otel/metric v1.27.0 // indirect
 	go.opentelemetry.io/otel/trace v1.27.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.24.0 // indirect
+	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
