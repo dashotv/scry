@@ -21,7 +21,7 @@ require (
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/nats-io/nats.go v1.36.0
 	github.com/olivere/elastic v6.2.37+incompatible
-	github.com/olivere/elastic/v6 v6.2.1
+	github.com/olivere/elastic/v7 v7.0.32
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
@@ -44,7 +44,6 @@ require (
 	github.com/elastic/go-windows v1.0.0 // indirect
 	github.com/ericlagergren/decimal v0.0.0-20240411145413-00de7ca16731 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
-	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.3 // indirect

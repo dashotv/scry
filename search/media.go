@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/olivere/elastic/v6"
+	"github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
 )
 
@@ -121,7 +121,7 @@ func (s *MediaSearch) Find() (*MediaSearchResponse, error) {
 		return r, err
 	}
 
-	r.Total = sr.Hits.TotalHits
+	r.Total = sr.Hits.TotalHits.Value
 	r.Count = len(sr.Hits.Hits)
 
 	ms, err := s.processResponse(sr)
@@ -142,7 +142,7 @@ func (s *MediaSearch) processResponse(res *elastic.SearchResult) ([]*Media, erro
 
 	for _, hit := range res.Hits.Hits {
 		m := &Media{}
-		if err := json.Unmarshal(*hit.Source, m); err != nil {
+		if err := json.Unmarshal(hit.Source, m); err != nil {
 			return nil, err
 		}
 		ms = append(ms, m)

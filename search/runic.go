@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/olivere/elastic/v6"
+	"github.com/olivere/elastic/v7"
 	"github.com/sirupsen/logrus"
 
 	runic "github.com/dashotv/runic/client"
@@ -112,7 +112,7 @@ func (s *RunicSearch) Find() (*RunicSearchResponse, error) {
 		return r, err
 	}
 
-	r.Total = sr.Hits.TotalHits
+	r.Total = sr.Hits.TotalHits.Value
 	r.Count = len(sr.Hits.Hits)
 
 	rels, err := s.processResponse(sr)
@@ -133,7 +133,7 @@ func (s *RunicSearch) processResponse(res *elastic.SearchResult) ([]*runic.Relea
 
 	for _, hit := range res.Hits.Hits {
 		rel := &runic.Release{}
-		if err := json.Unmarshal(*hit.Source, rel); err != nil {
+		if err := json.Unmarshal(hit.Source, rel); err != nil {
 			return nil, err
 		}
 

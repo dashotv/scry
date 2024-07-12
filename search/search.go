@@ -3,7 +3,7 @@ package search
 import (
 	"context"
 
-	"github.com/olivere/elastic/v6"
+	"github.com/olivere/elastic/v7"
 	"go.uber.org/zap"
 )
 
