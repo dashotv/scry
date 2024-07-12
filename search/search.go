@@ -14,16 +14,15 @@ type Client struct {
 	Code       int
 	Version    string
 
-	Release      *ReleaseService
-	ReleaseIndex string
-	Media        *MediaService
-	MediaIndex   string
-	Runic        *RunicService
-	RunicIndex   string
+	Media      *MediaService
+	MediaIndex string
+	Runic      *RunicService
+	RunicIndex string
 }
 
 type Service struct {
 	client *elastic.Client
+	env    string
 	index  string
 }
 
@@ -42,9 +41,9 @@ type SearchResponse struct {
 func New(url string, production bool) (*Client, error) {
 	var err error
 	c := &Client{url: url, Production: production}
-	a := ""
-	if !production {
-		a = "_development"
+	env := "dev"
+	if production {
+		env = "prod"
 	}
 
 	e, err := elastic.NewClient(elastic.SetURL(url), elastic.SetSniff(false))
@@ -62,12 +61,8 @@ func New(url string, production bool) (*Client, error) {
 	c.Version = info.Version.Number
 
 	c.client = e
-	c.Release = &ReleaseService{Service: Service{client: e, index: "torrents" + a}}
-	c.ReleaseIndex = "torrents" + a
-	c.Runic = &RunicService{Service: Service{client: e, index: "runic" + a}}
-	c.RunicIndex = "runic" + a
-	c.Media = &MediaService{Service: Service{client: e, index: "media" + a}}
-	c.MediaIndex = "media" + a
+	c.Runic = &RunicService{Service: Service{client: e, env: env, index: "runic"}}
+	c.Media = &MediaService{Service: Service{client: e, env: env, index: "media"}}
 
 	return c, nil
 }

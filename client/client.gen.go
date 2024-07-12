@@ -16,12 +16,11 @@ type Client struct {
 	Resty *resty.Client
 
 	// Services corresponding to the different endpoints (groups/routes)
-	Es       *EsService
-	Media    *MediaService
-	Nzbs     *NzbsService
-	Releases *ReleasesService
-	Runic    *RunicService
-	Search   *SearchService
+	Es     *EsService
+	Media  *MediaService
+	Nzbs   *NzbsService
+	Runic  *RunicService
+	Search *SearchService
 }
 
 // Set the debug flag
@@ -39,7 +38,6 @@ func New(remoteHost string) *Client {
 	c.Es = NewEsService(c)
 	c.Media = NewMediaService(c)
 	c.Nzbs = NewNzbsService(c)
-	c.Releases = NewReleasesService(c)
 	c.Runic = NewRunicService(c)
 	c.Search = NewSearchService(c)
 

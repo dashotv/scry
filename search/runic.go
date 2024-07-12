@@ -18,13 +18,30 @@ type RunicService struct {
 	Service
 }
 
+func (s *RunicService) Index(r *runic.Release) (*elastic.IndexResponse, error) {
+	return s.client.Index().
+		Index(fmt.Sprintf("%s_%s_%s", s.index, s.env, timeToDateBucket(r.PublishedAt))).
+		Type("_doc").
+		Id(r.ID.Hex()).
+		BodyJson(r).
+		Do(context.Background())
+}
+func (s *RunicService) Delete(id string) error {
+	_, err := s.client.Delete().
+		Index(s.index + "_" + s.env + "_*").
+		Type("_doc").
+		Id(id).
+		Do(context.Background())
+	return err
+}
+
 func (s *RunicService) NewSearch() *RunicSearch {
 	return &RunicSearch{
 		client:     s.client,
 		Season:     -1,
 		Episode:    -1,
 		Resolution: -1,
-		Search:     &Search{Start: 0, Limit: RUNIC_PAGE_SIZE, Index: s.index},
+		Search:     &Search{Start: 0, Limit: RUNIC_PAGE_SIZE, Index: s.index + "_" + s.env + "_*"},
 	}
 }
 

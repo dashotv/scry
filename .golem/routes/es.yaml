@@ -8,10 +8,6 @@ routes:
     path: /media
     result: "*elastic.IndexResponse"
     method: GET
-  - name: release
-    path: /release
-    result: "*elastic.IndexResponse"
-    method: GET
   - name: delete
     path: /:index
     method: DELETE

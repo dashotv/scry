@@ -17,6 +17,24 @@ type MediaService struct {
 	Service
 }
 
+func (s *MediaService) Index(m *Media) (*elastic.IndexResponse, error) {
+	m.Type = strings.ToLower(m.Type)
+	return s.client.Index().
+		Index(s.index + "_" + s.env + "_*").
+		Type("medium").
+		Id(m.ID).
+		BodyJson(m).
+		Do(context.Background())
+}
+func (s *MediaService) Delete(id string) error {
+	_, err := s.client.Delete().
+		Index(s.index + "_" + s.env + "_*").
+		Type("medium").
+		Id(id).
+		Do(context.Background())
+	return err
+}
+
 func (s *MediaService) NewSearch() *MediaSearch {
 	return &MediaSearch{
 		client: s.client,

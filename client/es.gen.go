@@ -63,30 +63,6 @@ func (s *EsService) Media(ctx context.Context) (*EsMediaResponse, error) {
 	return result, nil
 }
 
-type EsReleaseResponse struct {
-	*Response
-	Result *elastic.IndexResponse `json:"result"`
-}
-
-func (s *EsService) Release(ctx context.Context) (*EsReleaseResponse, error) {
-	result := &EsReleaseResponse{Response: &Response{}}
-	resp, err := s.client.Resty.R().
-		SetContext(ctx).
-		SetResult(result).
-		Get("/es/release")
-	if err != nil {
-		return nil, fae.Wrap(err, "failed to make request")
-	}
-	if !resp.IsSuccess() {
-		return nil, fae.Errorf("%d: %v", resp.StatusCode(), resp.String())
-	}
-	if result.Error {
-		return nil, fae.New(result.Message)
-	}
-
-	return result, nil
-}
-
 type EsDeleteRequest struct {
 	Index string `json:"index"`
 }

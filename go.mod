@@ -12,7 +12,7 @@ require (
 	github.com/dashotv/mercury v0.4.0
 	github.com/dashotv/runic v0.4.0
 	github.com/dashotv/tmdb v0.2.0
-	github.com/dashotv/tvdb v0.3.0
+	github.com/dashotv/tvdb v0.5.2
 	github.com/dotenv-org/godotenvvault v0.6.0
 	github.com/elastic/go-elasticsearch/v7 v7.17.10
 	github.com/go-resty/resty/v2 v2.12.0
@@ -42,7 +42,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/elastic/go-sysinfo v1.7.1 // indirect
 	github.com/elastic/go-windows v1.0.0 // indirect
-	github.com/ericlagergren/decimal v0.0.0-20240305081647-93d586550569 // indirect
+	github.com/ericlagergren/decimal v0.0.0-20240411145413-00de7ca16731 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect

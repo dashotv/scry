@@ -54,7 +54,6 @@ type Events struct {
 	Log      *zap.SugaredLogger
 	Episodes chan *EventEpisodes
 	Movies   chan *EventMovies
-	Releases chan *search.Release
 	Runic    chan *runic.Release
 	Series   chan *EventSeries
 }
@@ -71,7 +70,6 @@ func NewEvents(app *Application) (*Events, error) {
 		Log:      app.Log.Named("events"),
 		Episodes: make(chan *EventEpisodes),
 		Movies:   make(chan *EventMovies),
-		Releases: make(chan *search.Release),
 		Runic:    make(chan *runic.Release),
 		Series:   make(chan *EventSeries),
 	}
@@ -81,10 +79,6 @@ func NewEvents(app *Application) (*Events, error) {
 	}
 
 	if err := e.Merc.Receiver("tower.movies", e.Movies); err != nil {
-		return nil, err
-	}
-
-	if err := e.Merc.Receiver("tower.index.releases", e.Releases); err != nil {
 		return nil, err
 	}
 
@@ -109,9 +103,6 @@ func (e *Events) Start() error {
 
 			case m := <-e.Movies:
 				onMovies(e.App, m)
-
-			case m := <-e.Releases:
-				onReleases(e.App, m)
 
 			case m := <-e.Runic:
 				onRunic(e.App, m)

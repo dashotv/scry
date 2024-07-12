@@ -112,7 +112,7 @@ func (a *Application) searchTvdb(q string, limit int) ([]*SearchResult, error) {
 	req := tvdb.GetSearchResultsRequest{
 		Query:    &q,
 		Type:     tvdb.String("series"),
-		Limit:    tvdb.Int64(int64(limit)),
+		Limit:    tvdb.Float64(float64(limit)),
 		Language: tvdb.String("eng"),
 	}
 	r, err := a.Tvdb.GetSearchResults(req)

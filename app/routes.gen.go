@@ -87,7 +87,6 @@ func (a *Application) Routes() {
 	es := a.Router.Group("/es")
 	es.GET("/", a.EsIndexHandler)
 	es.GET("/media", a.EsMediaHandler)
-	es.GET("/release", a.EsReleaseHandler)
 	es.DELETE("/:index", a.EsDeleteHandler)
 
 	media := a.Router.Group("/media")
@@ -96,9 +95,6 @@ func (a *Application) Routes() {
 	nzbs := a.Router.Group("/nzbs")
 	nzbs.GET("/movie", a.NzbsMovieHandler)
 	nzbs.GET("/tv", a.NzbsTvHandler)
-
-	releases := a.Router.Group("/releases")
-	releases.GET("/", a.ReleasesIndexHandler)
 
 	runic := a.Router.Group("/runic")
 	runic.GET("/", a.RunicIndexHandler)
@@ -112,12 +108,11 @@ func (a *Application) indexHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, router.H{
 		"name": "scry",
 		"routes": router.H{
-			"es":       "/es",
-			"media":    "/media",
-			"nzbs":     "/nzbs",
-			"releases": "/releases",
-			"runic":    "/runic",
-			"search":   "/search",
+			"es":     "/es",
+			"media":  "/media",
+			"nzbs":   "/nzbs",
+			"runic":  "/runic",
+			"search": "/search",
 		},
 	})
 }
@@ -136,9 +131,6 @@ func (a *Application) EsIndexHandler(c echo.Context) error {
 }
 func (a *Application) EsMediaHandler(c echo.Context) error {
 	return a.EsMedia(c)
-}
-func (a *Application) EsReleaseHandler(c echo.Context) error {
-	return a.EsRelease(c)
 }
 func (a *Application) EsDeleteHandler(c echo.Context) error {
 	index := c.Param("index")
@@ -175,26 +167,6 @@ func (a *Application) NzbsTvHandler(c echo.Context) error {
 	season := router.QueryParamInt(c, "season")
 	episode := router.QueryParamInt(c, "episode")
 	return a.NzbsTv(c, tvdbid, season, episode)
-}
-
-// Releases (/releases)
-func (a *Application) ReleasesIndexHandler(c echo.Context) error {
-	start := router.QueryParamIntDefault(c, "start", "0")
-	limit := router.QueryParamIntDefault(c, "limit", "25")
-	type_ := router.QueryParamString(c, "type")
-	text := router.QueryParamString(c, "text")
-	year := router.QueryParamInt(c, "year")
-	season := router.QueryParamInt(c, "season")
-	episode := router.QueryParamInt(c, "episode")
-	group := router.QueryParamString(c, "group")
-	author := router.QueryParamString(c, "author")
-	resolution := router.QueryParamInt(c, "resolution")
-	source := router.QueryParamString(c, "source")
-	uncensored := router.QueryParamBool(c, "uncensored")
-	bluray := router.QueryParamBool(c, "bluray")
-	verified := router.QueryParamBool(c, "verified")
-	exact := router.QueryParamBool(c, "exact")
-	return a.ReleasesIndex(c, start, limit, type_, text, year, season, episode, group, author, resolution, source, uncensored, bluray, verified, exact)
 }
 
 // Runic (/runic)
