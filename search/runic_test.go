@@ -5,10 +5,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 func TestRunicSearch_Find(t *testing.T) {
-	c, err := New(elasticURL, false)
+	l, err := zap.NewDevelopment()
+	require.NoError(t, err)
+
+	c, err := New(elasticURL, l.Sugar(), false)
 	require.NoError(t, err)
 
 	s := c.Runic.NewSearch()

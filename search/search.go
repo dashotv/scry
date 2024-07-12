@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/olivere/elastic/v6"
+	"go.uber.org/zap"
 )
 
 type Client struct {
@@ -24,6 +25,7 @@ type Service struct {
 	client *elastic.Client
 	env    string
 	index  string
+	log    *zap.SugaredLogger
 }
 
 type Search struct {
@@ -38,7 +40,7 @@ type SearchResponse struct {
 	Count  int
 }
 
-func New(url string, production bool) (*Client, error) {
+func New(url string, log *zap.SugaredLogger, production bool) (*Client, error) {
 	var err error
 	c := &Client{url: url, Production: production}
 	env := "dev"
@@ -61,8 +63,8 @@ func New(url string, production bool) (*Client, error) {
 	c.Version = info.Version.Number
 
 	c.client = e
-	c.Runic = &RunicService{Service: Service{client: e, env: env, index: "runic"}}
-	c.Media = &MediaService{Service: Service{client: e, env: env, index: "media"}}
+	c.Runic = &RunicService{Service: Service{client: e, env: env, index: "runic", log: log.Named("runic")}}
+	c.Media = &MediaService{Service: Service{client: e, env: env, index: "media", log: log.Named("media")}}
 
 	return c, nil
 }
