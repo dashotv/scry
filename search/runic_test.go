@@ -12,7 +12,7 @@ func TestRunicSearch_Find(t *testing.T) {
 	l, err := zap.NewDevelopment()
 	require.NoError(t, err)
 
-	c, err := New(elasticURL, l.Sugar(), false)
+	c, err := New(elasticURLs, l.Sugar(), false)
 	require.NoError(t, err)
 
 	s := c.Runic.NewSearch()

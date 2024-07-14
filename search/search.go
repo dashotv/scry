@@ -9,7 +9,7 @@ import (
 
 type Client struct {
 	client *elastic.Client
-	url    string
+	url    []string
 
 	Production bool
 	Code       int
@@ -40,21 +40,21 @@ type SearchResponse struct {
 	Count  int
 }
 
-func New(url string, log *zap.SugaredLogger, production bool) (*Client, error) {
+func New(urls []string, log *zap.SugaredLogger, production bool) (*Client, error) {
 	var err error
-	c := &Client{url: url, Production: production}
+	c := &Client{url: urls, Production: production}
 	env := "dev"
 	if production {
 		env = "prod"
 	}
 
-	e, err := elastic.NewClient(elastic.SetURL(url), elastic.SetSniff(false))
+	e, err := elastic.NewClient(elastic.SetURL(urls...), elastic.SetSniff(false))
 	if err != nil {
 		return nil, err
 	}
 
 	ctx := context.Background()
-	info, code, err := e.Ping(url).Do(ctx)
+	info, code, err := e.Ping(urls[0]).Do(ctx)
 	if err != nil {
 		return nil, err
 	}

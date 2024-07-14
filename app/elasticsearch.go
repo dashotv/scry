@@ -14,9 +14,7 @@ func init() {
 
 func setupElasticsearch(app *Application) error {
 	c := elasticsearch.Config{
-		Addresses: []string{
-			app.Config.ElasticsearchURL,
-		},
+		Addresses: app.Config.ElasticsearchURL,
 	}
 
 	var err error

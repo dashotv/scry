@@ -3,6 +3,7 @@ package search
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/joho/godotenv"
@@ -10,18 +11,18 @@ import (
 	"go.uber.org/zap"
 )
 
-var elasticURL string
+var elasticURLs []string
 
 func init() {
 	godotenv.Load("../.env")
-	elasticURL = os.Getenv("ELASTICSEARCH_URL")
+	elasticURLs = strings.Split(os.Getenv("ELASTICSEARCH_URL"), ",")
 }
 
 func TestMediaSearch_Find(t *testing.T) {
 	l, err := zap.NewDevelopment()
 	require.NoError(t, err)
 
-	c, err := New(elasticURL, l.Sugar(), false)
+	c, err := New(elasticURLs, l.Sugar(), false)
 	require.NoError(t, err)
 
 	s := c.Media.NewSearch()

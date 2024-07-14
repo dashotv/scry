@@ -46,12 +46,12 @@ type Config struct {
 
 	//golem:template:app/config_partial_struct
 
-	ElasticsearchURL string `env:"ELASTICSEARCH_URL,required"`
-	NzbgeekKey       string `env:"NZBGEEK_KEY,required"`
-	NzbgeekURL       string `env:"NZBGEEK_URL,required"`
-	TvdbKey          string `env:"TVDB_KEY,required"`
-	TmdbToken        string `env:"TMDB_TOKEN,required"`
-	Production       bool   `env:"PRODUCTION" envDefault:"false"`
+	ElasticsearchURL []string `env:"ELASTICSEARCH_URL,required"`
+	NzbgeekKey       string   `env:"NZBGEEK_KEY,required"`
+	NzbgeekURL       string   `env:"NZBGEEK_URL,required"`
+	TvdbKey          string   `env:"TVDB_KEY,required"`
+	TmdbToken        string   `env:"TMDB_TOKEN,required"`
+	Production       bool     `env:"PRODUCTION" envDefault:"false"`
 }
 
 func (c *Config) Validate() error {
