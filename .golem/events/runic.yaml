@@ -1,4 +1,5 @@
 name: runic
 channel: runic.releases
 receiver: true
+concurrency: 10
 existing_payload: runic.Release

@@ -35,7 +35,7 @@ func setupEvents(app *Application) error {
 }
 
 func startEvents(ctx context.Context, app *Application) error {
-	go app.Events.Start()
+	go app.Events.Start(ctx)
 	return nil
 }
 
@@ -92,26 +92,64 @@ func NewEvents(app *Application) (*Events, error) {
 	return e, nil
 }
 
-func (e *Events) Start() error {
+func (e *Events) Start(ctx context.Context) error {
 	e.Log.Debugf("starting events...")
-	go func() {
-		// wire up receivers
-		for {
-			select {
-			case m := <-e.Episodes:
-				onEpisodes(e.App, m)
-
-			case m := <-e.Movies:
-				onMovies(e.App, m)
-
-			case m := <-e.Runic:
-				onRunic(e.App, m)
-
-			case m := <-e.Series:
-				onSeries(e.App, m)
+	// receiver: Episodes
+	for i := 0; i < 1; i++ {
+		go func() {
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case m := <-e.Episodes:
+					onEpisodes(e.App, m)
+				}
 			}
-		}
-	}()
+		}()
+	}
+
+	// receiver: Movies
+	for i := 0; i < 1; i++ {
+		go func() {
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case m := <-e.Movies:
+					onMovies(e.App, m)
+				}
+			}
+		}()
+	}
+
+	// receiver: Runic
+	for i := 0; i < 10; i++ {
+		go func() {
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case m := <-e.Runic:
+					onRunic(e.App, m)
+				}
+			}
+		}()
+	}
+
+	// receiver: Series
+	for i := 0; i < 1; i++ {
+		go func() {
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				case m := <-e.Series:
+					onSeries(e.App, m)
+				}
+			}
+		}()
+	}
+
 	return nil
 }
 
