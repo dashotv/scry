@@ -19,7 +19,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/dashotv/scry/app"
+	"github.com/dashotv/scry/internal/app"
 )
 
 // serverCmd represents the server command
