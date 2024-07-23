@@ -2,13 +2,14 @@ package search
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/olivere/elastic/v7"
+	"github.com/elastic/go-elasticsearch/v8"
 	"go.uber.org/zap"
 )
 
 type Client struct {
-	client *elastic.Client
+	client *elasticsearch.TypedClient
 	url    []string
 
 	Production bool
@@ -22,7 +23,7 @@ type Client struct {
 }
 
 type Service struct {
-	client *elastic.Client
+	client *elasticsearch.TypedClient
 	env    string
 	index  string
 	log    *zap.SugaredLogger
@@ -32,6 +33,7 @@ type Search struct {
 	Start int
 	Limit int
 	Index string
+	log   *zap.SugaredLogger
 }
 
 type SearchResponse struct {
@@ -48,19 +50,19 @@ func New(urls []string, log *zap.SugaredLogger, production bool) (*Client, error
 		env = "prod"
 	}
 
-	e, err := elastic.NewClient(elastic.SetURL(urls...), elastic.SetSniff(false))
+	e, err := elasticsearch.NewTypedClient(elasticsearch.Config{
+		Addresses: urls,
+	})
 	if err != nil {
 		return nil, err
 	}
-
-	ctx := context.Background()
-	info, code, err := e.Ping(urls[0]).Do(ctx)
+	ok, err := e.Ping().Do(context.Background())
 	if err != nil {
 		return nil, err
 	}
-	//logrus.Debugf("Elasticsearch returned with code %d and version %s", code, info.Version.Number)
-	c.Code = code
-	c.Version = info.Version.Number
+	if !ok {
+		return nil, fmt.Errorf("Elasticsearch is not available")
+	}
 
 	c.client = e
 	c.Runic = &RunicService{Service: Service{client: e, env: env, index: "runic", log: log.Named("runic")}}

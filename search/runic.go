@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/olivere/elastic/v7"
-	"github.com/sirupsen/logrus"
+	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/core/index"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/core/search"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 
 	runic "github.com/dashotv/runic/client"
 )
@@ -18,19 +20,14 @@ type RunicService struct {
 	Service
 }
 
-func (s *RunicService) Index(r *runic.Release) (*elastic.IndexResponse, error) {
-	return s.client.Index().
-		Index(fmt.Sprintf("%s_%s_%s", s.index, s.env, timeToDateBucket(r.PublishedAt))).
-		Type("_doc").
+func (s *RunicService) Index(r *runic.Release) (*index.Response, error) {
+	return s.client.Index(fmt.Sprintf("%s_%s_%s", s.index, s.env, timeToDateBucket(r.PublishedAt))).
 		Id(r.ID.Hex()).
-		BodyJson(r).
+		Request(r).
 		Do(context.Background())
 }
 func (s *RunicService) Delete(id string) error {
-	_, err := s.client.Delete().
-		Index(s.index + "_" + s.env + "_*").
-		Type("_doc").
-		Id(id).
+	_, err := s.client.Delete(s.index+"_"+s.env+"_*", id).
 		Do(context.Background())
 	return err
 }
@@ -41,7 +38,7 @@ func (s *RunicService) NewSearch() *RunicSearch {
 		Season:     -1,
 		Episode:    -1,
 		Resolution: -1,
-		Search:     &Search{Start: 0, Limit: RUNIC_PAGE_SIZE, Index: s.index + "_" + s.env + "_*"},
+		Search:     &Search{Start: 0, Limit: RUNIC_PAGE_SIZE, Index: s.index + "_" + s.env + "_*", log: s.log.Named("search")},
 	}
 }
 
@@ -73,7 +70,7 @@ type RunicSearch struct {
 	Checksum    string `bson:"checksum" json:"checksum"`
 	Exact       bool
 
-	client *elastic.Client
+	client *elasticsearch.TypedClient
 	*Search
 }
 
@@ -83,57 +80,52 @@ type RunicSearchResponse struct {
 }
 
 func (s *RunicSearch) Find() (*RunicSearchResponse, error) {
-	var q elastic.Query
+	var q *types.Query
 
+	if s.IsZero() {
+		q = &types.Query{
+			MatchAll: &types.MatchAllQuery{},
+		}
+	} else {
+		q = s.Query()
+	}
 	r := &RunicSearchResponse{SearchResponse: &SearchResponse{}}
 	ctx := context.Background()
 
-	search := s.client.Search().Index(s.Index)
-	logrus.Debugf("Find(): start=%d limit=%d", s.Start, s.Limit)
-	search = search.From(s.Start)
-	search = search.Size(s.Limit)
-	search = search.Sort("published_at", false)
-
-	if s.IsZero() {
-		q = elastic.NewMatchAllQuery()
-		r.Search = "*"
-	} else {
-		q, r.Search = s.Query()
-	}
-
-	search.Query(q)
-
-	sr, err := search.Do(ctx)
+	sort := map[string]map[string]string{"created_at": {"order": "desc"}}
+	sr, err := s.client.Search().Index(s.Index).
+		Query(q).
+		From(s.Start).
+		Size(s.Limit).
+		Sort(sort).
+		Do(ctx)
 	if err != nil {
-		logrus.Errorf("Find(): %s", err)
-		if e, ok := err.(*elastic.Error); ok {
-			logrus.Errorf("Elastic failed with status %d and error %s.", e.Status, e.Details.Reason)
-		}
+		s.log.Errorf("Find(): %s", err)
 		return r, err
 	}
 
-	r.Total = sr.Hits.TotalHits.Value
+	r.Total = sr.Hits.Total.Value
 	r.Count = len(sr.Hits.Hits)
 
-	rels, err := s.processResponse(sr)
+	ms, err := s.processResponse(sr)
 	if err != nil {
 		return r, err
 	}
-	r.Releases = rels
+	r.Releases = ms
 
 	return r, nil
 }
 
-func (s *RunicSearch) processResponse(res *elastic.SearchResult) ([]*runic.Release, error) {
+func (s *RunicSearch) processResponse(res *search.Response) ([]*runic.Release, error) {
 	var rels []*runic.Release
 
-	if res == nil || res.TotalHits() == 0 {
+	if res == nil || res.Hits.Total.Value == 0 {
 		return rels, nil
 	}
 
 	for _, hit := range res.Hits.Hits {
 		rel := &runic.Release{}
-		if err := json.Unmarshal(hit.Source, rel); err != nil {
+		if err := json.Unmarshal(hit.Source_, rel); err != nil {
 			return nil, err
 		}
 
@@ -143,7 +135,7 @@ func (s *RunicSearch) processResponse(res *elastic.SearchResult) ([]*runic.Relea
 	return rels, nil
 }
 
-func (s *RunicSearch) Query() (*elastic.QueryStringQuery, string) {
+func (s *RunicSearch) Query() *types.Query {
 	list := []string{}
 
 	if s.Title != "" {
@@ -198,8 +190,8 @@ func (s *RunicSearch) Query() (*elastic.QueryStringQuery, string) {
 	}
 
 	str := strings.Join(list, " AND ")
-	logrus.Debugf("    search: %s", str)
-	return elastic.NewQueryStringQuery(str), str
+	s.log.Debugf("    search: %s", str)
+	return &types.Query{QueryString: &types.QueryStringQuery{Query: str}}
 }
 
 func (s *RunicSearch) IsZero() bool {

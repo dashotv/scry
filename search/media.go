@@ -7,8 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/olivere/elastic/v7"
-	"github.com/sirupsen/logrus"
+	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/core/index"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/core/search"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
 const MEDIA_PAGE_SIZE = 25
@@ -17,20 +19,16 @@ type MediaService struct {
 	Service
 }
 
-func (s *MediaService) Index(m *Media) (*elastic.IndexResponse, error) {
+func (s *MediaService) Index(m *Media) (*index.Response, error) {
+	s.log.Debugf("index: %+v", m)
 	m.Type = strings.ToLower(m.Type)
-	return s.client.Index().
-		Index(s.index + "_" + s.env).
-		Type("medium").
+	return s.client.Index(s.index + "_" + s.env).
 		Id(m.ID).
-		BodyJson(m).
+		Request(m).
 		Do(context.Background())
 }
 func (s *MediaService) Delete(id string) error {
-	_, err := s.client.Delete().
-		Index(s.index + "_" + s.env).
-		Type("medium").
-		Id(id).
+	_, err := s.client.Delete(s.index+"_"+s.env, id).
 		Do(context.Background())
 	return err
 }
@@ -38,7 +36,7 @@ func (s *MediaService) Delete(id string) error {
 func (s *MediaService) NewSearch() *MediaSearch {
 	return &MediaSearch{
 		client: s.client,
-		Search: &Search{Start: 0, Limit: MEDIA_PAGE_SIZE, Index: s.index + "_" + s.env},
+		Search: &Search{Start: 0, Limit: MEDIA_PAGE_SIZE, Index: s.index + "_" + s.env, log: s.log.Named("search")},
 	}
 }
 
@@ -82,7 +80,7 @@ type MediaSearch struct {
 	Downloaded bool   `json:"downloaded"`
 	Completed  bool   `json:"completed"`
 
-	client *elastic.Client
+	client *elasticsearch.TypedClient
 	*Search
 }
 
@@ -92,36 +90,32 @@ type MediaSearchResponse struct {
 }
 
 func (s *MediaSearch) Find() (*MediaSearchResponse, error) {
-	var q elastic.Query
+	var q *types.Query
+
+	if s.IsZero() {
+		q = &types.Query{
+			MatchAll: &types.MatchAllQuery{},
+		}
+	} else {
+		q = s.Query()
+	}
 
 	r := &MediaSearchResponse{SearchResponse: &SearchResponse{}}
 	ctx := context.Background()
 
-	search := s.client.Search().Index(s.Index)
-	logrus.Debugf("Find(): start=%d limit=%d", s.Start, s.Limit)
-	search = search.From(s.Start)
-	search = search.Size(s.Limit)
-	search = search.Sort("created_at", false)
-
-	if s.IsZero() {
-		q = elastic.NewMatchAllQuery()
-		r.Search = "*"
-	} else {
-		q, r.Search = s.Query()
-	}
-
-	search.Query(q)
-
-	sr, err := search.Do(ctx)
+	sort := map[string]map[string]string{"created_at": {"order": "desc"}}
+	sr, err := s.client.Search().Index(s.Index).
+		Query(q).
+		From(s.Start).
+		Size(s.Limit).
+		Sort(sort).
+		Do(ctx)
 	if err != nil {
-		logrus.Errorf("Find(): %s", err)
-		if e, ok := err.(*elastic.Error); ok {
-			logrus.Errorf("Elastic failed with status %d and error %s.", e.Status, e.Details.Reason)
-		}
+		s.log.Errorf("Find(): %s", err)
 		return r, err
 	}
 
-	r.Total = sr.Hits.TotalHits.Value
+	r.Total = sr.Hits.Total.Value
 	r.Count = len(sr.Hits.Hits)
 
 	ms, err := s.processResponse(sr)
@@ -133,16 +127,16 @@ func (s *MediaSearch) Find() (*MediaSearchResponse, error) {
 	return r, nil
 }
 
-func (s *MediaSearch) processResponse(res *elastic.SearchResult) ([]*Media, error) {
+func (s *MediaSearch) processResponse(res *search.Response) ([]*Media, error) {
 	var ms []*Media
 
-	if res == nil || res.TotalHits() == 0 {
+	if res == nil || res.Hits.Total.Value == 0 {
 		return ms, nil
 	}
 
 	for _, hit := range res.Hits.Hits {
 		m := &Media{}
-		if err := json.Unmarshal(hit.Source, m); err != nil {
+		if err := json.Unmarshal(hit.Source_, m); err != nil {
 			return nil, err
 		}
 		ms = append(ms, m)
@@ -151,7 +145,7 @@ func (s *MediaSearch) processResponse(res *elastic.SearchResult) ([]*Media, erro
 	return ms, nil
 }
 
-func (s *MediaSearch) Query() (*elastic.QueryStringQuery, string) {
+func (s *MediaSearch) Query() *types.Query {
 	list := []string{}
 
 	if s.Name != "" {
@@ -199,8 +193,8 @@ func (s *MediaSearch) Query() (*elastic.QueryStringQuery, string) {
 	}
 
 	str := strings.Join(list, " AND ")
-	logrus.Debugf("    search: %s", str)
-	return elastic.NewQueryStringQuery(str), str
+	s.log.Debugf("    search: %s", str)
+	return &types.Query{QueryString: &types.QueryStringQuery{Query: str}}
 }
 
 func (s *MediaSearch) IsZero() bool {

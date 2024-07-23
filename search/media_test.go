@@ -27,7 +27,7 @@ func TestMediaSearch_Find(t *testing.T) {
 
 	s := c.Media.NewSearch()
 	s.Type = "series"
-	s.Name = "my hero academia"
+	s.Name = "hero"
 
 	r, err := s.Find()
 	require.NoError(t, err)
