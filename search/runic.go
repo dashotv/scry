@@ -92,7 +92,7 @@ func (s *RunicSearch) Find() (*RunicSearchResponse, error) {
 	r := &RunicSearchResponse{SearchResponse: &SearchResponse{}}
 	ctx := context.Background()
 
-	sort := map[string]map[string]string{"created_at": {"order": "desc"}}
+	sort := map[string]map[string]string{"published_at": {"order": "desc"}}
 	sr, err := s.client.Search().Index(s.Index).
 		Query(q).
 		From(s.Start).

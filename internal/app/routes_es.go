@@ -5,7 +5,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/dashotv/fae"
 	"github.com/dashotv/scry/search"
 )
 
@@ -15,7 +14,7 @@ func (a *Application) EsIndex(c echo.Context) error {
 
 func (a *Application) EsDelete(c echo.Context, index string) error {
 	if err := a.Client.DeleteIndex(index); err != nil {
-		return fae.Wrap(err, "failed to delete index")
+		return err
 	}
 
 	return c.JSON(http.StatusOK, Response{Error: false, Message: "Index deleted"})
