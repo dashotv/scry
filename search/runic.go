@@ -190,7 +190,7 @@ func (s *RunicSearch) Query() *types.Query {
 	}
 
 	str := strings.Join(list, " AND ")
-	s.log.Debugf("    search: %s", str)
+	// s.log.Debugf("    search: %s", str)
 	return &types.Query{QueryString: &types.QueryStringQuery{Query: str}}
 }
 

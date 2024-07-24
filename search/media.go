@@ -20,7 +20,7 @@ type MediaService struct {
 }
 
 func (s *MediaService) Index(m *Media) (*index.Response, error) {
-	s.log.Debugf("index: %+v", m)
+	// s.log.Debugf("index: %+v", m)
 	m.Type = strings.ToLower(m.Type)
 	return s.client.Index(s.index + "_" + s.env).
 		Id(m.ID).
@@ -193,7 +193,7 @@ func (s *MediaSearch) Query() *types.Query {
 	}
 
 	str := strings.Join(list, " AND ")
-	s.log.Debugf("    search: %s", str)
+	// s.log.Debugf("    search: %s", str)
 	return &types.Query{QueryString: &types.QueryStringQuery{Query: str}}
 }
 
